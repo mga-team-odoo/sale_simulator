@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<terp>
+    <data>
+
+        <menuitem 
+            name="Products/Configuration/Simulator"
+            id="menu_simulator"/>
+
+    <!-- View Product Item -->
+    <record model="ir.ui.view" id="view_product_item_form">
+        <field name="name">product.item.form</field>
+        <field name="model">product.item</field>
+        <field name="type">form</field>
+        <field name="priority" eval="7"/> 
+        <field name="arch" type="xml">
+            <form string="Product Item">
+                <field name="name" select="1" />
+                <field name="code" select="1" />
+                <field name="type" select="2" />
+                <field name="active" select="2" />
+                <field name="item_ids" nolabel="1" colspan="4">
+                    <tree string="Item line" editable="bottom">
+                        <field name="product_id"/>
+                        <field name="quantity"/>
+                        <field name="uom_id"/>
+                    </tree>
+                </field>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_product_item_tree">
+        <field name="name">product.item.tree</field>
+        <field name="model">product.item</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="7"/> 
+        <field name="arch" type="xml">
+            <tree string="Product Item">
+                <field name="name" />
+                <field name="code" />
+                <field name="type" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record model="ir.actions.act_window" id="action_product_item">
+        <field name="name">Product Item</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.item</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_product_item_tree"/>
+        <field name="domain">[ ('type','=','p') ]</field>
+        <field name="context">{'type': 'p'}</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem 
+        name="Products/Configuration/Simulator/Product Items" 
+        action="action_product_item" 
+        sequence="10"
+        id="menu_product_item"/>
+
+    <!-- View Module Item -->
+    <record model="ir.ui.view" id="view_module_item_form">
+        <field name="name">module.item.form</field>
+        <field name="model">product.item</field>
+        <field name="type">form</field>
+        <field name="priority" eval="7"/> 
+        <field name="arch" type="xml">
+            <form string="Module Item">
+                <field name="name" select="1" />
+                <field name="code" select="1" />
+                <field name="p_item_id" select="1"/> <!-- domain="[('type','=','p'),('active','=',True)]"/> -->
+                <field name="type" select="2" />
+                <field name="active" select="2" />
+                <field name="item_ids" nolabel="1" colspan="4">
+                    <tree string="Item line" editable="bottom">
+                        <field name="product_id"/>
+                        <field name="quantity"/>
+                        <field name="uom_id"/>
+                    </tree>
+                </field>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_module_item_tree">
+        <field name="name">module.item.tree</field>
+        <field name="model">product.item</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="7"/> 
+        <field name="arch" type="xml">
+            <tree string="Module Item">
+                <field name="name" />
+                <field name="code" />
+                <field name="type" />
+                <field name="p_item_id" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record model="ir.actions.act_window" id="action_module_item">
+        <field name="name">Module Item</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.item</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_module_item_tree"/>
+        <field name="domain">[('type','=','m')]</field> 
+        <field name="context">{'type': 'm'}</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem 
+        name="Products/Configuration/Simulator/Module Items" 
+        action="action_module_item" 
+        sequence="10"
+        id="menu_simulator_item"/>
+
+</data>
+</terp>

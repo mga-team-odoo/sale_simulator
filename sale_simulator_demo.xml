@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<terp>
+<data noupdate="1">
+
+    <!-- ******************* -->
+    <!-- Composition produit -->
+    <!-- ******************* -->
+   -
+    <record model="product.item" id="product_item_serveur_1u">
+        <field name="name">Serveur Syleam 1U</field>
+        <field name="code">SS1U</field>
+        <field name="type">p</field>
+    </record>
+
+    <record model="product.item.line" id="product_item_serveur_1u_boitier">
+        <field name="item_id" ref="product_item_serveur_1u"/>
+        <field name="product_id" model="product.product" search="[('default_code','=','TOW1')]" />
+        <field name="quantity">1.0</field>
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
+    </record>
+
+    <record model="product.item.line" id="product_item_serveur_1u_cm">
+        <field name="item_id" ref="product_item_serveur_1u"/>
+        <field name="product_id" model="product.product" search="[('default_code','=','MB1')]" />
+        <field name="quantity">1.0</field>
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
+    </record>
+
+    <record model="product.item.line" id="product_item_serveur_1u_dd80Go">
+        <field name="item_id" ref="product_item_serveur_1u"/>
+        <field name="product_id" model="product.product" search="[('default_code','=','HDD1')]" />
+        <field name="quantity">4.0</field>
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
+    </record>
+
+    <!-- ****************** -->
+    <!-- Composition module -->
+    <!-- ****************** -->
+    <record model="product.item" id="product_item_ss1u_dd120Go">
+        <field name="name">Disque 120Go</field>
+        <field name="code">DD120</field>
+        <field name="type">m</field>
+        <field name="p_item_id" ref="product_item_serveur_1u"/>
+    </record>
+
+    <record model="product.item.line" id="product_item_ss1u_dd120Go_dd80Go">
+        <field name="item_id" ref="product_item_ss1u_dd120Go"/>
+        <field name="product_id" model="product.product" search="[('default_code','=','HDD1')]" />
+        <field name="quantity">-4.0</field>
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
+    </record>
+
+    <record model="product.item.line" id="product_item_ss1u_dd120Go_dd120Go">
+        <field name="item_id" ref="product_item_ss1u_dd120Go"/>
+        <field name="product_id" model="product.product" search="[('default_code','=','HDD2')]" />
+        <field name="quantity">4.0</field>
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
+    </record>
+
+</data>
+</terp>
