@@ -64,14 +64,15 @@
                 <field name="code" select="1" />
                 <field name="type" select="2" />
                 <field name="active" select="2" />
-                <field name="item_ids" nolabel="1" colspan="4">
+                <separator colspan="4"/>
+                <field name="item_ids" nolabel="1" colspan="2">
                     <tree string="Item line" editable="bottom">
                         <field name="product_id"/>
                         <field name="quantity"/>
                         <field name="uom_id"/>
                     </tree>
                 </field>
-                <field name="feature_ids" nolabel="1" colspan="4">
+                <field name="feature_ids" nolabel="1" colspan="2">
                     <tree String="Feature line" editable="bottom">
                         <field name="feature_id"/>
                         <field name="quantity"/>

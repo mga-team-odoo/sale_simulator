@@ -77,7 +77,7 @@ class product_item(osv.osv):
         'active': fields.boolean('Active'),
         'item_ids': fields.one2many('product.item.line', 'item_id', 'Item line'),
         'p_item_id': fields.many2one('product.item', 'Product Item', ondelete='cascade'),
-        'feature_ids': fields.one2many('product.item.feature.line', 'feature_id', 'Feature'),
+        'feature_ids': fields.one2many('product.item.feature.line', 'item_id', 'Feature'),
     }
 
     _defaults = {

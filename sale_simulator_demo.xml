@@ -54,8 +54,10 @@
         <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
     </record>
 
-    <!-- ****************** -->
-    <!-- Composition module -->
+    <!-- ****************************************************** -->
+    <!-- * Composition module                                 * -->
+    <!-- ****************************************************** -->
+
     <!-- ****************** -->
     <record model="product.item" id="product_item_ss1u_dd120Go">
         <field name="name">Disque 120Go</field>
@@ -76,6 +78,13 @@
         <field name="product_id" model="product.product" search="[('default_code','=','HDD2')]" />
         <field name="quantity">4.0</field>
         <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
+    </record>
+
+    <!-- ****************** -->
+    <record model="product.item.feature.line" id="product_feature_ss1u_proc">
+        <field name="item_id" ref="product_item_serveur_1u"/>
+        <field name="feature_id" ref="feature_processor"/>
+        <field name="quantity">2.0</field>
     </record>
 
 </data>
