@@ -31,6 +31,35 @@
 from osv import fields, osv
 # from mx import DateTime
 
+
+# *****************************************************************************
+# * Product Section                                                           *
+# *****************************************************************************
+
+#
+# Feature list
+#
+class product_item_feature(osv.osv):
+    '''
+    Item feature list
+    '''
+    _name = 'product.item.feature'
+    _description = 'Product feature list'
+
+    _columns = {
+        'code': fields.char('Code', size=10, required=True),
+        'name': fields.char('Name', size=64, required=True, translate=True),
+        'active': fields.boolean('Active'),
+    }
+
+    _defaults = {
+        'active': lambda *a: True,
+    }
+
+    _order = 'code'
+
+product_item_feature()
+
 #
 # PRODUCT ITEM
 #
@@ -48,6 +77,7 @@ class product_item(osv.osv):
         'active': fields.boolean('Active'),
         'item_ids': fields.one2many('product.item.line', 'item_id', 'Item line'),
         'p_item_id': fields.many2one('product.item', 'Product Item', ondelete='cascade'),
+        'feature_ids': fields.one2many('product.item.feature.line', 'feature_id', 'Feature'),
     }
 
     _defaults = {
@@ -73,26 +103,57 @@ class product_item_line(osv.osv):
         'uom_id': fields.many2one('product.uom', 'Unit', required=True),
     }
 
-# gestion des contrainte en python
-#
-#    def __check_length:
-#        ...
-#        return True  # retourne True or False pour valider la contrainte
-#    _constraints = [
-#        (_check_length, 'Error ! the name length must be superior to ....', ['name'])
-#    ]
-    
-##
-# gestion des contraintes en SQL directement
-# arguments:
-# 1) - nom du champ
-# 2) - type de contrainte SQL (UNIQUE, CHECK, ...)
-# 3) - message à afficher lors de la violation de la contrainte
-#
-#    _sql_constraints = [
-#        ('code', 'UNIQUE (code)',  'Le code template doit être unique !'),
-#    ]
-
-# Load class after creation
 product_item_line()
+
+
+class product_item_feature_line(osv.osv):
+    '''
+    Product item feature line
+    '''
+    _name = 'product.item.feature.line'
+    _description = 'Product item feature line'
+
+    _columns = {
+        'item_id': fields.many2one('product.item', 'Item', required=True, ondelete='cascade'),
+        'feature_id': fields.many2one('product.item.feature', 'Feature', required=True),
+        'quantity': fields.float('Quantity',required=True),
+    }
+
+product_item_feature_line()
+
+# *****************************************************************************
+# Sale section
+# *****************************************************************************
+class sale_simulator(osv.osv):
+    '''
+    Sale simulator
+    '''
+    _name = 'sale.simulator'
+    _description = 'Sale simulator'
+
+    _columns = {
+        'name': fields.char('Simulation number', size=64, required=True),
+        'partner_id': fields.many2one('res.partner', 'Partner', ondelete='cascade'),
+        'pricelist_id': fields.many2one('product.pricelist','Price List', ondelete='cascade'),
+    }
+
+    _defaults = {
+        'name': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'sale.simulator'),
+    }
+
+sale_simulator()
+
+class sale_simulator_line(osv.osv):
+    '''
+    Sale simulator line
+    '''
+    _name = 'sale.simulator.line'
+    _description = 'Sale simulator line'
+
+    _columns = {
+        'description': fields.char('Description', size=64, required=True),
+        'simul_id': fields.many2one('sale.simulator', 'Sale simulator', ondelete='cascade'),
+    }
+
+sale_simulator_line()
 

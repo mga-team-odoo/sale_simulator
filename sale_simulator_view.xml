@@ -6,6 +6,52 @@
             name="Products/Configuration/Simulator"
             id="menu_simulator"/>
 
+
+        <record model="ir.ui.view" id="view_product_item_feature_form">
+            <field name="name">product.item.feature.form</field>
+            <field name="model">product.item.feature</field>
+            <field name="type">form</field>
+            <field name="priority" eval="7"/>
+            <field name="arch" type="xml">
+                <form string="Feature item">
+                    <field name="name" select="1" />
+                    <field name="code" select="1" />
+                    <field name="active" select="2" />
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_product_item_feature_tree">
+            <field name="name">product.item.feature.tree</field>
+            <field name="model">product.item.feature</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="7"/>
+            <field name="arch" type="xml">
+                <tree string="Feature item">
+                    <field name="name" select="1" />
+                    <field name="code" select="1" />
+                    <field name="active" select="2" />
+                </tree>
+            </field>
+        </record>
+
+    <!-- Action -->
+    <record model="ir.actions.act_window" id="action_product_item_feature">
+        <field name="name">Item Feature</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.item.feature</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_product_item_feature_tree"/>
+    </record>
+
+    <!-- Menu -->
+    <menuitem 
+        name="Products/Configuration/Simulator/Feature Items" 
+        action="action_product_item_feature" 
+        sequence="8"
+        id="menu_product_item_feature"/>
+
     <!-- View Product Item -->
     <record model="ir.ui.view" id="view_product_item_form">
         <field name="name">product.item.form</field>
@@ -23,6 +69,12 @@
                         <field name="product_id"/>
                         <field name="quantity"/>
                         <field name="uom_id"/>
+                    </tree>
+                </field>
+                <field name="feature_ids" nolabel="1" colspan="4">
+                    <tree String="Feature line" editable="bottom">
+                        <field name="feature_id"/>
+                        <field name="quantity"/>
                     </tree>
                 </field>
             </form>
