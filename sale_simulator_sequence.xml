@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<terp>
+    <data noupdate="1">
+
+        <record model="ir.sequence.type" id="sale_simulator_type">
+            <field name="name">Sale simulator</field>
+            <field name="code">sale.simulator</field>
+        </record>
+
+        <record model="ir.sequence" id="sale_simualtor_seq">
+            <field name="name">Sale simulator</field>
+            <field name="code">sale.simulator</field>
+            <field name="prefix">%(year)s</field>
+            <field name="suffix">/SIM</field>
+            <field name="padding">5</field>
+        </record>
+
+    </data>
+</terp>

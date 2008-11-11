@@ -26,7 +26,8 @@
     </record>
 
     <!-- ******************** -->
-
+    <!-- * Serveur 1U       * -->
+    <!-- ******************** -->
     <record model="product.item" id="product_item_serveur_1u">
         <field name="name">Serveur Syleam 1U</field>
         <field name="code">SS1U</field>
@@ -84,8 +85,119 @@
     <record model="product.item.feature.line" id="product_feature_ss1u_proc">
         <field name="item_id" ref="product_item_serveur_1u"/>
         <field name="feature_id" ref="feature_processor"/>
-        <field name="quantity">2.0</field>
+        <field name="quantity">1.0</field>
+        <field name="global">2.0</field>
     </record>
 
+    <record model="product.item.feature.line" id="product_feature_ss1u_hdd">
+        <field name="item_id" ref="product_item_serveur_1u"/>
+        <field name="feature_id" ref="feature_hdd"/>
+        <field name="quantity">4.0</field>
+        <field name="global">8.0</field>
+    </record>
+
+    <record model="product.item.feature.line" id="product_feature_ss1u_mem">
+        <field name="item_id" ref="product_item_serveur_1u"/>
+        <field name="feature_id" ref="feature_memory"/>
+        <field name="quantity">2.0</field>
+        <field name="global">4.0</field>
+    </record>
+
+    <!-- ******************** -->
+    <!-- * Serveur 2U       * -->
+    <!-- ******************** -->
+    <record model="product.item" id="product_item_serveur_2u">
+        <field name="name">Serveur Syleam 2U</field>
+        <field name="code">SS2U</field>
+        <field name="type">p</field>
+    </record>
+
+    <record model="product.item.line" id="product_item_serveur_2u_boitier">
+        <field name="item_id" ref="product_item_serveur_2u"/>
+        <field name="product_id" model="product.product" search="[('default_code','=','TOW1')]" />
+        <field name="quantity">1.0</field>
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
+    </record>
+
+    <record model="product.item.line" id="product_item_serveur_2u_cm">
+        <field name="item_id" ref="product_item_serveur_2u"/>
+        <field name="product_id" model="product.product" search="[('default_code','=','MB2')]" />
+        <field name="quantity">1.0</field>
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
+    </record>
+
+    <record model="product.item.line" id="product_item_serveur_2u_dd120Go">
+        <field name="item_id" ref="product_item_serveur_2u"/>
+        <field name="product_id" model="product.product" search="[('default_code','=','HDD2')]" />
+        <field name="quantity">4.0</field>
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
+    </record>
+
+    <!-- Module Disque 160 Go -->
+    <record model="product.item" id="product_item_ss2u_dd160Go">
+        <field name="name">Extension Disque 640Go</field>
+        <field name="code">DD640</field>
+        <field name="type">m</field>
+        <field name="p_item_id" ref="product_item_serveur_2u"/>
+    </record>
+
+    <record model="product.item.line" id="product_item_ss2u_dd160Go_dd120Go">
+        <field name="item_id" ref="product_item_ss2u_dd160Go"/>
+        <field name="product_id" model="product.product" search="[('default_code','=','HDD2')]" />
+        <field name="quantity">-4.0</field>
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
+    </record>
+
+    <record model="product.item.line" id="product_item_ss2u_dd160Go_dd160Go">
+        <field name="item_id" ref="product_item_ss2u_dd160Go"/>
+        <field name="product_id" model="product.product" search="[('default_code','=','HDD3')]" />
+        <field name="quantity">4.0</field>
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
+    </record>
+
+    <record model="product.item.feature.line" id="product_feature_ss2u_dd160Go">
+        <field name="item_id" ref="product_item_ss2u_dd160Go"/>
+        <field name="feature_id" ref="feature_hdd"/>
+        <field name="quantity">4.0</field>
+        <field name="global">0.0</field>
+    </record>
+
+    <!-- ****************** -->
+    <record model="product.item.feature.line" id="product_feature_ss2u_proc">
+        <field name="item_id" ref="product_item_serveur_2u"/>
+        <field name="feature_id" ref="feature_processor"/>
+        <field name="quantity">2.0</field>
+        <field name="global">4.0</field>
+    </record>
+
+    <record model="product.item.feature.line" id="product_feature_ss2u_hdd">
+        <field name="item_id" ref="product_item_serveur_2u"/>
+        <field name="feature_id" ref="feature_hdd"/>
+        <field name="quantity">4.0</field>
+        <field name="global">16.0</field>
+    </record>
+
+    <record model="product.item.feature.line" id="product_feature_ss2u_mem">
+        <field name="item_id" ref="product_item_serveur_2u"/>
+        <field name="feature_id" ref="feature_memory"/>
+        <field name="quantity">4.0</field>
+        <field name="global">8.0</field>
+    </record>
+
+    <!-- ****************************************************** -->
+    <!-- * Création d'une simulation de ventes                  -->
+    <!-- ****************************************************** -->
+
+    <record model="sale.simulator" id="sale_simulator_1">
+        <field name="partner_id" model="res.partner" search="[('name','=','Ecole de Commerce de Liege')]"/>
+        <field name="pricelist_id" model="product.pricelist" search="[('type','=','sale')]"/>
+    </record>
+
+    <record model="sale.simulator.line" id="sale_simulator_line_1">
+        <field name="description">Serveur 1U pas chère</field>
+        <field name="simul_id" ref="sale_simulator_1"/>
+        <field name="item_id" ref="product_item_serveur_1u"/>
+        <field name="sale_price">1690.95</field>
+    </record>
 </data>
 </terp>

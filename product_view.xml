@@ -60,10 +60,13 @@
         <field name="priority" eval="7"/> 
         <field name="arch" type="xml">
             <form string="Product Item">
-                <field name="name" select="1" />
-                <field name="code" select="1" />
-                <field name="type" select="2" />
-                <field name="active" select="2" />
+                <group col="8" colspan="4">
+                    <field name="name" select="1" colspan="4"/>
+                    <field name="code" select="1" />
+                    <field name="p_item_id" select="2" colspan="2"/> <!-- TODO Read Only-->
+                    <field name="type" select="2" />
+                    <field name="active" select="1" />
+                </group>
                 <separator colspan="4"/>
                 <field name="item_ids" nolabel="1" colspan="2">
                     <tree string="Item line" editable="bottom">
@@ -74,8 +77,9 @@
                 </field>
                 <field name="feature_ids" nolabel="1" colspan="2">
                     <tree String="Feature line" editable="bottom">
-                        <field name="feature_id"/>
+                        <field name="feature_id" width="450"/>
                         <field name="quantity"/>
+                        <field name="global"/>
                     </tree>
                 </field>
             </form>

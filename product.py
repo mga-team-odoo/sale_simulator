@@ -26,15 +26,7 @@
 #
 ##############################################################################
 
-#import time
-# import netsvc
 from osv import fields, osv
-# from mx import DateTime
-
-
-# *****************************************************************************
-# * Product Section                                                           *
-# *****************************************************************************
 
 #
 # Feature list
@@ -117,43 +109,9 @@ class product_item_feature_line(osv.osv):
         'item_id': fields.many2one('product.item', 'Item', required=True, ondelete='cascade'),
         'feature_id': fields.many2one('product.item.feature', 'Feature', required=True),
         'quantity': fields.float('Quantity',required=True),
+        'global': fields.float('Global', required=True),
     }
 
 product_item_feature_line()
 
-# *****************************************************************************
-# Sale section
-# *****************************************************************************
-class sale_simulator(osv.osv):
-    '''
-    Sale simulator
-    '''
-    _name = 'sale.simulator'
-    _description = 'Sale simulator'
-
-    _columns = {
-        'name': fields.char('Simulation number', size=64, required=True),
-        'partner_id': fields.many2one('res.partner', 'Partner', ondelete='cascade'),
-        'pricelist_id': fields.many2one('product.pricelist','Price List', ondelete='cascade'),
-    }
-
-    _defaults = {
-        'name': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'sale.simulator'),
-    }
-
-sale_simulator()
-
-class sale_simulator_line(osv.osv):
-    '''
-    Sale simulator line
-    '''
-    _name = 'sale.simulator.line'
-    _description = 'Sale simulator line'
-
-    _columns = {
-        'description': fields.char('Description', size=64, required=True),
-        'simul_id': fields.many2one('sale.simulator', 'Sale simulator', ondelete='cascade'),
-    }
-
-sale_simulator_line()
 
