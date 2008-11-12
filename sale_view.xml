@@ -14,7 +14,7 @@
                     <field name="pricelist_id" select="2" />
                     <field name="line_ids" nolabel="1" colspan="4">
                         <tree string="Lines">
-                            <field name="description" />
+                            <field name="description" width="450" />
                             <field name="item_id" domain="[('type','=','p')]"/>
                             <field name="quantity" />
                             <field name="factory_price" />

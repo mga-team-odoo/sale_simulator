@@ -63,9 +63,13 @@
                 <group col="8" colspan="4">
                     <field name="name" select="1" colspan="4"/>
                     <field name="code" select="1" />
-                    <field name="p_item_id" select="2" colspan="2"/> <!-- TODO Read Only-->
+                    <field name="p_item_id" select="2" colspan="2" domain="[('type','=','p')]"/> <!-- TODO Read Only-->
                     <field name="type" select="2" />
                     <field name="active" select="1" />
+                    <field name="number" select="2" colspan="2"/>
+                    <field name="capacity_start" select="2" />
+                    <field name="factory_price" select="2" />
+                    <field name="retail_price" select="2" />
                 </group>
                 <separator colspan="4"/>
                 <field name="item_ids" nolabel="1" colspan="2">
@@ -93,9 +97,12 @@
         <field name="priority" eval="7"/> 
         <field name="arch" type="xml">
             <tree string="Product Item">
-                <field name="name" />
+                <field name="name" width="450" />
                 <field name="code" />
                 <field name="type" />
+                <field name="factory_price" />
+                <field name="retail_price" />
+                <field name="capacity_start" />
                 <field name="active" />
             </tree>
         </field>
@@ -133,6 +140,10 @@
                 <field name="p_item_id" select="1"/> <!-- domain="[('type','=','p'),('active','=',True)]"/> -->
                 <field name="type" select="2" />
                 <field name="active" select="2" />
+                <field name="number" select="2" />
+                <field name="capacity_start" select="2" />
+                <field name="factory_price" select="2" />
+                <field name="retail_price" select="2" />
                 <field name="item_ids" nolabel="1" colspan="4">
                     <tree string="Item line" editable="bottom">
                         <field name="product_id"/>
@@ -151,10 +162,14 @@
         <field name="priority" eval="7"/> 
         <field name="arch" type="xml">
             <tree string="Module Item">
-                <field name="name" />
+                <field name="name" width="450" />
                 <field name="code" />
                 <field name="type" />
                 <field name="p_item_id" />
+                <field name="number" />
+                <field name="factory_price" />
+                <field name="retail_price" />
+                <field name="capacity_start" />
                 <field name="active" />
             </tree>
         </field>

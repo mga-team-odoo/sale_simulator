@@ -32,6 +32,9 @@
         <field name="name">Serveur Syleam 1U</field>
         <field name="code">SS1U</field>
         <field name="type">p</field>
+        <field name="capacity_start">0.32</field>
+        <field name="factory_price">1000.00</field>
+        <field name="retail_price">1200.00</field>
     </record>
 
     <record model="product.item.line" id="product_item_serveur_1u_boitier">
@@ -61,10 +64,12 @@
 
     <!-- ****************** -->
     <record model="product.item" id="product_item_ss1u_dd120Go">
-        <field name="name">Disque 120Go</field>
-        <field name="code">DD120</field>
+        <field name="name">Extension 480Go</field>
+        <field name="code">EXT480</field>
         <field name="type">m</field>
         <field name="p_item_id" ref="product_item_serveur_1u"/>
+        <field name="factory_price">200.00</field>
+        <field name="retail_price">240.00</field>
     </record>
 
     <record model="product.item.line" id="product_item_ss1u_dd120Go_dd80Go">
@@ -110,6 +115,9 @@
         <field name="name">Serveur Syleam 2U</field>
         <field name="code">SS2U</field>
         <field name="type">p</field>
+        <field name="capacity_start">0.48</field>
+        <field name="factory_price">1150.00</field>
+        <field name="retail_price">1300.00</field>
     </record>
 
     <record model="product.item.line" id="product_item_serveur_2u_boitier">
@@ -136,9 +144,11 @@
     <!-- Module Disque 160 Go -->
     <record model="product.item" id="product_item_ss2u_dd160Go">
         <field name="name">Extension Disque 640Go</field>
-        <field name="code">DD640</field>
+        <field name="code">EXT640</field>
         <field name="type">m</field>
         <field name="p_item_id" ref="product_item_serveur_2u"/>
+        <field name="factory_price">300.00</field>
+        <field name="retail_price">400.00</field>
     </record>
 
     <record model="product.item.line" id="product_item_ss2u_dd160Go_dd120Go">
@@ -187,17 +197,31 @@
     <!-- ****************************************************** -->
     <!-- * Création d'une simulation de ventes                  -->
     <!-- ****************************************************** -->
-
     <record model="sale.simulator" id="sale_simulator_1">
         <field name="partner_id" model="res.partner" search="[('name','=','Ecole de Commerce de Liege')]"/>
         <field name="pricelist_id" model="product.pricelist" search="[('type','=','sale')]"/>
     </record>
 
     <record model="sale.simulator.line" id="sale_simulator_line_1">
-        <field name="description">Serveur 1U pas chère</field>
+        <field name="description">Serveur 1U Économique</field>
         <field name="simul_id" ref="sale_simulator_1"/>
         <field name="item_id" ref="product_item_serveur_1u"/>
         <field name="sale_price">1690.95</field>
     </record>
+
+    <record model="sale.simulator.line" id="sale_simulator_line_2">
+        <field name="description">Serveur 2U Confort</field>
+        <field name="simul_id" ref="sale_simulator_1"/>
+        <field name="item_id" ref="product_item_serveur_2u"/>
+        <field name="sale_price">2490.25</field>
+    </record>
+    
+    <record model="sale.simulator.line.item" id="sale_simulator_line_item_1_1">
+        <field name="line_id" ref="sale_simulator_line_1"/>
+        <field name="item_id2" ref="product_item_ss1u_dd120Go"/>
+        <field name="retail_price">10.0</field>
+        <field name="factory_price">12.0</field>
+    </record>
+    
 </data>
 </terp>

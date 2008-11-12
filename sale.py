@@ -56,21 +56,46 @@ class sale_simulator_line(osv.osv):
     _description = 'Sale simulator line'
 
     def _factory_price(self, cr, uid, ids, name, arg, context={}):
+        '''
+        Calcul le prix de revient de chaque composant.
+        '''
         res = {}
+        line_obj = self.pool.get('sale.simulator.line.item')
         for id in ids:
-            res.setdefault(id, 10.0)
+            line = self.browse(cr, uid, id)
+            factory_price = line.item_id.factory_price
+            # Récupération des modules
+            mod_ids = line_obj.search(cr, uid, [('line_id','=',id)])
+            for mod_id in mod_ids:
+                mod = line_obj.browse(cr, uid, mod_id)
+                factory_price += round(mod.item_id2.factory_price, 2)
+            res.setdefault(id, factory_price)
         return res
 
     def _retail_price(self, cr, uid, ids, name, arg, context={}):
+        '''
+        Calcul du prix de vente.
+        '''
         res = {}
+        line_obj = self.pool.get('sale.simulator.line.item')
         for id in ids:
-            res.setdefault(id, 1998.50)
+            line = self.browse(cr, uid, id)
+            # Récupération du produit de référence
+            retail_price = line.item_id.retail_price
+            # Récupération des modules
+            mod_ids = line_obj.search(cr, uid, [('line_id','=',id)])
+            for mod_id in mod_ids:
+                mod = line_obj.browse(cr, uid, mod_id)
+                retail_price += round(mod.item_id2.retail_price, 2)
+            res.setdefault(id, retail_price)
         return res
 
     def _margin(self, cr, uid, ids, name, arg, context={}):
         res = {}
         for id in ids:
-            res.setdefault(id, 18.0)
+            line = self.browse(cr, uid, id)
+            margin = round((((line.sale_price - line.factory_price) / line.retail_price) * 100),2)
+            res.setdefault(id, margin)
         return res
 
     _columns = {
