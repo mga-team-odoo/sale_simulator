@@ -27,7 +27,5 @@
 #
 ##############################################################################
 
-import product
-import sale
-import wizard
+import sale_order
 

@@ -21,6 +21,7 @@ The sale simulator
     "update_xml" : [
         "product_view.xml",
         "sale_view.xml",
+        "sale_simulator_wizard.xml",
     ],
     "active": False,
     "installable": True,

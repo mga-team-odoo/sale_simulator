@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<terp>
+<data>
+
+    <wizard string="Create sale order"
+            model="sale.simulator"
+            name="simul.create_order"
+            id="sale_simulator_class" />
+
+</data>
+</terp>

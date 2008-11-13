@@ -32,6 +32,7 @@
                             <field name="retail_price" />
                             <field name="sale_price" />
                             <field name="margin" />
+                            <field name="order_id" readonly="1" />
                             <field name="line_ids" nolabel="1" colspan="4">
                                 <tree string="Item" editable="bottom">
                                     <field name="item_id2" domain="[('type','=','m')]"/>

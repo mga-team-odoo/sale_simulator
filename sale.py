@@ -94,7 +94,7 @@ class sale_simulator_line(osv.osv):
         res = {}
         for id in ids:
             line = self.browse(cr, uid, id)
-            margin = round((((line.sale_price - line.factory_price) / line.retail_price) * 100),2)
+            margin = round((line.sale_price - line.factory_price),2)
             res.setdefault(id, margin)
         return res
 
@@ -109,6 +109,7 @@ class sale_simulator_line(osv.osv):
         'margin': fields.function(_margin, method=True, type='float', string='Margin'),
         'sale_price': fields.float('Sale price'),
         'line_ids': fields.one2many('sale.simulator.line.item','line_id','Item'),
+        'order_id': fields.many2one('sale.order', 'Sale order'),
     }
 
     _defaults = {
