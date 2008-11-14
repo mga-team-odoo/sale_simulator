@@ -74,6 +74,9 @@ class product_item(osv.osv):
         'factory_price': fields.float('Factory price'),
         'retail_price': fields.float('Retail price'),
         'capacity_start': fields.float('Capacity (To)'),
+        'sequence': fields.selection([(1,'First step'),(2,'Second step')], 'Sequence', required=True),
+        'sale_taxes_id': fields.many2many('account.tax', 'sale_simulator_taxes_rel','item_id', 'tax_id', 'Customer taxes'),
+        'categ_id': fields.many2one('product.category','Category', required=True),
     }
 
     _defaults = {

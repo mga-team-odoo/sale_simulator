@@ -40,6 +40,8 @@ class sale_simulator(osv.osv):
         'partner_id': fields.many2one('res.partner', 'Partner', ondelete='cascade'),
         'pricelist_id': fields.many2one('product.pricelist','Price List', ondelete='cascade'),
         'line_ids': fields.one2many('sale.simulator.line','simul_id', 'Lines'),
+        'user_id': fields.many2one('res.users', 'Salesman', required=True, select=True),
+        'shop_id': fields.many2one('sale.shop', 'Shop', required=True),
     }
 
     _defaults = {
@@ -115,6 +117,15 @@ class sale_simulator_line(osv.osv):
     _defaults = {
         'quantity': lambda *a: 1.0,
     }
+
+    def _check_config(self, cr, uid, ids, context={}):
+        '''
+        Check if selected configuration is valid
+        '''
+        print '_check_config:ids:  %s' % str(ids)
+        print '_check_config:context %s' % str(context)
+
+        return True
 
 sale_simulator_line()
 

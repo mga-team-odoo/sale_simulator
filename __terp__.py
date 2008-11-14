@@ -12,6 +12,7 @@ The sale simulator
         "base",
         "product",
         "sale",
+        "account",
     ],
     "init_xml" : [],
     "demo_xml" : [

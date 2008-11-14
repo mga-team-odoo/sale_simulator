@@ -29,6 +29,7 @@
 import pooler
 import wizard
 from tools.misc import UpdateableStr, UpdateableDict
+import time
 
 _select_form =  UpdateableStr() 
 _select_fields = UpdateableDict()
@@ -88,6 +89,98 @@ def _make_order(self, cr, uid, data, context):
     - Create a produit with this nomemclature
     '''
     print '_make_order: %s' % str(data)
+    simul_nb = data['id']
+    sline_nb = data['form']['simul']
+    print '_make_order:simul_nb: %s' % str(simul_nb)
+    pool = pooler.get_pool(cr.dbname)
+    simul_obj = pool.get('sale.simulator')
+    simul_line_obj = pool.get('sale.simulator.line')
+    order_obj = pool.get('sale.order')
+    order_line_obj = pool.get('sale.order.line')
+    partner_obj = pool.get('res.partner')
+    product_obj = pool.get('product.product')
+
+    simul = simul_obj.read(cr, uid, simul_nb)
+    if not simul:
+        print '_make_order: Erreur lors de la recup de la simulation'
+
+    # Récupération des addresses contact, livraison, facturation
+    addr = partner_obj.address_get(cr, uid, [simul['partner_id'][0]],['delivery','invoice','contact'])
+    print '_make_order:simul: %s' % str(simul)
+    print '_make_order:addr:  %s' % str(addr)
+    # Create an empty order
+    order = {
+        'origin': simul['name'],
+        'date_order': time.strftime('%Y-%m-%d'),
+        'partner_id': simul['partner_id'][0],
+        'partner_invoice_id':addr['invoice'],
+        'partner_order_id': addr['contact'],
+        'partner_shipping_id': addr['delivery'],
+        'pricelist_id': simul['pricelist_id'][0],
+        'user_id': simul['user_id'][0],
+        'shop_id': simul['shop_id'][0],
+    }
+    print 'order: %s' % str(order)
+    # Création du devis,
+    order_id = order_obj.create(cr, uid, order, context)
+    if not order_id:
+        print '_make_order: Erreur dans la création de l''entete du devis'
+
+    # Ajout de cet ID sur la page de configuration en lien
+    args = {'order_id': order_id}
+    res = simul_line_obj.write(cr, uid, sline_nb, args, context)
+    if not res:
+        print '_make_order: Erreur lors de la MAJ du numéro de commande'
+
+    # Création du produit
+    # - Les taxes sont prises sur le produit de référence
+    # - la catégorie aussi
+    config = simul_line_obj.browse(cr, uid, sline_nb)
+    if not config:
+        print '_make_order: Erreur recherche produit'
+
+    print '_make_order: config: %s' % str(config.description)
+    print '_make_order: taxes: %s'% str(config.item_id.sale_taxes_id)
+
+    taxes_ids = []
+    for x in config.item_id.sale_taxes_id:
+        taxes_ids.append(x.id)
+
+    proref = {
+        'name': config.description,
+        'categ_id': config.item_id.categ_id.id,
+        'taxes_id': [(6,0,taxes_ids)],
+        'sale_ok': True,
+        'purchase_ok': False,
+        'list_price': config.sale_price,
+        'standard_price': config.factory_price,
+        'procure_method': 'make_to_order',
+        'supply_method': 'produce',
+    }
+    print '_make_order:proref: %s' % str(proref)
+    proref_id = product_obj.create(cr, uid, proref, context)
+    if not proref_id:
+        print '_make_order: erreur creation produit'
+
+    # Création de la nomenclature principale
+    
+
+    # Ajout du produit sur le devis
+    # TODO Unité à mettre sur l'item
+    order_line = {
+        'order_id': order_id,
+        'name': config.description,
+        'product_id': proref_id,
+        'price_unit': config.sale_price,
+        'tax_id': [(6,0,taxes_ids)],
+        'type': 'make_to_order',
+        'product_uom_qty': config.quantity,
+        'product_uom': 1,
+    }
+    order_line_id = order_line_obj.create(cr, uid, order_line, context)
+    if not order_line_id:
+        print '_make_order: Erreur creation ligne de devis'
+
     return {}
 
 

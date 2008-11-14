@@ -200,6 +200,8 @@
     <record model="sale.simulator" id="sale_simulator_1">
         <field name="partner_id" model="res.partner" search="[('name','=','Ecole de Commerce de Liege')]"/>
         <field name="pricelist_id" model="product.pricelist" search="[('type','=','sale')]"/>
+        <field name="user_id">3</field>
+        <field name="shop_id">1</field>
     </record>
 
     <record model="sale.simulator.line" id="sale_simulator_line_1">

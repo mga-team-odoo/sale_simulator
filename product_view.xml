@@ -63,8 +63,10 @@
                 <group col="8" colspan="4">
                     <field name="name" select="1" colspan="4"/>
                     <field name="code" select="1" />
+                    <field name="sequence" select="2" />
                     <field name="p_item_id" select="2" colspan="2" domain="[('type','=','p')]"/> <!-- TODO Read Only-->
                     <field name="type" select="2" />
+                    <field name="categ_id" select="2" />
                     <field name="active" select="1" />
                     <field name="number" select="2" colspan="2"/>
                     <field name="capacity_start" select="2" />
@@ -86,6 +88,8 @@
                         <field name="global"/>
                     </tree>
                 </field>
+                <separator string="Customer taxes" colspan="4"/>
+                <field name="sale_taxes_id" colspan="4" nolabel="1"/>
             </form>
         </field>
     </record>
@@ -135,22 +139,36 @@
         <field name="priority" eval="7"/> 
         <field name="arch" type="xml">
             <form string="Module Item">
-                <field name="name" select="1" />
-                <field name="code" select="1" />
-                <field name="p_item_id" select="1"/> <!-- domain="[('type','=','p'),('active','=',True)]"/> -->
-                <field name="type" select="2" />
-                <field name="active" select="2" />
-                <field name="number" select="2" />
-                <field name="capacity_start" select="2" />
-                <field name="factory_price" select="2" />
-                <field name="retail_price" select="2" />
-                <field name="item_ids" nolabel="1" colspan="4">
+                <group col="8" colspan="4">
+                    <field name="name" select="1" colspan="4"/>
+                    <field name="code" select="1" />
+                    <field name="sequence" select="2" />
+                    <field name="p_item_id" select="2" colspan="2" domain="[('type','=','p')]"/> <!-- TODO Read Only-->
+                    <field name="type" select="2" />
+                    <field name="categ_id" select="2" />
+                    <field name="active" select="1" />
+                    <field name="number" select="2" colspan="2"/>
+                    <field name="capacity_start" select="2" />
+                    <field name="factory_price" select="2" />
+                    <field name="retail_price" select="2" />
+                </group>
+                <separator colspan="4"/>
+                <field name="item_ids" nolabel="1" colspan="2">
                     <tree string="Item line" editable="bottom">
                         <field name="product_id"/>
                         <field name="quantity"/>
                         <field name="uom_id"/>
                     </tree>
                 </field>
+                <field name="feature_ids" nolabel="1" colspan="2">
+                    <tree String="Feature line" editable="bottom">
+                        <field name="feature_id" width="450"/>
+                        <field name="quantity"/>
+                        <field name="global"/>
+                    </tree>
+                </field>
+                <separator string="Customer taxes" colspan="4"/>
+                <field name="sale_taxes_id" colspan="4" nolabel="1"/>
             </form>
         </field>
     </record>
