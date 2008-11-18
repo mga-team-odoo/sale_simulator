@@ -122,14 +122,10 @@ class sale_simulator_line(osv.osv):
         '''
         Check if selected configuration is valid
         '''
-        #print '-----------------------------------------------------------------'
-        #print '_check_config:ids:  %s' % str(ids)
-        #print '_check_config:context %s' % str(context)
-
         config = self.read(cr, uid, ids)
         if not config:
             print '_check_config:config: not found !'
-        #print '_check_config:config: %s' % str(config)
+            return False
         for c in config:
             tf = {}
             nf = {}
@@ -137,46 +133,32 @@ class sale_simulator_line(osv.osv):
 
             # search feature in product item
             item_id = c['item_id'][0]
-            #print '_check_config:item_id: %s' % str(item_id)
             f_obj = self.pool.get('product.item.feature.line')
             f_id = f_obj.search(cr, uid, [('item_id','=',item_id)])
             if not f_id:
                 print '_check_config:f_id: not found !'
+
             feature_ids = self.pool.get('product.item.feature.line').read(cr, uid, f_id, ['id','feature_id', 'quantity', 'global'], context)
             for f in feature_ids:
-                #print '_check_config:f: %s' % str(f)
                 tf[f['feature_id'][0]] = f['global']
                 nf[f['feature_id'][0]] = f['feature_id'][1]
                 lf[f['feature_id'][0]] = f['quantity']
 
             # check all modules
-            #print 'c line_ids: %s' % str(c['line_ids'])
-
             for z_id in c['line_ids']:
                 module_id = self.pool.get('sale.simulator.line.item').read(cr, uid, z_id, ['id','item_id2'])
                 if not module_id:
                     print '_check_config:module_ids: erreur '
 
-                #print '_check_config:module_id: %s' % str(module_id)
                 fline_obj = self.pool.get('product.item.feature.line')
-
                 fmod_args = [('item_id','=', module_id['item_id2'][0])]
-                #print '_check_config:fmod_args: %s' % str(fmod_args)
                 fmod_ids = fline_obj.search(cr, uid, fmod_args)
-                if not fmod_ids:
-                    print '_check_config:fmod_ids: pas de feature'
-                else:
+                if fmod_ids:
                     fitem_ids = fline_obj.read(cr, uid, fmod_ids, ['id','feature_id', 'quantity', 'global'],context)
-                    if not fitem_ids:
-                        print '_check_config:fitem_ids: erreur'
-                    else:
+                    if fitem_ids:
                         #print '_check_config:fitem_ids: %s' % str(fitem_ids)
                         for mf in fitem_ids:
                             lf[mf['feature_id'][0]] += mf['quantity']
-
-            #print '_check_config:tf: %s' % str(tf)
-            #print '_check_config:lf: %s' % str(lf)
-            #print '_check_config:nf: %s' % str(nf)
 
             # Check if max config is superior
             for k in tf.keys():
