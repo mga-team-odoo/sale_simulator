@@ -79,10 +79,25 @@
     </record>
 
         <menuitem 
-            name="Sales Management/Simulator/All Simulation"
+            name="Sales Management/Simulator/All Simulations"
             action="action_sale_simulator_all"
             sequence="10"
             id="menu_sale_simulator_all"/>
 
+    <record model="ir.actions.act_window" id="action_sale_simulator_my">
+        <field name="name">Sale simulator</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.simulator</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_sale_simulator_tree"/>
+        <field name="domain">[('user_id','=',uid)]</field>
+    </record>
+
+        <menuitem 
+            name="Sales Management/Simulator/My Simulations"
+            action="action_sale_simulator_my"
+            sequence="10"
+            id="menu_sale_simulator_my"/>
     </data>
 </terp>

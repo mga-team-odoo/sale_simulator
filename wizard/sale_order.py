@@ -30,6 +30,7 @@ import pooler
 import wizard
 from tools.misc import UpdateableStr, UpdateableDict
 import time
+#import make_product
 
 _select_form =  UpdateableStr() 
 _select_fields = UpdateableDict()
@@ -95,6 +96,7 @@ def _make_order(self, cr, uid, data, context):
     pool = pooler.get_pool(cr.dbname)
     simul_obj = pool.get('sale.simulator')
     simul_line_obj = pool.get('sale.simulator.line')
+    simul_line_item_obj = pool.get('sale.simulator.line.item')
     order_obj = pool.get('sale.order')
     order_line_obj = pool.get('sale.order.line')
     partner_obj = pool.get('res.partner')
@@ -132,22 +134,50 @@ def _make_order(self, cr, uid, data, context):
     if not res:
         print '_make_order: Erreur lors de la MAJ du numéro de commande'
 
-    # Création du produit
+    # Création des produits 
+    # Création du produit assemblé de toutes les pièces
+    # Création du produit, composé du produit précédent.
     # - Les taxes sont prises sur le produit de référence
     # - la catégorie aussi
+
+    # proref_id = make_product.generate(cr, uid, sline_nb, context)
+    # Search product and module items on this configuration
     config = simul_line_obj.browse(cr, uid, sline_nb)
     if not config:
-        print '_make_order: Erreur recherche produit'
+        print 'make_product.generate: Erreur recherche produit'
 
     print '_make_order: config: %s' % str(config.description)
     print '_make_order: taxes: %s'% str(config.item_id.sale_taxes_id)
+
+    # Check if configuration have a multi level
+    item_ids = simul_line_item_obj.search(cr, uid, [('line_id','=',sline_nb)])
+    if not item_ids:
+        print '_make_order:item_ids not found'
+
+    item_rs = simul_line_item_obj.browse(cr, uid, item_ids)
+    if not item_rs:
+        print '_make_order:item_rs not found'
+
+    step2 = False
+    for item in item_rs:
+        if item.item_id2.sequence:
+            step2 = True
+        print 'generate:level: %s' % item.item_id2.sequence
 
     taxes_ids = []
     for x in config.item_id.sale_taxes_id:
         taxes_ids.append(x.id)
 
-    proref = {
-        'name': config.description,
+    if step2:
+        proname = config.item_id.name
+    else:
+        proname = config.description
+
+    #
+    # Création du produit de niveau 1
+    #
+    proref1 = {
+        'name': proname,
         'categ_id': config.item_id.categ_id.id,
         'taxes_id': [(6,0,taxes_ids)],
         'sale_ok': True,
@@ -156,27 +186,45 @@ def _make_order(self, cr, uid, data, context):
         'standard_price': config.factory_price,
         'procure_method': 'make_to_order',
         'supply_method': 'produce',
+        'uom_id': config.item_id.uom_id.id
     }
     print '_make_order:proref: %s' % str(proref)
-    proref_id = product_obj.create(cr, uid, proref, context)
-    if not proref_id:
+    proref_id1 = product_obj.create(cr, uid, proref1, context)
+    if not proref_id1:
         print '_make_order: erreur creation produit'
 
-    # Création de la nomenclature principale
-    
+    # Création de la nomemclature du produit de niveau 1
+    # Recherche de tous les produits de niveau 1i
+    pil_obj = pool.get('product.item.line')
+    niv1_lst = []
+    niv2_lst = []
+    for niv1 in item_rs:
+        pil_args = [
+            ('item_id','=', niv1.item_id2.id)
+        ]
+
+    # *********************************************************************
+    # A retirer après les tests
+    # *********************************************************************
+    raise wizard.except_wizard('Error', 'STOP !')
 
     # Ajout du produit sur le devis
     # TODO Unité à mettre sur l'item
     order_line = {
         'order_id': order_id,
         'name': config.description,
-        'product_id': proref_id,
         'price_unit': config.sale_price,
         'tax_id': [(6,0,taxes_ids)],
         'type': 'make_to_order',
         'product_uom_qty': config.quantity,
-        'product_uom': 1,
+        'product_uom': config.item_id.uom_id.id,
     }
+
+    if step2:
+        order_line['product_id'] = proref_id2
+    else:
+        order_line['product_id'] = proref_id1
+
     order_line_id = order_line_obj.create(cr, uid, order_line, context)
     if not order_line_id:
         print '_make_order: Erreur creation ligne de devis'

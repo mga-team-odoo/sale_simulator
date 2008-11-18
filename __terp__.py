@@ -13,6 +13,7 @@ The sale simulator
         "product",
         "sale",
         "account",
+        "mrp",
     ],
     "init_xml" : [],
     "demo_xml" : [

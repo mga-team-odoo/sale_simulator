@@ -38,7 +38,7 @@ class sale_simulator(osv.osv):
     _columns = {
         'name': fields.char('Simulation number', size=64, required=True),
         'partner_id': fields.many2one('res.partner', 'Partner', ondelete='cascade'),
-        'pricelist_id': fields.many2one('product.pricelist','Price List', ondelete='cascade'),
+        'pricelist_id': fields.many2one('product.pricelist','Price List', ondelete='cascade', required=True),
         'line_ids': fields.one2many('sale.simulator.line','simul_id', 'Lines'),
         'user_id': fields.many2one('res.users', 'Salesman', required=True, select=True),
         'shop_id': fields.many2one('sale.shop', 'Shop', required=True),
@@ -122,8 +122,66 @@ class sale_simulator_line(osv.osv):
         '''
         Check if selected configuration is valid
         '''
-        print '_check_config:ids:  %s' % str(ids)
-        print '_check_config:context %s' % str(context)
+        #print '-----------------------------------------------------------------'
+        #print '_check_config:ids:  %s' % str(ids)
+        #print '_check_config:context %s' % str(context)
+
+        config = self.read(cr, uid, ids)
+        if not config:
+            print '_check_config:config: not found !'
+        #print '_check_config:config: %s' % str(config)
+        for c in config:
+            tf = {}
+            nf = {}
+            lf = {}
+
+            # search feature in product item
+            item_id = c['item_id'][0]
+            #print '_check_config:item_id: %s' % str(item_id)
+            f_obj = self.pool.get('product.item.feature.line')
+            f_id = f_obj.search(cr, uid, [('item_id','=',item_id)])
+            if not f_id:
+                print '_check_config:f_id: not found !'
+            feature_ids = self.pool.get('product.item.feature.line').read(cr, uid, f_id, ['id','feature_id', 'quantity', 'global'], context)
+            for f in feature_ids:
+                #print '_check_config:f: %s' % str(f)
+                tf[f['feature_id'][0]] = f['global']
+                nf[f['feature_id'][0]] = f['feature_id'][1]
+                lf[f['feature_id'][0]] = f['quantity']
+
+            # check all modules
+            #print 'c line_ids: %s' % str(c['line_ids'])
+
+            for z_id in c['line_ids']:
+                module_id = self.pool.get('sale.simulator.line.item').read(cr, uid, z_id, ['id','item_id2'])
+                if not module_id:
+                    print '_check_config:module_ids: erreur '
+
+                #print '_check_config:module_id: %s' % str(module_id)
+                fline_obj = self.pool.get('product.item.feature.line')
+
+                fmod_args = [('item_id','=', module_id['item_id2'][0])]
+                #print '_check_config:fmod_args: %s' % str(fmod_args)
+                fmod_ids = fline_obj.search(cr, uid, fmod_args)
+                if not fmod_ids:
+                    print '_check_config:fmod_ids: pas de feature'
+                else:
+                    fitem_ids = fline_obj.read(cr, uid, fmod_ids, ['id','feature_id', 'quantity', 'global'],context)
+                    if not fitem_ids:
+                        print '_check_config:fitem_ids: erreur'
+                    else:
+                        #print '_check_config:fitem_ids: %s' % str(fitem_ids)
+                        for mf in fitem_ids:
+                            lf[mf['feature_id'][0]] += mf['quantity']
+
+            #print '_check_config:tf: %s' % str(tf)
+            #print '_check_config:lf: %s' % str(lf)
+            #print '_check_config:nf: %s' % str(nf)
+
+            # Check if max config is superior
+            for k in tf.keys():
+                if k in lf and tf[k] < lf[k]:
+                    raise  osv.except_osv('Error !','Caractéristique (%s) dépassée qté:%s max:%s !' % (nf[k],str(lf[k]),str(tf[k])))
 
         return True
 
