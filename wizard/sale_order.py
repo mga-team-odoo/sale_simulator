@@ -152,29 +152,35 @@ def _make_order(self, cr, uid, data, context):
     # Check if configuration have a multi level
     item_ids = simul_line_item_obj.search(cr, uid, [('line_id','=',sline_nb)])
     if not item_ids:
-        print '_make_order:item_ids not found'
+        raise wizard.except_wizard('Error', 'Problème récupération des IDS')
 
     item_rs = simul_line_item_obj.browse(cr, uid, item_ids)
     if not item_rs:
-        print '_make_order:item_rs not found'
+        raise wizard.except_wizard('Error', 'Erreur parcours des IDS')
 
     step2 = False
     for item in item_rs:
-        if item.item_id2.sequence:
+        if item.item_id2.sequence == 2:
             step2 = True
         print 'generate:level: %s' % item.item_id2.sequence
 
+    #
+    # Ajout des taxes principales du produits de base
+    #
     taxes_ids = []
     for x in config.item_id.sale_taxes_id:
         taxes_ids.append(x.id)
 
+    #
+    # Choisit le nom du produit final en fonction du nombre de niveau
+    #
     if step2:
         proname = config.item_id.name
     else:
         proname = config.description
 
     #
-    # Création du produit de niveau 1
+    # Création du produit (1)
     #
     proref1 = {
         'name': proname,
@@ -188,25 +194,157 @@ def _make_order(self, cr, uid, data, context):
         'supply_method': 'produce',
         'uom_id': config.item_id.uom_id.id
     }
-    print '_make_order:proref: %s' % str(proref)
+    print '_make_order:proref: %s' % str(proref1)
     proref_id1 = product_obj.create(cr, uid, proref1, context)
     if not proref_id1:
         print '_make_order: erreur creation produit'
 
+    #
     # Création de la nomemclature du produit de niveau 1
-    # Recherche de tous les produits de niveau 1i
+    #
     pil_obj = pool.get('product.item.line')
-    niv1_lst = []
-    niv2_lst = []
+    niv1_lst = {}
+    niv2_lst = {}
+
+    # On recherche les produits qui compose le produit de référence
+    nivref_args = [('item_id','=',config.item_id.id)]
+    print 'nivref_args: %s' % str(nivref_args)
+
+    nivref_ids = pil_obj.search(cr, uid, nivref_args)
+    if nivref_ids:
+        print 'AFF: nivref_ids: %s' % str(nivref_ids)
+        for nivref_id in nivref_ids:
+            nivref = pil_obj.read(cr, uid, nivref_id, ['product_id','quantity','uom_id'], context)
+            print 'AFF: nivref: %s ' % str(nivref)
+            niv1_lst[nivref['product_id'][0]] = (nivref['quantity'], nivref['uom_id'][0])
+
     for niv1 in item_rs:
         pil_args = [
             ('item_id','=', niv1.item_id2.id)
         ]
+        pil_ids = pil_obj.search(cr, uid, pil_args)
+        if pil_ids:
+            for pil_id in pil_ids:
+                pil = pil_obj.read(cr, uid, pil_id, ['product_id','quantity','uom_id'], context)
+                print 'AFF: pil: %s' % str(pil)
+
+                p_id = pil['product_id'][0]
+                if niv1.item_id2.sequence == 1:
+                    if pil['product_id'][0] in niv1_lst:
+                        niv1_lst[p_id] = (niv1_lst[p_id][0] + pil['quantity'], pil['uom_id'][0])
+                    else:
+                        niv1_lst[p_id] = (pil['quantity'], pil['uom_id'][0])
+                else:
+                    if pil['product_id'][0] in niv2_lst:
+                        niv2_lst[p_id] = (niv2_lst[p_id][0] + pil['quantity'], pil['uom_id'][0])
+                    else:
+                        niv2_lst[p_id] = (pil['quantity'], pil['uom_id'][0])
+
+    print 'niv1_lst: %s' % str(niv1_lst)
+    print 'niv2_lst: %s' % str(niv2_lst)
+
+    # Constitution de la nomemclature du premier produit.
+    bom_obj = pool.get('mrp.bom')
+
+    # le produit lui même a sa BOM
+    # on récupère son id pour ses composants
+    proref_bom1 = {
+        'name': proname,
+        'product_id': proref_id1,
+        'product_qty': 1,
+        'product_uom': config.item_id.uom_id.id,
+    }
+    prb1_id = bom_obj.create(cr, uid, proref_bom1, context)
+    if not prb1_id:
+        print 'erreur lors de la création de la BOM principale'
+
+    for bom1 in niv1_lst:
+        if niv1_lst[bom1][0] > 0:
+            # le nombre de produit est supérieur a 0 donc on peut les ajoutés.
+            print 'produit: %s:%s' % (str(bom1),str(niv1_lst[bom1]))
+            # Recherche du nom du produit a mettre dans la bom
+            propro = product_obj.read(cr, uid, bom1, ['name'], context)
+            mod_bom1 = {
+                'name': propro['name'],
+                'product_id': bom1,
+                'product_qty': niv1_lst[bom1][0],
+                'product_uom': niv1_lst[bom1][1],
+                'bom_id': prb1_id,
+            }
+            mod1_id = bom_obj.create(cr, uid, mod_bom1, context)
+            if not mod1_id:
+                print 'Erreur création produit %s ' % str(bom1)
+
+    # si niveau 2 on créer le produit
+    if step2:
+        print'****************** NIVEAU 2 ***************************'
+        #Création du produit numéro 2
+        proref2 = {
+            'name': config.description,
+            'categ_id': config.item_id.categ_id.id,
+            'taxes_id': [(6,0,taxes_ids)],
+            'sale_ok': True,
+            'purchase_ok': False,
+            'list_price': config.sale_price,
+            'standard_price': config.factory_price,
+            'procure_method': 'make_to_order',
+            'supply_method': 'produce',
+            'uom_id': config.item_id.uom_id.id
+        }
+        print '_make_order:proref: %s' % str(proref2)
+        proref_id2 = product_obj.create(cr, uid, proref2, context)
+        if not proref_id2:
+            print '_make_order: erreur creation produit'
+
+        # le produit a lui même sa nomenclature
+
+        proref_bom2 = {
+            'name': config.description,
+            'product_id': proref_id2,
+            'product_qty': 1,
+            'product_uom': config.item_id.uom_id.id,
+        }
+        prb2_id = bom_obj.create(cr, uid, proref_bom2, context)
+        if not prb2_id:
+            print 'erreur lors de la création de la BOM principale'
+        print '***************** BOM 2 CREER ********************'
+
+        #Ratache le produit N°1 en nomenclature en premier
+        propro = product_obj.read(cr, uid, proref_id1, ['name'], context)
+        mod_bomX = {
+            'name': propro['name'],
+            'product_id': proref_id1,
+            'product_qty': niv1_lst[bom1][0],
+            'product_uom': niv1_lst[bom1][1],
+            'bom_id': prb2_id,
+        }
+        modx_id = bom_obj.create(cr, uid, mod_bomX, context)
+        if not modx_id:
+            print 'Erreur création produit %s ' % str(bom1)
+        print 'ratache'
+        #On ratache les autres produits
+        for bom2 in niv2_lst:
+            if niv2_lst[bom2][0] > 0:
+                # le nombre de produit est supérieur a 0 donc on peut les ajoutés.
+                print 'produit: %s:%s' % (str(bom2),str(niv2_lst[bom2]))
+                # Recherche du nom du produit a mettre dans la bom
+                propro = product_obj.read(cr, uid, bom2, ['name'], context)
+                mod_bom1 = {
+                    'name': propro['name'],
+                    'product_id': bom2,
+                    'product_qty': niv2_lst[bom2][0],
+                    'product_uom': niv2_lst[bom2][1],
+                    'bom_id': prb2_id,
+                }
+                mod2_id = bom_obj.create(cr, uid, mod_bom1, context)
+                if not mod2_id:
+                    print 'Erreur création produit %s ' % str(bom1)
+
 
     # *********************************************************************
     # A retirer après les tests
     # *********************************************************************
-    raise wizard.except_wizard('Error', 'STOP !')
+    #raise wizard.except_wizard('Error', 'STOP !')
 
     # Ajout du produit sur le devis
     # TODO Unité à mettre sur l'item
