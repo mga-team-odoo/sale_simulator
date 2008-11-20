@@ -24,6 +24,7 @@
                             <field name="retail_price" />
                             <field name="margin" />
                             <field name="sale_price" />
+                            <field name="order_id" readonly="1" />
                         </tree>
                         <form string="Lines">
                             <field name="description" />
@@ -37,7 +38,7 @@
                             <field name="order_id" readonly="1" />
                             <field name="line_ids" nolabel="1" colspan="4">
                                 <tree string="Item" editable="bottom">
-                                    <field name="item_id2" domain="[('type','=','m')]"/>
+                                    <field name="item_id2" domain="[('type','=','m')]" width="450"/>
                                     <field name="factory_price"/>
                                     <field name="retail_price"/>
                                 </tree>

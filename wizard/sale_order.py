@@ -30,7 +30,6 @@ import pooler
 import wizard
 from tools.misc import UpdateableStr, UpdateableDict
 import time
-#import make_product
 
 _select_form =  UpdateableStr() 
 _select_fields = UpdateableDict()
@@ -60,7 +59,10 @@ def _pre_init(self, cr, uid, data, context):
 
     #recherche
     line_obj = pool.get('sale.simulator.line')
-    args = [('simul_id','=',data['id'])]
+    args = [
+        ('simul_id','=',data['id']),
+        ('order_id','=',False),
+    ]
     line_ids = line_obj.search(cr, uid, args)
     if not line_ids:
         raise wizard.except_wizard('Error', 'No line in simulation !')
@@ -188,7 +190,7 @@ def _make_order(self, cr, uid, data, context):
         'taxes_id': [(6,0,taxes_ids)],
         'sale_ok': True,
         'purchase_ok': False,
-        'list_price': config.sale_price,
+        'list_price': config.retail_price,
         'standard_price': config.factory_price,
         'procure_method': 'make_to_order',
         'supply_method': 'produce',
@@ -277,7 +279,7 @@ def _make_order(self, cr, uid, data, context):
 
     # si niveau 2 on créer le produit
     if step2:
-        print'****************** NIVEAU 2 ***************************'
+        #print'****************** NIVEAU 2 ***************************'
         #Création du produit numéro 2
         proref2 = {
             'name': config.description,
@@ -285,7 +287,7 @@ def _make_order(self, cr, uid, data, context):
             'taxes_id': [(6,0,taxes_ids)],
             'sale_ok': True,
             'purchase_ok': False,
-            'list_price': config.sale_price,
+            'list_price': config.retail_price,
             'standard_price': config.factory_price,
             'procure_method': 'make_to_order',
             'supply_method': 'produce',
@@ -307,7 +309,7 @@ def _make_order(self, cr, uid, data, context):
         prb2_id = bom_obj.create(cr, uid, proref_bom2, context)
         if not prb2_id:
             print 'erreur lors de la création de la BOM principale'
-        print '***************** BOM 2 CREER ********************'
+        #print '***************** BOM 2 CREER ********************'
 
         #Ratache le produit N°1 en nomenclature en premier
         propro = product_obj.read(cr, uid, proref_id1, ['name'], context)
