@@ -111,6 +111,7 @@
                 <field name="name" width="450" />
                 <field name="code" />
                 <field name="type" />
+                <field name="p_item_id" />
                 <field name="factory_price" />
                 <field name="retail_price" />
                 <field name="capacity_start" />

@@ -42,7 +42,9 @@ def _pre_init(self, cr, uid, data, context):
     simul_obj = pool.get('sale.simulator')
     simul = simul_obj.read(cr, uid, data['id'], ['id','partner_id'], context)
     if not simul['partner_id']:
-        raise wizard.except_wizard('Error','Select or create a partner!')
+        raise wizard.except_wizard('Error','Pour créer un devis, veuillez créer ou sélectionner un partenaire!')
+
+    # Regarder si le coefficient de remise maxi du client, et bloquer si l'on dépasse.
 
     # Composition du formulaire
     _select_form_list = [
