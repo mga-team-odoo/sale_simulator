@@ -60,43 +60,46 @@
         <field name="priority" eval="7"/> 
         <field name="arch" type="xml">
             <form string="Product Item">
-                <group col="8" colspan="4">
-                    <field name="name" select="1" colspan="4"/>
-                    <field name="code" select="1" />
-                    <field name="sequence" select="2" />
-                    <field name="p_item_id" select="2" colspan="2" domain="[('type','=','p')]"/> <!-- TODO Read Only-->
-                    <field name="type" select="2" />
-                    <field name="active" select="1" />
-                    <field name="number" select="2" colspan="2"/>
-                    <field name="capacity_start" select="2" />
-                    <field name="factory_price" select="2" />
-                    <field name="retail_price" select="2" />
-                </group>
-                <separator colspan="4"/>
-                <field name="item_ids" nolabel="1" colspan="2">
-                    <tree string="Item line" editable="bottom">
-                        <field name="product_id"/>
-                        <field name="quantity"/>
-                        <field name="uom_id"/>
-                    </tree>
-                </field>
-                <field name="feature_ids" nolabel="1" colspan="2">
-                    <tree String="Feature line" editable="bottom">
-                        <field name="feature_id" width="450"/>
-                        <field name="quantity"/>
-                        <field name="global"/>
-                    </tree>
-                </field>
-                <group col="8" colspan="4">
-                    <separator string="Customer taxes/Othe rinformation" colspan="8"/>
-                    <group>
-                        <field name="sale_taxes_id" nolabel="1"/>
-                    </group>
-                    <group>
-                        <field name="uom_id" colspan="4" />
-                        <field name="categ_id" select="2" colspan="4" />
-                    </group>
-                </group>
+                <notebook>
+                    <page string="General">
+                        <group col="8" colspan="4">
+                            <field name="name" select="1" colspan="4"/>
+                            <field name="code" select="1" />
+                            <field name="sequence" select="2" />
+                            <field name="p_item_id" select="2" colspan="2" domain="[('type','=','p')]"/> <!-- TODO Read Only-->
+                            <field name="type" select="2" />
+                            <field name="active" select="1" />
+                            <field name="number" select="2" colspan="2"/>
+                            <field name="capacity_start" select="2" />
+                            <field name="factory_price" select="2" />
+                            <field name="retail_price" select="2" />
+                        </group>
+                        <separator colspan="4"/>
+                        <field name="item_ids" nolabel="1" colspan="2">
+                            <tree string="Item line" editable="bottom">
+                                <field name="product_id" on_change="onchange_product(product_id)" />
+                                <field name="quantity"/>
+                                <field name="uom_id"/>
+                            </tree>
+                        </field>
+                        <field name="feature_ids" nolabel="1" colspan="2">
+                            <tree String="Feature line" editable="bottom">
+                                <field name="feature_id" width="400"/>
+                                <field name="quantity"/>
+                                <field name="global"/>
+                            </tree>
+                        </field>
+                        <separator string="Other informations" colspan="4"/>
+                        <field name="uom_id" />
+                        <field name="categ_id" select="2" />
+                    </page>
+                    <page string="Other">
+                        <separator string="Sale taxes" colspan="4" />
+                        <field name="sale_taxes_id" nolabel="1" />
+                        <separator string="Notes" colspan="4" />
+                        <field name="notes" nolabel="1" />
+                    </page>
+                </notebook>
             </form>
         </field>
     </record>
@@ -147,43 +150,46 @@
         <field name="priority" eval="7"/> 
         <field name="arch" type="xml">
             <form string="Module Item">
-                <group col="8" colspan="4">
-                    <field name="name" select="1" colspan="4"/>
-                    <field name="code" select="1" />
-                    <field name="sequence" select="2" />
-                    <field name="p_item_id" select="2" colspan="2" domain="[('type','=','p')]"/> <!-- TODO Read Only-->
-                    <field name="type" select="2" />
-                    <field name="active" select="1" />
-                    <field name="number" select="2" colspan="2"/>
-                    <field name="capacity_start" select="2" />
-                    <field name="factory_price" select="2" />
-                    <field name="retail_price" select="2" />
-                </group>
-                <separator colspan="4"/>
-                <field name="item_ids" nolabel="1" colspan="2">
-                    <tree string="Item line" editable="bottom">
-                        <field name="product_id"/>
-                        <field name="quantity"/>
-                        <field name="uom_id"/>
-                    </tree>
-                </field>
-                <field name="feature_ids" nolabel="1" colspan="2">
-                    <tree String="Feature line" editable="bottom">
-                        <field name="feature_id" width="450"/>
-                        <field name="quantity"/>
-                        <field name="global"/>
-                    </tree>
-                </field>
-                <group col="8" colspan="4">
-                    <separator string="Customer taxes/Other information" colspan="8"/>
-                    <group>
-                        <field name="sale_taxes_id" nolabel="1"/>
+                <notebook>
+                    <page string="General">
+                        <group col="8" colspan="4">
+                            <field name="name" select="1" colspan="4"/>
+                            <field name="code" select="1" />
+                            <field name="sequence" select="2" />
+                            <field name="p_item_id" select="2" colspan="2" domain="[('type','=','p')]"/> <!-- TODO Read Only-->
+                            <field name="type" select="2" />
+                            <field name="active" select="1" />
+                            <field name="number" select="2" colspan="2"/>
+                            <field name="capacity_start" select="2" />
+                            <field name="factory_price" select="2" />
+                            <field name="retail_price" select="2" />
                     </group>
-                    <group>
-                        <field name="uom_id" colspan="4" />
-                        <field name="categ_id" select="2" colspan="4" />
-                    </group>
-                </group>
+                    <separator colspan="4"/>
+                    <field name="item_ids" nolabel="1" colspan="2">
+                        <tree string="Item line" editable="bottom">
+                            <field name="product_id"/>
+                            <field name="quantity"/>
+                            <field name="uom_id"/>
+                        </tree>
+                    </field>
+                    <field name="feature_ids" nolabel="1" colspan="2">
+                        <tree String="Feature line" editable="bottom">
+                            <field name="feature_id" width="450"/>
+                            <field name="quantity"/>
+                            <field name="global"/>
+                        </tree>
+                    </field>
+                        <separator string="Other information" colspan="4"/>
+                        <field name="uom_id" />
+                        <field name="categ_id" select="2" />
+                    </page>
+                    <page string="Other">
+                        <separator string="Sale taxes" colspan="4" />
+                        <field name="sale_taxes_id" nolabel="1" />
+                        <separator string="Notes" colspan="4" />
+                        <field name="notes" nolabel="1" />
+                    </page>
+                </notebook>
             </form>
         </field>
     </record>

@@ -78,6 +78,7 @@ class product_item(osv.osv):
         'sale_taxes_id': fields.many2many('account.tax', 'sale_simulator_taxes_rel','item_id', 'tax_id', 'Customer taxes'),
         'categ_id': fields.many2one('product.category','Category', required=True),
         'uom_id': fields.many2one('product.uom', 'Unit', required=True),
+        'notes': fields.text('Notes'),
     }
 
     _defaults = {
@@ -102,6 +103,20 @@ class product_item_line(osv.osv):
         'quantity': fields.float('Quantity', required=True),
         'uom_id': fields.many2one('product.uom', 'Unit', required=True),
     }
+
+    def onchange_product(self, cr, uid, ids, product_id):
+        '''
+        If product change
+        '''
+        v = {}
+        if product_id:
+            print 'Ok on change'
+            product = self.pool.get('product.product').browse(cr, uid, product_id)
+            if product:
+                v['uom_id'] = product.uom_id.id
+            v['quantity'] = 1
+
+        return {'value': v}
 
 product_item_line()
 
