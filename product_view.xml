@@ -6,7 +6,6 @@
             name="Products/Configuration/Simulator"
             id="menu_simulator"/>
 
-
         <record model="ir.ui.view" id="view_product_item_feature_form">
             <field name="name">product.item.feature.form</field>
             <field name="model">product.item.feature</field>
@@ -28,8 +27,8 @@
             <field name="priority" eval="7"/>
             <field name="arch" type="xml">
                 <tree string="Feature item">
-                    <field name="name" width="450" />
-                    <field name="code" width="200" />
+                    <field name="name" width="400" />
+                    <field name="code" width="180" />
                     <field name="active" />
                 </tree>
             </field>
@@ -84,7 +83,7 @@
                         </field>
                         <field name="feature_ids" nolabel="1" colspan="2">
                             <tree String="Feature line" editable="bottom">
-                                <field name="feature_id" width="400"/>
+                                <field name="feature_id" width="300"/>
                                 <field name="quantity"/>
                                 <field name="global"/>
                             </tree>
@@ -111,7 +110,7 @@
         <field name="priority" eval="7"/> 
         <field name="arch" type="xml">
             <tree string="Product Item">
-                <field name="name" width="450" />
+                <field name="name" width="300" />
                 <field name="code" />
                 <field name="type" />
                 <field name="p_item_id" />
@@ -174,7 +173,7 @@
                     </field>
                     <field name="feature_ids" nolabel="1" colspan="2">
                         <tree String="Feature line" editable="bottom">
-                            <field name="feature_id" width="450"/>
+                            <field name="feature_id" width="300"/>
                             <field name="quantity"/>
                             <field name="global"/>
                         </tree>
@@ -201,7 +200,7 @@
         <field name="priority" eval="7"/> 
         <field name="arch" type="xml">
             <tree string="Module Item">
-                <field name="name" width="450" />
+                <field name="name" width="300" />
                 <field name="code" />
                 <field name="type" />
                 <field name="p_item_id" />

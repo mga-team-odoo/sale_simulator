@@ -17,10 +17,10 @@ The sale simulator
     ],
     "init_xml" : [],
     "demo_xml" : [
-        "sale_simulator_sequence.xml",
         "sale_simulator_demo.xml"
     ],
     "update_xml" : [
+        "sale_simulator_sequence.xml",
         "product_view.xml",
         "sale_view.xml",
         "sale_simulator_wizard.xml",

@@ -30,23 +30,27 @@
                             <field name="description" />
                             <field name="item_id" domain="[('type','=','p')]"/>
                             <field name="quantity" />
-                            <field name="discount" />
+                            <field name="discount" on_change="onchange_discount(item_id, discount, retail_price)" />
                             <field name="factory_price" />
                             <field name="retail_price" />
-                            <field name="sale_price" />
+                            <field name="sale_price" on_change="onchange_saleprice(item_id, retail_price, sale_price)"/>
                             <field name="margin" />
                             <field name="order_id" readonly="1" />
                             <field name="line_ids" nolabel="1" colspan="4">
                                 <tree string="Item" editable="bottom">
-                                    <field name="item_id2" domain="[('type','=','m')]" width="450"/>
-                                    <field name="factory_price"/>
-                                    <field name="retail_price"/>
+                                    <field name="item_id2" domain="[('type','=','m')]" width="450" on_change="onchange_item(item_id2)"/>
+                                    <field name="factory_price" readonly="1" />
+                                    <field name="retail_price" readonly="1" />
                                 </tree>
                             </field>
                             <button 
                                 name="_check_config"
                                 string="Check"
                                 type="object"/>
+                            <button 
+                                name="button_dummy" 
+                                string="Compute" 
+                                type="object"/> 
                         </form>
                     </field>
                 </form>

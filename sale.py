@@ -39,7 +39,7 @@ class sale_simulator(osv.osv):
         'name': fields.char('Simulation number', size=64, required=True),
         'partner_id': fields.many2one('res.partner', 'Partner', ondelete='cascade'),
         'pricelist_id': fields.many2one('product.pricelist','Price List', ondelete='cascade', required=True),
-        'line_ids': fields.one2many('sale.simulator.line','simul_id', 'Lines'),
+        'line_ids': fields.one2many('sale.simulator.line','simul_id', 'Lines', required=True),
         'user_id': fields.many2one('res.users', 'Salesman', required=True, select=True),
         'shop_id': fields.many2one('sale.shop', 'Shop', required=True),
     }
@@ -47,6 +47,8 @@ class sale_simulator(osv.osv):
     _defaults = {
         'name': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'sale.simulator'),
     }
+
+    _order = 'name'
 
 sale_simulator()
 
@@ -101,6 +103,7 @@ class sale_simulator_line(osv.osv):
         return res
 
     _columns = {
+        'name': fields.char('Name', size=12, required=True),
         'description': fields.char('Description', size=64, required=True),
         'simul_id': fields.many2one('sale.simulator', 'Sale simulator', required=True, ondelete='cascade'),
         'item_id': fields.many2one('product.item', 'Product Item', required=True, ondelete='cascade'),
@@ -110,13 +113,19 @@ class sale_simulator_line(osv.osv):
         'retail_price': fields.function(_retail_price, method=True, type='float', string='Retail price'),
         'margin': fields.function(_margin, method=True, type='float', string='Margin'),
         'sale_price': fields.float('Sale price'),
-        'line_ids': fields.one2many('sale.simulator.line.item','line_id','Item'),
+        'line_ids': fields.one2many('sale.simulator.line.item','line_id','Item',required=True),
         'order_id': fields.many2one('sale.order', 'Sale order'),
     }
 
     _defaults = {
+        'name': lambda *a: 'OK',
         'quantity': lambda *a: 1.0,
     }
+
+    _order = 'id'
+
+    def button_dummy(self, cr, uid, ids, context={}):
+        return True
 
     def _check_config(self, cr, uid, ids, context={}):
         '''
@@ -167,22 +176,70 @@ class sale_simulator_line(osv.osv):
 
         return True
 
+    #
+    # On change method
+    #
+    def onchange_discount(self, cr, uid, ids, item_id, discount, retail_price):
+        v= {}
+        if item_id:
+            v['sale_price'] = retail_price - (retail_price * discount / 100)
+            #v['sale_price'] = 1001
+
+        return {'value': v}
+
+    def onchange_saleprice(self, cr, uid, ids, item_id, retail_price, sale_price):
+        v = {}
+        if item_id:
+            v['discount'] = 100 - (sale_price * 100 / retail_price)
+
+        return {'value': v}
+
+
+
 sale_simulator_line()
 
 class sale_simulator_line_item(osv.osv):
     _name = 'sale.simulator.line.item'
     _description = 'Sale simulator line item'
 
+    def name_get(self, cr, uid, ids, context={}):
+        if not len(ids):
+            return []
+        reads = self.read(cr, uid, ids ['line_id', 'item_id2'], context)
+        res = []
+        for read in reads:
+            print 'name_get:read: %s' % str(read)
+            res.append(read['id'], 'OK')
+        return res
+
     _columns = {
-        'line_id': fields.many2one('sale.simulator.line', 'Sale simulator line', required=True, ondelete='cascade'),
+        #'name': fields.char('Name', size=12, required=True),
+        'line_id': fields.many2one('sale.simulator.line', 'Sale simulator line', required=True, select=True),
         'item_id2': fields.many2one('product.item', 'Product Item', required=True, ondelete='cascade'),
         'retail_price': fields.float('Retail price'),
         'factory_price': fields.float('Factory Price'),
     }
 
     _defaults = {
+        #'name': lambda *a: 'OK',
         'retail_price': lambda *a: 0.0,
         'factory_price': lambda *a: 0.0,
     }
+
+    _order = 'id'
+
+    def onchange_item(self, cr, uid, ids, item_id):
+        '''
+        If item change
+        '''
+        v = {}
+        if item_id:
+            print 'Ok on change'
+            item = self.pool.get('product.item').browse(cr, uid, item_id)
+            if item:
+                v['factory_price'] = item.factory_price
+                v['retail_price'] = item.retail_price
+
+        return {'value': v}
 
 sale_simulator_line_item()

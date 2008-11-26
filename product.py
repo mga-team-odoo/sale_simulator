@@ -62,6 +62,23 @@ class product_item(osv.osv):
     _name = 'product.item'
     _description = 'Product item'
 
+    def _total_standard_price(self, cr , uid, ids, name, arg, context={}):
+        '''
+        Compute all products standard price.
+        '''
+        res = {}
+        for id in ids:
+            std_price = 0.0
+            line_args = [('item_id','=',id)]
+            line_obj = self.pool.get('product.item.line')
+            line_ids = line_obj.search(cr, uid, line_args)
+            for line_id in line_ids:
+                line = line_obj.browse(cr, uid, line_id)
+                std_price += line.product_id.standard_price
+            res.setdefault(id, std_price)
+        print '_total_standard_price: %s:%s' % (str(id), str(std_price))
+        return res
+
     _columns = {
         'name': fields.char('Name', size=64, required=True),
         'code': fields.char('Code', size=12, required=True),
@@ -79,6 +96,7 @@ class product_item(osv.osv):
         'categ_id': fields.many2one('product.category','Category', required=True),
         'uom_id': fields.many2one('product.uom', 'Unit', required=True),
         'notes': fields.text('Notes'),
+        #        'tsp': fields.function(_total_standard_price, method=True, type='float', string='Total standard price'),
     }
 
     _defaults = {
