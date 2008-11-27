@@ -44,8 +44,6 @@ def _pre_init(self, cr, uid, data, context):
     if not simul['partner_id']:
         raise wizard.except_wizard('Error','Pour créer un devis, veuillez créer ou sélectionner un partenaire!')
 
-    # Regarder si le coefficient de remise maxi du client, et bloquer si l'on dépasse.
-
     # Composition du formulaire
     _select_form_list = [
         '<?xml version="1.0"?>',
@@ -114,6 +112,27 @@ def _make_order(self, cr, uid, data, context):
     addr = partner_obj.address_get(cr, uid, [simul['partner_id'][0]],['delivery','invoice','contact'])
     print '_make_order:simul: %s' % str(simul)
     print '_make_order:addr:  %s' % str(addr)
+
+    # verifie si l'on a pas dépasser la remise maxi
+    config = simul_line_obj.browse(cr, uid, sline_nb)
+    if not config:
+        print 'make_product.generate: Erreur recherche produit'
+    
+    max_discount = 0
+    partner = partner_obj.browse(cr, uid, simul['partner_id'][0])
+    for categ_id in partner.category_id:
+        print 'category: %s::%s -> %s' % (str(categ_id.id), categ_id.name, str(categ_id.discount))
+        if categ_id.discount:
+            if categ_id.discount > max_discount:
+                max_discount = categ_id.discount
+    #print 'Remise maxi %s' % str(max_discount)
+
+    if config.discount > max_discount:
+        print 'config: %s' % str(config.discount)
+        raise wizard.except_wizard('Error', 'Erreur remise maximale dépassée (%s) : maxi (%s)' % (str(config.discount), str(max_discount)))
+
+    #raise wizard.except_wizard('Error', 'Ok')
+
     # Create an empty order
     order = {
         'origin': simul['name'],
@@ -146,9 +165,6 @@ def _make_order(self, cr, uid, data, context):
 
     # proref_id = make_product.generate(cr, uid, sline_nb, context)
     # Search product and module items on this configuration
-    config = simul_line_obj.browse(cr, uid, sline_nb)
-    if not config:
-        print 'make_product.generate: Erreur recherche produit'
 
     print '_make_order: config: %s' % str(config.description)
     print '_make_order: taxes: %s'% str(config.item_id.sale_taxes_id)
