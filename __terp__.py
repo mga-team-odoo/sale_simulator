@@ -23,6 +23,7 @@ The sale simulator
         "sale_simulator_sequence.xml",
         "product_view.xml",
         "sale_view.xml",
+        "partner_view.xml",
         "sale_simulator_wizard.xml",
     ],
     "active": False,
