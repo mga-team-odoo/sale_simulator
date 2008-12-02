@@ -91,10 +91,9 @@ def _make_order(self, cr, uid, data, context):
     - Create an order
     - Create a produit with this nomemclature
     '''
-    print '_make_order: %s' % str(data)
     simul_nb = data['id']
     sline_nb = data['form']['simul']
-    print '_make_order:simul_nb: %s' % str(simul_nb)
+
     pool = pooler.get_pool(cr.dbname)
     simul_obj = pool.get('sale.simulator')
     simul_line_obj = pool.get('sale.simulator.line')
@@ -108,12 +107,14 @@ def _make_order(self, cr, uid, data, context):
     if not simul:
         print '_make_order: Erreur lors de la recup de la simulation'
 
-    # Récupération des addresses contact, livraison, facturation
+    # *********************************************************************
+    #  Retrieve contact, delivery, invoice address
+    # *********************************************************************
     addr = partner_obj.address_get(cr, uid, [simul['partner_id'][0]],['delivery','invoice','contact'])
-    print '_make_order:simul: %s' % str(simul)
-    print '_make_order:addr:  %s' % str(addr)
 
-    # verifie si l'on a pas dépasser la remise maxi
+    # *********************************************************************
+    #  Verify if the max discount was not exceed
+    # *********************************************************************
     config = simul_line_obj.browse(cr, uid, sline_nb)
     if not config:
         print 'make_product.generate: Erreur recherche produit'
@@ -125,15 +126,15 @@ def _make_order(self, cr, uid, data, context):
         if categ_id.discount:
             if categ_id.discount > max_discount:
                 max_discount = categ_id.discount
-    #print 'Remise maxi %s' % str(max_discount)
 
     if config.discount > max_discount:
         print 'config: %s' % str(config.discount)
         raise wizard.except_wizard('Error', 'Erreur remise maximale dépassée (%s) : maxi (%s)' % (str(config.discount), str(max_discount)))
 
-    #raise wizard.except_wizard('Error', 'Ok')
 
-    # Create an empty order
+    # *********************************************************************
+    #  Create an empty order
+    # *********************************************************************
     order = {
         'origin': simul['name'],
         'date_order': time.strftime('%Y-%m-%d'),
@@ -145,13 +146,14 @@ def _make_order(self, cr, uid, data, context):
         'user_id': simul['user_id'][0],
         'shop_id': simul['shop_id'][0],
     }
-    print 'order: %s' % str(order)
-    # Création du devis,
+
     order_id = order_obj.create(cr, uid, order, context)
     if not order_id:
         print '_make_order: Erreur dans la création de l''entete du devis'
 
-    # Ajout de cet ID sur la page de configuration en lien
+    # *********************************************************************
+    # Add ID in simulation line
+    # *********************************************************************
     args = {'order_id': order_id}
     res = simul_line_obj.write(cr, uid, sline_nb, args, context)
     if not res:
@@ -163,13 +165,9 @@ def _make_order(self, cr, uid, data, context):
     # - Les taxes sont prises sur le produit de référence
     # - la catégorie aussi
 
-    # proref_id = make_product.generate(cr, uid, sline_nb, context)
-    # Search product and module items on this configuration
-
-    print '_make_order: config: %s' % str(config.description)
-    print '_make_order: taxes: %s'% str(config.item_id.sale_taxes_id)
-
+    # *********************************************************************
     # Check if configuration have a multi level
+    # *********************************************************************
     item_ids = simul_line_item_obj.search(cr, uid, [('line_id','=',sline_nb)])
     if not item_ids:
         raise wizard.except_wizard('Error', 'Problème récupération des IDS')
@@ -184,24 +182,25 @@ def _make_order(self, cr, uid, data, context):
             step2 = True
         print 'generate:level: %s' % item.item_id2.sequence
 
-    #
-    # Ajout des taxes principales du produits de base
-    #
+    # *********************************************************************
+    #  Add taxes on main product
+    # *********************************************************************
     taxes_ids = []
     for x in config.item_id.sale_taxes_id:
         taxes_ids.append(x.id)
 
-    #
-    # Choisit le nom du produit final en fonction du nombre de niveau
-    #
+    # *********************************************************************
+    # Compose name of main product by concatenate product item ans
+    # all module(s) item(s)
+    # *********************************************************************
     if step2:
         proname = config.item_id.name
     else:
         proname = config.description
 
-    #
-    # Création du produit (1)
-    #
+    # *********************************************************************
+    #  Create the first product
+    # *********************************************************************
     proref1 = {
         'name': proname,
         'categ_id': config.item_id.categ_id.id,
@@ -226,16 +225,15 @@ def _make_order(self, cr, uid, data, context):
     niv1_lst = {}
     niv2_lst = {}
 
-    # On recherche les produits qui compose le produit de référence
+    # *********************************************************************
+    #  Search all modules items which compose the main product
+    # *********************************************************************
     nivref_args = [('item_id','=',config.item_id.id)]
-    print 'nivref_args: %s' % str(nivref_args)
 
     nivref_ids = pil_obj.search(cr, uid, nivref_args)
     if nivref_ids:
-        print 'AFF: nivref_ids: %s' % str(nivref_ids)
         for nivref_id in nivref_ids:
             nivref = pil_obj.read(cr, uid, nivref_id, ['product_id','quantity','uom_id'], context)
-            print 'AFF: nivref: %s ' % str(nivref)
             niv1_lst[nivref['product_id'][0]] = (nivref['quantity'], nivref['uom_id'][0])
 
     for niv1 in item_rs:
@@ -246,7 +244,6 @@ def _make_order(self, cr, uid, data, context):
         if pil_ids:
             for pil_id in pil_ids:
                 pil = pil_obj.read(cr, uid, pil_id, ['product_id','quantity','uom_id'], context)
-                print 'AFF: pil: %s' % str(pil)
 
                 p_id = pil['product_id'][0]
                 if niv1.item_id2.sequence == 1:
@@ -263,11 +260,11 @@ def _make_order(self, cr, uid, data, context):
     print 'niv1_lst: %s' % str(niv1_lst)
     print 'niv2_lst: %s' % str(niv2_lst)
 
-    # Constitution de la nomemclature du premier produit.
+    # *********************************************************************
+    #  Add BOM on the main product.
+    # *********************************************************************
     bom_obj = pool.get('mrp.bom')
 
-    # le produit lui même a sa BOM
-    # on récupère son id pour ses composants
     proref_bom1 = {
         'name': proname,
         'product_id': proref_id1,
@@ -295,10 +292,10 @@ def _make_order(self, cr, uid, data, context):
             if not mod1_id:
                 print 'Erreur création produit %s ' % str(bom1)
 
-    # si niveau 2 on créer le produit
+    # *********************************************************************
+    # Create product if an item module have 2 step
+    # *********************************************************************
     if step2:
-        #print'****************** NIVEAU 2 ***************************'
-        #Création du produit numéro 2
         proref2 = {
             'name': config.description,
             'categ_id': config.item_id.categ_id.id,
@@ -316,8 +313,6 @@ def _make_order(self, cr, uid, data, context):
         if not proref_id2:
             print '_make_order: erreur creation produit'
 
-        # le produit a lui même sa nomenclature
-
         proref_bom2 = {
             'name': config.description,
             'product_id': proref_id2,
@@ -327,7 +322,6 @@ def _make_order(self, cr, uid, data, context):
         prb2_id = bom_obj.create(cr, uid, proref_bom2, context)
         if not prb2_id:
             print 'erreur lors de la création de la BOM principale'
-        #print '***************** BOM 2 CREER ********************'
 
         #Ratache le produit N°1 en nomenclature en premier
         propro = product_obj.read(cr, uid, proref_id1, ['name'], context)
@@ -342,7 +336,10 @@ def _make_order(self, cr, uid, data, context):
         if not modx_id:
             print 'Erreur création produit %s ' % str(bom1)
         print 'ratache'
-        #On ratache les autres produits
+
+        # *****************************************************************
+        #  Add all modules items in second step.
+        # *****************************************************************
         for bom2 in niv2_lst:
             if niv2_lst[bom2][0] > 0:
                 # le nombre de produit est supérieur a 0 donc on peut les ajoutés.
@@ -362,12 +359,13 @@ def _make_order(self, cr, uid, data, context):
 
 
     # *********************************************************************
-    # A retirer après les tests
+    #  Remove after test
     # *********************************************************************
     #raise wizard.except_wizard('Error', 'STOP !')
 
-    # Ajout du produit sur le devis
-    # TODO Unité à mettre sur l'item
+    # *********************************************************************
+    #  Add product on quotation.
+    # *********************************************************************
     order_line = {
         'order_id': order_id,
         'name': config.description,
@@ -385,7 +383,7 @@ def _make_order(self, cr, uid, data, context):
 
     order_line_id = order_line_obj.create(cr, uid, order_line, context)
     if not order_line_id:
-        print '_make_order: Erreur creation ligne de devis'
+        raise wizard.except_wizard('Error', 'Error on create ligne order !')
 
     return {}
 

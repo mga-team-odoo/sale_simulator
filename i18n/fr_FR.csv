@@ -88,7 +88,8 @@
 "view","sale.simulator",0,"Lines","Lignes"
 "view","sale.simulator",0,"Lines","Lignes"
 "view","sale.simulator",0,"Item","Élément"
-"view","sale.simulator",0,"Check","Vérifier"
+"view","sale.simulator.line",0,"Check","Vérifier"
+"view","sale.simulator.line",0,"Compute","Calculer"
 "view","sale.simulator",0,"Feature item","Caractéristiques"
 
 
