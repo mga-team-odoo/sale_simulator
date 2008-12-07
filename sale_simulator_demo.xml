@@ -35,6 +35,9 @@
         <field name="capacity_start">0.32</field>
         <field name="factory_price">1000.00</field>
         <field name="retail_price">1200.00</field>
+        <field name="sequence">1</field>
+        <field name="categ_id" model="product.category" search="[('name','=','All products')]" />
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
     </record>
 
     <record model="product.item.line" id="product_item_serveur_1u_boitier">
@@ -70,6 +73,9 @@
         <field name="p_item_id" ref="product_item_serveur_1u"/>
         <field name="factory_price">200.00</field>
         <field name="retail_price">240.00</field>
+        <field name="sequence">1</field>
+        <field name="categ_id" model="product.category" search="[('name','=','All products')]" />
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
     </record>
 
     <record model="product.item.line" id="product_item_ss1u_dd120Go_dd80Go">
@@ -118,6 +124,9 @@
         <field name="capacity_start">0.48</field>
         <field name="factory_price">1150.00</field>
         <field name="retail_price">1300.00</field>
+        <field name="sequence">1</field>
+        <field name="categ_id" model="product.category" search="[('name','=','All products')]" />
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
     </record>
 
     <record model="product.item.line" id="product_item_serveur_2u_boitier">
@@ -149,6 +158,9 @@
         <field name="p_item_id" ref="product_item_serveur_2u"/>
         <field name="factory_price">300.00</field>
         <field name="retail_price">400.00</field>
+        <field name="sequence">1</field>
+        <field name="categ_id" model="product.category" search="[('name','=','All products')]" />
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
     </record>
 
     <record model="product.item.line" id="product_item_ss2u_dd160Go_dd120Go">

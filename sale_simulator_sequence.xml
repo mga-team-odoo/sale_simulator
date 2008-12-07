@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <terp>
-    <data noupdate="1">
+    <data>
 
         <record model="ir.sequence.type" id="sale_simulator_type">
             <field name="name">Sale simulator</field>

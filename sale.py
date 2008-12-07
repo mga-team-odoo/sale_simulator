@@ -174,6 +174,8 @@ class sale_simulator_line(osv.osv):
                 if k in lf and tf[k] < lf[k]:
                     raise  osv.except_osv('Error !','Caractéristique (%s) dépassée qté:%s max:%s !' % (nf[k],str(lf[k]),str(tf[k])))
 
+            raise  osv.except_osv('Information', 'La configuration est valide')
+
         return True
 
     #

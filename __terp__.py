@@ -15,12 +15,13 @@ The sale simulator
         "account",
         "mrp",
     ],
-    "init_xml" : [],
+    "init_xml" : [
+        "sale_simulator_sequence.xml",
+    ],
     "demo_xml" : [
         "sale_simulator_demo.xml"
     ],
     "update_xml" : [
-        "sale_simulator_sequence.xml",
         "product_view.xml",
         "sale_view.xml",
         "partner_view.xml",
