@@ -159,11 +159,12 @@ def _make_order(self, cr, uid, data, context):
     if not res:
         print '_make_order: Erreur lors de la MAJ du numéro de commande'
 
-    # Création des produits 
-    # Création du produit assemblé de toutes les pièces
-    # Création du produit, composé du produit précédent.
-    # - Les taxes sont prises sur le produit de référence
-    # - la catégorie aussi
+    # *********************************************************************
+    #  Product section
+    # *********************************************************************
+    note = ''
+    notes = [config.item_id.notes]
+    codes = [config.item_id.code]
 
     # *********************************************************************
     # Check if configuration have a multi level
@@ -181,7 +182,12 @@ def _make_order(self, cr, uid, data, context):
         if item.item_id2.sequence == 2:
             step2 = True
         print 'generate:level: %s' % item.item_id2.sequence
+        notes.append(item.item_id2.notes)
+        codes.append(item.item_id2.code)
 
+    note = '\n'.join(notes)
+    coder = '-'.join(codes)
+    print 'Note finale: %s' % note
     # *********************************************************************
     #  Add taxes on main product
     # *********************************************************************
@@ -199,7 +205,7 @@ def _make_order(self, cr, uid, data, context):
         proname = config.description
 
     # *********************************************************************
-    #  Create the first product
+    #  Prepare the first product
     # *********************************************************************
     proref1 = {
         'name': proname,
@@ -211,16 +217,13 @@ def _make_order(self, cr, uid, data, context):
         'standard_price': config.factory_price,
         'procure_method': 'make_to_order',
         'supply_method': 'produce',
-        'uom_id': config.item_id.uom_id.id
+        'uom_id': config.item_id.uom_id.id,
+        'description_sale': note,
     }
+    if not step2:
+        proref1['name'] = coder[:64]
     print '_make_order:proref: %s' % str(proref1)
-    proref_id1 = product_obj.create(cr, uid, proref1, context)
-    if not proref_id1:
-        print '_make_order: erreur creation produit'
 
-    #
-    # Création de la nomemclature du produit de niveau 1
-    #
     pil_obj = pool.get('product.item.line')
     niv1_lst = {}
     niv2_lst = {}
@@ -260,6 +263,13 @@ def _make_order(self, cr, uid, data, context):
     print 'niv1_lst: %s' % str(niv1_lst)
     print 'niv2_lst: %s' % str(niv2_lst)
 
+    #
+    #  Create the first product.
+    #
+    proref_id1 = product_obj.create(cr, uid, proref1, context)
+    if not proref_id1:
+        print '_make_order: erreur creation produit'
+
     # *********************************************************************
     #  Add BOM on the main product.
     # *********************************************************************
@@ -297,7 +307,7 @@ def _make_order(self, cr, uid, data, context):
     # *********************************************************************
     if step2:
         proref2 = {
-            'name': config.description,
+            'name': coder[:64],
             'categ_id': config.item_id.categ_id.id,
             'taxes_id': [(6,0,taxes_ids)],
             'sale_ok': True,
@@ -306,7 +316,8 @@ def _make_order(self, cr, uid, data, context):
             'standard_price': config.factory_price,
             'procure_method': 'make_to_order',
             'supply_method': 'produce',
-            'uom_id': config.item_id.uom_id.id
+            'uom_id': config.item_id.uom_id.id,
+            'description_sale': note,
         }
         print '_make_order:proref: %s' % str(proref2)
         proref_id2 = product_obj.create(cr, uid, proref2, context)
@@ -368,12 +379,13 @@ def _make_order(self, cr, uid, data, context):
     # *********************************************************************
     order_line = {
         'order_id': order_id,
-        'name': config.description,
+        'name': coder[:64],
         'price_unit': config.sale_price,
         'tax_id': [(6,0,taxes_ids)],
         'type': 'make_to_order',
         'product_uom_qty': config.quantity,
         'product_uom': config.item_id.uom_id.id,
+        'notes': note,
     }
 
     if step2:
@@ -384,6 +396,8 @@ def _make_order(self, cr, uid, data, context):
     order_line_id = order_line_obj.create(cr, uid, order_line, context)
     if not order_line_id:
         raise wizard.except_wizard('Error', 'Error on create ligne order !')
+
+    #raise wizard.except_wizard('Error', 'On stop')
 
     return {}
 

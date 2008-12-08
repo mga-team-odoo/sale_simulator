@@ -105,7 +105,7 @@ class sale_simulator_line(osv.osv):
     _columns = {
         'name': fields.char('Name', size=12, required=True),
         'description': fields.char('Description', size=64, required=True),
-        'simul_id': fields.many2one('sale.simulator', 'Sale simulator', required=True, ondelete='cascade'),
+        'simul_id': fields.many2one('sale.simulator', 'Sale simulator', select=True, required=True, ondelete='cascade'),
         'item_id': fields.many2one('product.item', 'Product Item', required=True, ondelete='cascade'),
         'quantity': fields.float('Quantity'),
         'factory_price': fields.function(_factory_price, method=True, type='float', string='Factory price'),
@@ -115,6 +115,7 @@ class sale_simulator_line(osv.osv):
         'sale_price': fields.float('Sale price'),
         'line_ids': fields.one2many('sale.simulator.line.item','line_id','Item',required=True),
         'order_id': fields.many2one('sale.order', 'Sale order'),
+        'message': fields.char('Message', size=128),
     }
 
     _defaults = {
@@ -169,12 +170,17 @@ class sale_simulator_line(osv.osv):
                         for mf in fitem_ids:
                             lf[mf['feature_id'][0]] += mf['quantity']
 
+            msg = True
             # Check if max config is superior
             for k in tf.keys():
                 if k in lf and tf[k] < lf[k]:
-                    raise  osv.except_osv('Error !','Caractéristique (%s) dépassée qté:%s max:%s !' % (nf[k],str(lf[k]),str(tf[k])))
+                    msg = False
+                    rew = self.write(cr, uid, ids, {'message': 'Caractéristique (%s) dépassée sté:%s max:%s'% (nf[k],str(lf[k]),str(tf[k]))}, context)
 
-            raise  osv.except_osv('Information', 'La configuration est valide')
+            if msg:
+                rew = self.write(cr, uid, ids, {'message': 'Configuration valide'}, context)
+                if not rew:
+                    print 'Erreur écriture message'
 
         return True
 
@@ -199,7 +205,14 @@ class sale_simulator_line(osv.osv):
 
         return {'value': v}
 
+    def onchange_product(self, cr, uid, ids, item_id):
+        v = {}
+        if item_id:
+            product_item = self.pool.get('product.item').read(cr, uid, item_id, ['retail_price'])
+            v['sale_price'] = product_item['retail_price']
+            cr.commit()
 
+        return {'value': v}
 
 sale_simulator_line()
 
@@ -244,6 +257,12 @@ class sale_simulator_line_item(osv.osv):
             if item:
                 v['factory_price'] = item.factory_price
                 v['retail_price'] = item.retail_price
+
+                #vals = {
+                #    'factory_price': item.factory_price,
+                #    'retail_price': item.retail_price,
+                #}
+                #rew = self.write(cr, uid, ids, vals)
 
         return {'value': v}
 
