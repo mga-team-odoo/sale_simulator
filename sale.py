@@ -192,7 +192,10 @@ class sale_simulator_line(osv.osv):
     def onchange_saleprice(self, cr, uid, ids, item_id, retail_price, sale_price):
         v = {}
         if item_id:
-            v['discount'] = 100 - (sale_price * 100 / retail_price)
+            if retail_price <= 0:
+                v['discount'] = 0
+            else:
+                v['discount'] = 100 - (sale_price * 100 / retail_price)
 
         return {'value': v}
 
