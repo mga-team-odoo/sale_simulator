@@ -76,7 +76,6 @@ class product_item(osv.osv):
                 line = line_obj.browse(cr, uid, line_id)
                 std_price += line.product_id.standard_price
             res.setdefault(id, std_price)
-        print '_total_standard_price: %s:%s' % (str(id), str(std_price))
         return res
 
     _columns = {
@@ -128,7 +127,6 @@ class product_item_line(osv.osv):
         '''
         v = {}
         if product_id:
-            print 'Ok on change'
             product = self.pool.get('product.product').browse(cr, uid, product_id)
             if product:
                 v['uom_id'] = product.uom_id.id

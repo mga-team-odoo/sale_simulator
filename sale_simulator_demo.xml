@@ -29,12 +29,12 @@
     <!-- * Serveur 1U       * -->
     <!-- ******************** -->
     <record model="product.item" id="product_item_serveur_1u">
-        <field name="name">Serveur Syleam 1U</field>
+        <field name="name">Syleam Server 1U</field>
         <field name="code">SS1U</field>
         <field name="type">p</field>
         <field name="capacity_start">0.32</field>
         <field name="factory_price">1000.00</field>
-        <field name="retail_price">1200.00</field>
+        <field name="retail_price">20000.00</field>
         <field name="sequence">1</field>
         <field name="categ_id" model="product.category" search="[('name','=','All products')]" />
         <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
@@ -67,11 +67,11 @@
 
     <!-- ****************** -->
     <record model="product.item" id="product_item_ss1u_dd120Go">
-        <field name="name">Extension 480Go</field>
+        <field name="name">Hard disk extension 480Go</field>
         <field name="code">EXT480</field>
         <field name="type">m</field>
         <field name="p_item_id" ref="product_item_serveur_1u"/>
-        <field name="factory_price">200.00</field>
+        <field name="factory_price">180.00</field>
         <field name="retail_price">240.00</field>
         <field name="sequence">1</field>
         <field name="categ_id" model="product.category" search="[('name','=','All products')]" />
@@ -113,17 +113,32 @@
         <field name="quantity">2.0</field>
         <field name="global">4.0</field>
     </record>
+    <!-- ****************************************************************** -->
+
+    <record model="product.item" id="product_item_ss1u_il">
+        <field name="name">Software Installation (il)</field>
+        <field name="code">IL</field>
+        <field name="type">m</field>
+        <field name="p_item_id" ref="product_item_serveur_1u"/>
+        <field name="factory_price">100.00</field>
+        <field name="retail_price">180.00</field>
+        <field name="sequence">2</field>
+        <field name="categ_id" model="product.category" search="[('name','=','All products')]" />
+        <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
+        <field name="notes">Software installation</field>
+    </record>
+
 
     <!-- ******************** -->
     <!-- * Serveur 2U       * -->
     <!-- ******************** -->
     <record model="product.item" id="product_item_serveur_2u">
-        <field name="name">Serveur Syleam 2U</field>
+        <field name="name">Syleam Server 2U</field>
         <field name="code">SS2U</field>
         <field name="type">p</field>
         <field name="capacity_start">0.48</field>
-        <field name="factory_price">1150.00</field>
-        <field name="retail_price">1300.00</field>
+        <field name="factory_price">1230.00</field>
+        <field name="retail_price">3000.00</field>
         <field name="sequence">1</field>
         <field name="categ_id" model="product.category" search="[('name','=','All products')]" />
         <field name="uom_id" model="product.uom" search="[('name','=','Unit')]" />
@@ -152,11 +167,11 @@
 
     <!-- Module Disque 160 Go -->
     <record model="product.item" id="product_item_ss2u_dd160Go">
-        <field name="name">Extension Disque 640Go</field>
+        <field name="name">Hard Disque extension 640Go</field>
         <field name="code">EXT640</field>
         <field name="type">m</field>
         <field name="p_item_id" ref="product_item_serveur_2u"/>
-        <field name="factory_price">300.00</field>
+        <field name="factory_price">150.00</field>
         <field name="retail_price">400.00</field>
         <field name="sequence">1</field>
         <field name="categ_id" model="product.category" search="[('name','=','All products')]" />
@@ -217,17 +232,17 @@
     </record>
 
     <record model="sale.simulator.line" id="sale_simulator_line_1">
-        <field name="description">Serveur 1U Économique</field>
+        <field name="description">Eco Server 1U</field>
         <field name="simul_id" ref="sale_simulator_1"/>
         <field name="item_id" ref="product_item_serveur_1u"/>
-        <field name="sale_price">1690.95</field>
+        <field name="sale_price">2600.95</field>
     </record>
 
     <record model="sale.simulator.line" id="sale_simulator_line_2">
-        <field name="description">Serveur 2U Confort</field>
+        <field name="description">Wonderfull Server 2U</field>
         <field name="simul_id" ref="sale_simulator_1"/>
         <field name="item_id" ref="product_item_serveur_2u"/>
-        <field name="sale_price">2490.25</field>
+        <field name="sale_price">3490.25</field>
     </record>
     
     <record model="sale.simulator.line.item" id="sale_simulator_line_item_1_1">

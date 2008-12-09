@@ -166,7 +166,6 @@ class sale_simulator_line(osv.osv):
                 if fmod_ids:
                     fitem_ids = fline_obj.read(cr, uid, fmod_ids, ['id','feature_id', 'quantity', 'global'],context)
                     if fitem_ids:
-                        #print '_check_config:fitem_ids: %s' % str(fitem_ids)
                         for mf in fitem_ids:
                             lf[mf['feature_id'][0]] += mf['quantity']
 
@@ -191,7 +190,6 @@ class sale_simulator_line(osv.osv):
         v= {}
         if item_id:
             v['sale_price'] = retail_price - (retail_price * discount / 100)
-            #v['sale_price'] = 1001
 
         return {'value': v}
 
@@ -210,7 +208,6 @@ class sale_simulator_line(osv.osv):
         if item_id:
             product_item = self.pool.get('product.item').read(cr, uid, item_id, ['retail_price'])
             v['sale_price'] = product_item['retail_price']
-            cr.commit()
 
         return {'value': v}
 
@@ -226,12 +223,11 @@ class sale_simulator_line_item(osv.osv):
         reads = self.read(cr, uid, ids ['line_id', 'item_id2'], context)
         res = []
         for read in reads:
-            print 'name_get:read: %s' % str(read)
             res.append(read['id'], 'OK')
         return res
 
     _columns = {
-        #'name': fields.char('Name', size=12, required=True),
+        'name': fields.char('Name', size=12, required=True),
         'line_id': fields.many2one('sale.simulator.line', 'Sale simulator line', required=True, select=True),
         'item_id2': fields.many2one('product.item', 'Product Item', required=True, ondelete='cascade'),
         'retail_price': fields.float('Retail price'),
@@ -239,7 +235,7 @@ class sale_simulator_line_item(osv.osv):
     }
 
     _defaults = {
-        #'name': lambda *a: 'OK',
+        'name': lambda *a: 'OK',
         'retail_price': lambda *a: 0.0,
         'factory_price': lambda *a: 0.0,
     }
@@ -252,17 +248,10 @@ class sale_simulator_line_item(osv.osv):
         '''
         v = {}
         if item_id:
-            print 'Ok on change'
             item = self.pool.get('product.item').browse(cr, uid, item_id)
             if item:
                 v['factory_price'] = item.factory_price
                 v['retail_price'] = item.retail_price
-
-                #vals = {
-                #    'factory_price': item.factory_price,
-                #    'retail_price': item.retail_price,
-                #}
-                #rew = self.write(cr, uid, ids, vals)
 
         return {'value': v}
 
