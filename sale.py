@@ -2,6 +2,7 @@
 ##############################################################################
 #
 # Copyright (c) 2008 Sylëam Info Services (http://www.syleam.fr) All rights Reserved.
+#               2013 Christophe CHAUVET <christophe.chauvet@gmail.com>
 #
 # WARNING: This program as such is intended to be used by professional
 # programmers who take the whole responsability of assessing all potential
@@ -26,14 +27,17 @@
 #
 ##############################################################################
 
-from osv import fields, osv
+from openerp.osv import orm
+from openerp.osv import fields
 
-class sale_simulator(osv.osv):
+
+class sale_simulator(orm.Model):
     '''
     Sale simulator
     '''
     _name = 'sale.simulator'
     _description = 'Sale simulator'
+    _order = 'name'
 
     _columns = {
         'name': fields.char('Simulation number', size=64, required=True),
@@ -48,18 +52,15 @@ class sale_simulator(osv.osv):
         'name': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'sale.simulator'),
     }
 
-    _order = 'name'
 
-sale_simulator()
-
-class sale_simulator_line(osv.osv):
+class sale_simulator_line(orm.Model):
     '''
     Sale simulator line
     '''
     _name = 'sale.simulator.line'
     _description = 'Sale simulator line'
 
-    def _factory_price(self, cr, uid, ids, name, arg, context={}):
+    def _factory_price(self, cr, uid, ids, name, arg, context=None):
         '''
         Calcul le prix de revient de chaque composant.
         '''
@@ -69,14 +70,14 @@ class sale_simulator_line(osv.osv):
             line = self.browse(cr, uid, id)
             factory_price = line.item_id.factory_price
             # Récupération des modules
-            mod_ids = line_obj.search(cr, uid, [('line_id','=',id)])
+            mod_ids = line_obj.search(cr, uid, [('line_id', '=', id)])
             for mod_id in mod_ids:
                 mod = line_obj.browse(cr, uid, mod_id)
                 factory_price += round(mod.item_id2.factory_price, 2)
             res.setdefault(id, factory_price)
         return res
 
-    def _retail_price(self, cr, uid, ids, name, arg, context={}):
+    def _retail_price(self, cr, uid, ids, name, arg, context=None):
         '''
         Calcul du prix de vente.
         '''
@@ -87,18 +88,18 @@ class sale_simulator_line(osv.osv):
             # Récupération du produit de référence
             retail_price = line.item_id.retail_price
             # Récupération des modules
-            mod_ids = line_obj.search(cr, uid, [('line_id','=',id)])
+            mod_ids = line_obj.search(cr, uid, [('line_id', '=', id)])
             for mod_id in mod_ids:
                 mod = line_obj.browse(cr, uid, mod_id)
                 retail_price += round(mod.item_id2.retail_price, 2)
             res.setdefault(id, retail_price)
         return res
 
-    def _margin(self, cr, uid, ids, name, arg, context={}):
+    def _margin(self, cr, uid, ids, name, arg, context=None):
         res = {}
         for id in ids:
             line = self.browse(cr, uid, id)
-            margin = round((line.sale_price - line.factory_price),2)
+            margin = round((line.sale_price - line.factory_price), 2)
             res.setdefault(id, margin)
         return res
 
@@ -125,10 +126,10 @@ class sale_simulator_line(osv.osv):
 
     _order = 'id'
 
-    def button_dummy(self, cr, uid, ids, context={}):
+    def button_dummy(self, cr, uid, ids, context=None):
         return True
 
-    def _check_config(self, cr, uid, ids, context={}):
+    def _check_config(self, cr, uid, ids, context=None):
         '''
         Check if selected configuration is valid
         '''
@@ -136,6 +137,7 @@ class sale_simulator_line(osv.osv):
         if not config:
             print '_check_config:config: not found !'
             return False
+
         for c in config:
             tf = {}
             nf = {}
@@ -211,13 +213,12 @@ class sale_simulator_line(osv.osv):
 
         return {'value': v}
 
-sale_simulator_line()
 
-class sale_simulator_line_item(osv.osv):
+class sale_simulator_line_item(orm.Model):
     _name = 'sale.simulator.line.item'
     _description = 'Sale simulator line item'
 
-    def name_get(self, cr, uid, ids, context={}):
+    def name_get(self, cr, uid, ids, context=None):
         if not len(ids):
             return []
         reads = self.read(cr, uid, ids ['line_id', 'item_id2'], context)
@@ -255,4 +256,4 @@ class sale_simulator_line_item(osv.osv):
 
         return {'value': v}
 
-sale_simulator_line_item()
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

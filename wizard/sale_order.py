@@ -28,10 +28,11 @@
 
 import pooler
 import wizard
-from tools.misc import UpdateableStr, UpdateableDict
+from openerp.tools.misc import UpdateableStr, UpdateableDict
+
 import time
 
-_select_form =  UpdateableStr() 
+_select_form =  UpdateableStr()
 _select_fields = UpdateableDict()
 
 def _pre_init(self, cr, uid, data, context):
@@ -82,7 +83,7 @@ def _pre_init(self, cr, uid, data, context):
         'selection': res,
         'required': True,
     }
-    
+
     return {}
 
 def _make_order(self, cr, uid, data, context):
@@ -118,7 +119,7 @@ def _make_order(self, cr, uid, data, context):
     config = simul_line_obj.browse(cr, uid, sline_nb)
     if not config:
         print 'make_product.generate: Erreur recherche produit'
-    
+
     max_discount = 0
     partner = partner_obj.browse(cr, uid, simul['partner_id'][0])
     for categ_id in partner.category_id:
@@ -403,9 +404,18 @@ def _make_order(self, cr, uid, data, context):
 
 
 
+#
+#
+# MIGRATION: rewrite wizard.interface to osv.TransientModel
+#
+# MIGRATION: rewrite wizard.interface to osv.TransientModel
+#
+#
+# MIGRATION: rewrite wizard.interface to osv.TransientModel
+#
 class simul_create_order(wizard.interface):
     states = {
-        'init': { 
+        'init': {
             'actions': [_pre_init],
             'result': {
                 'type': 'form',

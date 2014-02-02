@@ -1,57 +1,54 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<terp>
+<?xml version='1.0' encoding='UTF-8'?>
+<openerp>
     <data>
+
+        <menuitem id="menu_simulator"
+            name="Simulator"
+            parent="base.menu_base_partner"/>
 
         <record model="ir.ui.view" id="view_sale_simulator_form">
             <field name="name">sale.simulator.form</field>
             <field name="model">sale.simulator</field>
-            <field name="type">form</field>
             <field name="priority" eval="7"/>
             <field name="arch" type="xml">
-                <form string="Feature item">
-                    <field name="name" select="1" />
-                    <field name="partner_id" select="1" />
-                    <field name="pricelist_id" select="2" />
-                    <field name="shop_id" select="2" />
-                    <field name="user_id" select="2" />
+                <form string="Feature item" version="7.0">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="pricelist_id"/>
+                    <field name="shop_id"/>
+                    <field name="user_id"/>
                     <field name="line_ids" nolabel="1" colspan="4">
                         <tree string="Lines">
-                            <field name="description" width="450" />
+                            <field name="description" width="450"/>
                             <field name="item_id" domain="[('type','=','p')]"/>
-                            <field name="quantity" />
-                            <field name="factory_price" />
-                            <field name="discount" />
-                            <field name="retail_price" />
-                            <field name="margin" />
-                            <field name="sale_price" />
-                            <field name="order_id" readonly="1" />
+                            <field name="quantity"/>
+                            <field name="factory_price"/>
+                            <field name="discount"/>
+                            <field name="retail_price"/>
+                            <field name="margin"/>
+                            <field name="sale_price"/>
+                            <field name="order_id" readonly="1"/>
                         </tree>
-                        <form string="Lines">
-                            <field name="description" />
-                            <field name="item_id" domain="[('type','=','p')]" on_change="onchange_product(item_id)" />
-                            <field name="quantity" />
-                            <field name="discount" on_change="onchange_discount(item_id, discount, retail_price)" />
-                            <field name="factory_price" />
-                            <field name="retail_price" />
+                        <form string="Lines" version="7.0">
+                            <field name="description"/>
+                            <field name="item_id" domain="[('type','=','p')]" on_change="onchange_product(item_id)"/>
+                            <field name="quantity"/>
+                            <field name="discount" on_change="onchange_discount(item_id, discount, retail_price)"/>
+                            <field name="factory_price"/>
+                            <field name="retail_price"/>
                             <field name="sale_price" on_change="onchange_saleprice(item_id, retail_price, sale_price)"/>
-                            <field name="margin" />
-                            <field name="order_id" readonly="1" />
+                            <field name="margin"/>
+                            <field name="order_id" readonly="1"/>
                             <field name="line_ids" nolabel="1" colspan="4">
                                 <tree string="Item" editable="bottom">
                                     <field name="item_id2" domain="[('type','=','m'),('p_item_id','=',parent.item_id)]" width="450" on_change="onchange_item(item_id2)"/>
-                                    <field name="factory_price" />
-                                    <field name="retail_price" />
+                                    <field name="factory_price"/>
+                                    <field name="retail_price"/>
                                 </tree>
                             </field>
-                            <button 
-                                name="_check_config"
-                                string="Check"
-                                type="object"/>
+                            <button name="_check_config" string="Check" type="object"/>
                             <field name="message" colspan="2" nolabel="1" readonly="1"/>
-                            <button 
-                                name="button_dummy" 
-                                string="Compute" 
-                                type="object"/> 
+                            <button name="button_dummy" string="Compute" type="object"/> 
                         </form>
                     </field>
                 </form>
@@ -61,49 +58,48 @@
         <record model="ir.ui.view" id="view_sale_simulator_tree">
             <field name="name">sale.simulator.tree</field>
             <field name="model">sale.simulator</field>
-            <field name="type">tree</field>
             <field name="priority" eval="7"/>
             <field name="arch" type="xml">
                 <tree string="Feature item">
-                    <field name="name" select="1" />
-                    <field name="partner_id" select="1" />
-                    <field name="pricelist_id" select="2" />
-                    <field name="user_id" />
-                    <field name="shop_id" />
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="pricelist_id"/>
+                    <field name="user_id"/>
+                    <field name="shop_id"/>
                 </tree>
             </field>
         </record>
 
-    <!-- Action -->
-    <record model="ir.actions.act_window" id="action_sale_simulator_all">
-        <field name="name">Sale simulator</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">sale.simulator</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_sale_simulator_tree"/>
-    </record>
+        <!-- Action -->
+        <record model="ir.actions.act_window" id="action_sale_simulator_all">
+            <field name="name">Sale simulator</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.simulator</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_sale_simulator_tree"/>
+        </record>
 
-        <menuitem 
-            name="Sales Management/Simulator/All Simulations"
+        <menuitem name="All Simulations" 
             action="action_sale_simulator_all"
             sequence="10"
-            id="menu_sale_simulator_all"/>
+            id="menu_sale_simulator_all"
+            parent="menu_simulator"/>
 
-    <record model="ir.actions.act_window" id="action_sale_simulator_my">
-        <field name="name">Sale simulator</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">sale.simulator</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_sale_simulator_tree"/>
-        <field name="domain">[('user_id','=',uid)]</field>
-    </record>
+        <record model="ir.actions.act_window" id="action_sale_simulator_my">
+            <field name="name">Sale simulator</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.simulator</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_sale_simulator_tree"/>
+            <field name="domain">[('user_id','=',uid)]</field>
+        </record>
 
-        <menuitem 
-            name="Sales Management/Simulator/My Simulations"
-            action="action_sale_simulator_my"
-            sequence="10"
-            id="menu_sale_simulator_my"/>
+        <menuitem name="My Simulations" 
+            action="action_sale_simulator_my" 
+            sequence="10" 
+            id="menu_sale_simulator_my"
+            parent="menu_simulator"/>
     </data>
-</terp>
+</openerp>

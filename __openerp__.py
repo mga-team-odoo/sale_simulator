@@ -23,24 +23,24 @@
 ##############################################################################
 
 {
-    "name" : "Sale Simulator",
-    "version" : "1.1",
-    "author" : "Mirounga, Syleam",
-    "website" : "http://www.mirounga.fr/",
+    "name": "Sale Simulator",
+    "version": "1.1",
+    "author": "Mirounga, Syleam",
+    "website": "http://www.mirounga.fr/",
     "description": """
 The sale simulator
     """,
-    "category" : "Generic Modules/Sale",
-    "depends" : [
+    "category": "Generic Modules/Sale",
+    "depends": [
         "base",
         "product",
         "sale",
         "mrp",
     ],
-    "demo" : [
-        "sale_simulator_demo.xml"
+    "demo": [
+         "sale_simulator_demo.xml"
     ],
-    "data" : [
+    "data": [
         "sale_simulator_sequence.xml",
         "product_view.xml",
         "sale_view.xml",

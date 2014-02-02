@@ -1,17 +1,15 @@
-<?xml version="1.0"?>
-<terp>
-  <data>
+<?xml version='1.0' encoding='UTF-8'?>
+<openerp>
+    <data>
         <record model="ir.ui.view" id="partner_discount_form_view">
-                <field name="name">partner_discount.form.view</field>
-                <field name="model">res.partner.category</field>
-                <field name="type">form</field>
-                <field name="inherit_id" ref="base.view_partner_category_form"/>
-                <field name="arch" type="xml">
-                        <field name="parent_id" position="after">
-                                <field name="discount"/>
-                        </field>
-                </field>
+            <field name="name">partner_discount.form.view</field>
+            <field name="model">res.partner.category</field>
+            <field name="inherit_id" ref="base.view_partner_category_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="discount"/>
+                </xpath>
+            </field>
         </record>
-  </data>
-</terp>
-
+    </data>
+</openerp>

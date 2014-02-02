@@ -2,6 +2,7 @@
 ##############################################################################
 #
 # Copyright (c) 2008 Sylëam Info Services (http://www.syleam.fr) All rights Reserved.
+#               2013 Christophe CHAUVET <christophe.chauvet@gmail.com>
 #
 # WARNING: This program as such is intended to be used by professional
 # programmers who take the whole responsability of assessing all potential
@@ -26,29 +27,27 @@
 #
 ##############################################################################
 
-from osv import fields, osv
+from openerp.osv import orm
+from openerp.osv import fields
 
-#
-# Add a control 
-#
-class res_partner_category(osv.osv):
+
+class res_partner_category(orm.Model):
 
     _inherit = 'res.partner.category'
 
-    def _check_valid(self, cr, uid, ids):
-        categories = self.browse(cr, uid, ids)
-        for category in categories:
+    def _check_valid(self, cr, uid, ids, context=None):
+        for category in self.browse(cr, uid, ids, context=context):
             if category.discount < 0 or category.discount > 100:
                 return False
         return True
 
     _columns = {
-        'discount': fields.float('Discount Control', required=True, help="If different to 0, there is a control when discount(%) is more important than this value")
+        'discount': fields.float('Discount Control', required=True,
+                                help="If different to 0, there is a control when discount(%) is more important than this value")
     }
 
     _constraints = [
         (_check_valid, 'Erreur la valeur doit etre comprise entre 0 et 100', ['discount'])
     ]
 
-res_partner_category()
-
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
