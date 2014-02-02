@@ -60,15 +60,14 @@ class product_item(orm.Model):
     def _total_standard_price(self, cr, uid, ids, name, arg, context=None):
         '''
         Compute all products standard price.
+        TODO: Maybe use a pricelist, to compute purchase price
         '''
         line_obj = self.pool.get('product.item.line')
         res = {}
         for id in ids:
             std_price = 0.0
-            line_args = [('item_id', '=', id)]
-            line_ids = line_obj.search(cr, uid, line_args, context=context)
-            for line_id in line_ids:
-                line = line_obj.browse(cr, uid, line_id, context=context)
+            line_ids = line_obj.search(cr, uid, [('item_id', '=', id)], context=context)
+            for line in line_obj.browse(cr, uid, line_ids, context=context):
                 std_price += line.product_id.standard_price
             res.setdefault(id, std_price)
         return res
