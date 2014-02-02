@@ -1,0 +1,8 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_product_item_feature,access_product_item_feature,model_product_item_feature,,1,0,0,0
+access_product_item,access_product_item,model_product_item,,1,0,0,0
+access_product_item_line,access_product_item_line,model_product_item_line,,1,0,0,0
+access_product_item_feature_line,access_product_item_feature_line,model_product_item_feature_line,,1,0,0,0
+access_sale_simulator,access_sale_simulator,model_sale_simulator,,1,0,0,0
+access_sale_simulator_line,access_sale_simulator_line,model_sale_simulator_line,,1,0,0,0
+access_sale_simulator_line_item,access_sale_simulator_line_item,model_sale_simulator_line_item,,1,0,0,0

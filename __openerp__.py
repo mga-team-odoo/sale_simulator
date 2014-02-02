@@ -41,6 +41,7 @@ The sale simulator
          "sale_simulator_demo.xml"
     ],
     "data": [
+        "security/ir.model.access.csv",
         "sale_simulator_sequence.xml",
         "product_view.xml",
         "sale_view.xml",
