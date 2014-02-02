@@ -129,7 +129,7 @@ class sale_simulator_line(orm.Model):
     def button_dummy(self, cr, uid, ids, context=None):
         return True
 
-    def _check_config(self, cr, uid, ids, context=None):
+    def check_config(self, cr, uid, ids, context=None):
         '''
         Check if selected configuration is valid
         '''

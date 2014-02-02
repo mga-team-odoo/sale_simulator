@@ -12,45 +12,65 @@
             <field name="priority" eval="7"/>
             <field name="arch" type="xml">
                 <form string="Feature item" version="7.0">
-                    <field name="name"/>
-                    <field name="partner_id"/>
-                    <field name="pricelist_id"/>
-                    <field name="shop_id"/>
-                    <field name="user_id"/>
-                    <field name="line_ids" nolabel="1" colspan="4">
-                        <tree string="Lines">
-                            <field name="description" width="450"/>
-                            <field name="item_id" domain="[('type','=','p')]"/>
-                            <field name="quantity"/>
-                            <field name="factory_price"/>
-                            <field name="discount"/>
-                            <field name="retail_price"/>
-                            <field name="margin"/>
-                            <field name="sale_price"/>
-                            <field name="order_id" readonly="1"/>
-                        </tree>
-                        <form string="Lines" version="7.0">
-                            <field name="description"/>
-                            <field name="item_id" domain="[('type','=','p')]" on_change="onchange_product(item_id)"/>
-                            <field name="quantity"/>
-                            <field name="discount" on_change="onchange_discount(item_id, discount, retail_price)"/>
-                            <field name="factory_price"/>
-                            <field name="retail_price"/>
-                            <field name="sale_price" on_change="onchange_saleprice(item_id, retail_price, sale_price)"/>
-                            <field name="margin"/>
-                            <field name="order_id" readonly="1"/>
-                            <field name="line_ids" nolabel="1" colspan="4">
-                                <tree string="Item" editable="bottom">
-                                    <field name="item_id2" domain="[('type','=','m'),('p_item_id','=',parent.item_id)]" width="450" on_change="onchange_item(item_id2)"/>
-                                    <field name="factory_price"/>
-                                    <field name="retail_price"/>
-                                </tree>
-                            </field>
-                            <button name="_check_config" string="Check" type="object"/>
-                            <field name="message" colspan="2" nolabel="1" readonly="1"/>
-                            <button name="button_dummy" string="Compute" type="object"/> 
-                        </form>
-                    </field>
+                    <header>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <div class="oe_edit_only">
+                                <label for="name"/>
+                            </div>
+                            <h1>
+                                <field name="name" default_focus="1" placeholder="Name" />
+                            </h1>
+                        </div>
+
+                        <group colspan="4">
+                            <field name="partner_id"/>
+                            <field name="pricelist_id"/>
+                            <field name="shop_id"/>
+                            <field name="user_id"/>
+                        </group>
+                        <field name="line_ids" nolabel="1" colspan="4">
+                            <tree string="Lines">
+                                <field name="description" width="450"/>
+                                <field name="item_id" domain="[('type','=','p')]"/>
+                                <field name="quantity"/>
+                                <field name="factory_price"/>
+                                <field name="discount"/>
+                                <field name="retail_price"/>
+                                <field name="margin"/>
+                                <field name="sale_price"/>
+                                <field name="order_id" readonly="1"/>
+                            </tree>
+                            <form string="Lines" version="7.0">
+                                <header>
+                                    <button name="check_config" string="Check" type="object"/>
+                                    <button name="button_dummy" string="Compute" type="object"/> 
+                                </header>
+                                <sheet>
+                                    <group colspan="4">
+                                        <field name="description"/>
+                                        <field name="item_id" domain="[('type','=','p')]" on_change="onchange_product(item_id)"/>
+                                        <field name="quantity"/>
+                                        <field name="discount" on_change="onchange_discount(item_id, discount, retail_price)"/>
+                                        <field name="factory_price"/>
+                                        <field name="retail_price"/>
+                                        <field name="sale_price" on_change="onchange_saleprice(item_id, retail_price, sale_price)"/>
+                                        <field name="margin"/>
+                                        <field name="order_id" readonly="1"/>
+                                        <field name="line_ids" nolabel="1" colspan="4">
+                                            <tree string="Item" editable="bottom">
+                                                <field name="item_id2" domain="[('type','=','m'),('p_item_id','=',parent.item_id)]" width="450" on_change="onchange_item(item_id2)"/>
+                                                <field name="factory_price"/>
+                                                <field name="retail_price"/>
+                                            </tree>
+                                        </field>
+                                        <field name="message" colspan="2" nolabel="1" readonly="1"/>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -70,7 +90,6 @@
             </field>
         </record>
 
-        <!-- Action -->
         <record model="ir.actions.act_window" id="action_sale_simulator_all">
             <field name="name">Sale simulator</field>
             <field name="type">ir.actions.act_window</field>
