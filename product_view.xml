@@ -171,46 +171,61 @@
             <field name="priority" eval="8"/> 
             <field name="arch" type="xml">
                 <form string="Module Item" version="7.0">
-                    <notebook>
-                        <page string="General">
-                            <group col="8" colspan="4">
-                                <field name="name" colspan="4"/>
-                                <field name="code"/>
-                                <field name="sequence"/>
-                                <field name="p_item_id" colspan="2" domain="[('type','=','p')]"/> <!-- TODO Read Only-->
-                                <field name="type"/>
-                                <field name="active"/>
-                                <field name="number" colspan="2"/>
-                                <field name="capacity_start"/>
-                                <field name="factory_price"/>
-                                <field name="retail_price"/>
-                            </group>
-                            <separator colspan="4"/>
-                            <field name="item_ids" nolabel="1" colspan="2">
-                                <tree string="Item line" editable="bottom">
-                                    <field name="product_id"/>
-                                    <field name="quantity"/>
+                    <sheet>
+                        <div class="oe_title">
+                            <div class="oe_edit_only">
+                                <label for="name"/> (
+                                <field name="active" class="oe_inline"/> <label for="active" string="Active"/>)
+                            </div>
+                            <h1>
+                                <field name="name" default_focus="1" placeholder="Name" />
+                            </h1>
+                        </div>
+                        <notebook>
+                            <page string="General">
+                                <group col="8" colspan="4">
+                                    <field name="code"/>
+                                    <field name="sequence"/>
+                                    <field name="p_item_id" colspan="2" domain="[('type','=','p')]"/>
+                                    <field name="type"/>
+                                    <field name="number" colspan="2"/>
+                                    <field name="capacity_start"/>
+                                    <field name="factory_price"/>
+                                    <field name="retail_price"/>
+                                </group>
+                                <separator string="Other information" colspan="4"/>
+                                <group colspan="4">
                                     <field name="uom_id"/>
-                                </tree>
-                            </field>
-                            <field name="feature_ids" nolabel="1" colspan="2">
-                                <tree String="Feature line" editable="bottom">
-                                    <field name="feature_id" width="300"/>
-                                    <field name="quantity"/>
-                                    <field name="global"/>
-                                </tree>
-                            </field>
-                            <separator string="Other information" colspan="4"/>
-                            <field name="uom_id"/>
-                            <field name="categ_id"/>
-                        </page>
-                        <page string="Other">
-                            <separator string="Sale taxes" colspan="4"/>
-                            <field name="sale_taxes_id" nolabel="1"/>
-                            <separator string="Notes" colspan="4"/>
-                            <field name="notes" nolabel="1"/>
-                        </page>
-                    </notebook>
+                                    <field name="categ_id"/>
+
+                                </group>
+                            </page>
+                            <page string="Products">
+                                <field name="item_ids" nolabel="1" colspan="2">
+                                    <tree string="Item line" editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="quantity"/>
+                                        <field name="uom_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Features">
+                                <field name="feature_ids" nolabel="1" colspan="2">
+                                    <tree String="Feature line" editable="bottom">
+                                        <field name="feature_id" width="300"/>
+                                        <field name="quantity"/>
+                                        <field name="global"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Other">
+                                <separator string="Sale taxes" colspan="4"/>
+                                <field name="sale_taxes_id" nolabel="1"/>
+                                <separator string="Notes" colspan="4"/>
+                                <field name="notes" nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -246,7 +261,20 @@
             <field name="context">{'type': 'm'}</field>
         </record>
 
-        <!-- Menu -->
+        <record model="ir.actions.act_window.view" id="act_open_module_item_view_form">
+            <field name="act_window_id" ref="action_module_item"/>
+            <field name="sequence" eval="20"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_module_item_form"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="act_open_module_item_view_tree">
+            <field name="act_window_id" ref="action_module_item"/>
+            <field name="sequence" eval="10"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_module_item_tree"/>
+        </record>
+
         <menuitem name="Module Items" 
             action="action_module_item" 
             sequence="10" 
