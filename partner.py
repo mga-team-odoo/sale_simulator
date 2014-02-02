@@ -43,11 +43,14 @@ class res_partner_category(orm.Model):
 
     _columns = {
         'discount': fields.float('Discount Control', required=True,
-                                help="If different to 0, there is a control when discount(%) is more important than this value")
+                                 help="If different to 0, it control max value"
+                                 "of discount(%) and block if greather")
     }
 
     _constraints = [
-        (_check_valid, 'Erreur la valeur doit etre comprise entre 0 et 100', ['discount'])
+        (_check_valid,
+         'Erreur la valeur doit etre comprise entre 0 et 100',
+         ['discount'])
     ]
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
