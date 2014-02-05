@@ -25,6 +25,12 @@
             <field name="name">PCI Connector</field>
         </record>
 
+        <record model="product.item.feature" id="feature_power">
+            <field name="code">PW</field>
+            <field name="name">Power supply</field>
+        </record>
+
+
         <!-- ******************** -->
         <!-- * Serveur 1U       * -->
         <!-- ******************** -->
