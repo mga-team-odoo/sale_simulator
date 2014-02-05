@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright (c) 2008 Sylëam Info Services (http://www.syleam.fr) All rights Reserved.
+# Copyright (c) 2008 Syleam Info Services (http://www.syleam.fr) All rights Reserved.
 #               2013 Christophe CHAUVET <christophe.chauvet@gmail.com>
 #
 # WARNING: This program as such is intended to be used by professional
@@ -29,6 +29,7 @@
 
 from openerp.osv import orm
 from openerp.osv import fields
+from openerp.tools.translate import _
 
 
 class sale_simulator(orm.Model):
@@ -42,10 +43,10 @@ class sale_simulator(orm.Model):
     _columns = {
         'name': fields.char('Simulation number', size=64, required=True),
         'partner_id': fields.many2one('res.partner', 'Partner', ondelete='cascade'),
-        'pricelist_id': fields.many2one('product.pricelist','Price List', ondelete='cascade', required=True),
-        'line_ids': fields.one2many('sale.simulator.line','simul_id', 'Lines', required=True),
-        'user_id': fields.many2one('res.users', 'Salesman', required=True, select=True),
-        'shop_id': fields.many2one('sale.shop', 'Shop', required=True),
+        'pricelist_id': fields.many2one('product.pricelist', 'Price List', ondelete='cascade', required=True),
+        'line_ids': fields.one2many('sale.simulator.line', 'simul_id', 'Lines', required=True),
+        'user_id': fields.many2one('res.users', 'Salesman', required=True, help="Salesman user"),
+        'shop_id': fields.many2one('sale.shop', 'Shop', required=True, help='Select shop to convert this sale as sale order'),
     }
 
     _defaults = {
@@ -59,6 +60,7 @@ class sale_simulator_line(orm.Model):
     '''
     _name = 'sale.simulator.line'
     _description = 'Sale simulator line'
+    _order = 'id'
 
     def _factory_price(self, cr, uid, ids, name, arg, context=None):
         '''
@@ -66,14 +68,14 @@ class sale_simulator_line(orm.Model):
         '''
         res = {}
         line_obj = self.pool.get('sale.simulator.line.item')
-        for id in ids:
-            line = self.browse(cr, uid, id)
+        for line in self.browse(cr, uid, ids, context=context):
             factory_price = line.item_id.factory_price
+
             # Récupération des modules
-            mod_ids = line_obj.search(cr, uid, [('line_id', '=', id)])
-            for mod_id in mod_ids:
-                mod = line_obj.browse(cr, uid, mod_id)
-                factory_price += round(mod.item_id2.factory_price, 2)
+            mod_ids = line_obj.search(cr, uid, [('line_id', '=', id)], context=context)
+            if mod_ids:
+                for mod in line_obj.browse(cr, uid, mod_ids, context=context):
+                    factory_price += round(mod.item_id2.factory_price, 2)
             res.setdefault(id, factory_price)
         return res
 
@@ -83,22 +85,21 @@ class sale_simulator_line(orm.Model):
         '''
         res = {}
         line_obj = self.pool.get('sale.simulator.line.item')
-        for id in ids:
-            line = self.browse(cr, uid, id)
+        for line in self.browse(cr, uid, ids, context=context):
             # Récupération du produit de référence
             retail_price = line.item_id.retail_price
+
             # Récupération des modules
             mod_ids = line_obj.search(cr, uid, [('line_id', '=', id)])
-            for mod_id in mod_ids:
-                mod = line_obj.browse(cr, uid, mod_id)
-                retail_price += round(mod.item_id2.retail_price, 2)
+            if mod_ids:
+                for mod in line_obj.browse(cr, uid, mod_ids, context=context):
+                    retail_price += round(mod.item_id2.retail_price, 2)
             res.setdefault(id, retail_price)
         return res
 
     def _margin(self, cr, uid, ids, name, arg, context=None):
         res = {}
-        for id in ids:
-            line = self.browse(cr, uid, id)
+        for line in self.browse(cr, uid, ids, context=context):
             margin = round((line.sale_price - line.factory_price), 2)
             res.setdefault(id, margin)
         return res
@@ -114,7 +115,7 @@ class sale_simulator_line(orm.Model):
         'retail_price': fields.function(_retail_price, method=True, type='float', string='Retail price'),
         'margin': fields.function(_margin, method=True, type='float', string='Margin'),
         'sale_price': fields.float('Sale price'),
-        'line_ids': fields.one2many('sale.simulator.line.item','line_id','Item',required=True),
+        'line_ids': fields.one2many('sale.simulator.line.item', 'line_id', 'Item', required=True),
         'order_id': fields.many2one('sale.order', 'Sale order'),
         'message': fields.char('Message', size=128),
     }
@@ -124,8 +125,6 @@ class sale_simulator_line(orm.Model):
         'quantity': lambda *a: 1.0,
     }
 
-    _order = 'id'
-
     def button_dummy(self, cr, uid, ids, context=None):
         return True
 
@@ -133,10 +132,11 @@ class sale_simulator_line(orm.Model):
         '''
         Check if selected configuration is valid
         '''
-        config = self.read(cr, uid, ids)
+        f_obj = self.pool.get('product.item.feature.line')
+        sl_obj = self.pool.get('sale.simulator.line.item')
+        config = self.read(cr, uid, ids, context=context)
         if not config:
-            print '_check_config:config: not found !'
-            return False
+            raise orm.except_orm(_('Error'), _('Configuration line not found'))
 
         for c in config:
             tf = {}
@@ -145,12 +145,11 @@ class sale_simulator_line(orm.Model):
 
             # search feature in product item
             item_id = c['item_id'][0]
-            f_obj = self.pool.get('product.item.feature.line')
-            f_id = f_obj.search(cr, uid, [('item_id','=',item_id)])
+            f_id = f_obj.search(cr, uid, [('item_id', '=', item_id)], context=context)
             if not f_id:
                 print '_check_config:f_id: not found !'
 
-            feature_ids = self.pool.get('product.item.feature.line').read(cr, uid, f_id, ['id','feature_id', 'quantity', 'global'], context)
+            feature_ids = f_obj.read(cr, uid, f_id, ['id', 'feature_id', 'quantity', 'global'], context=context)
             for f in feature_ids:
                 tf[f['feature_id'][0]] = f['global']
                 nf[f['feature_id'][0]] = f['feature_id'][1]
@@ -158,15 +157,14 @@ class sale_simulator_line(orm.Model):
 
             # check all modules
             for z_id in c['line_ids']:
-                module_id = self.pool.get('sale.simulator.line.item').read(cr, uid, z_id, ['id','item_id2'])
+                module_id = sl_obj.read(cr, uid, z_id, ['id', 'item_id2'], context=context)
                 if not module_id:
-                    print '_check_config:module_ids: erreur '
+                    raise orm.except_orm(_('Error'), _('No module found for %d !') % z_id)
 
-                fline_obj = self.pool.get('product.item.feature.line')
-                fmod_args = [('item_id','=', module_id['item_id2'][0])]
-                fmod_ids = fline_obj.search(cr, uid, fmod_args)
+                fmod_args = [('item_id', '=', module_id['item_id2'][0])]
+                fmod_ids = f_obj.search(cr, uid, fmod_args, context=context)
                 if fmod_ids:
-                    fitem_ids = fline_obj.read(cr, uid, fmod_ids, ['id','feature_id', 'quantity', 'global'],context)
+                    fitem_ids = f_obj.read(cr, uid, fmod_ids, ['id', 'feature_id', 'quantity', 'global'], context=context)
                     if fitem_ids:
                         for mf in fitem_ids:
                             lf[mf['feature_id'][0]] += mf['quantity']
@@ -176,20 +174,19 @@ class sale_simulator_line(orm.Model):
             for k in tf.keys():
                 if k in lf and tf[k] < lf[k]:
                     msg = False
-                    rew = self.write(cr, uid, ids, {'message': 'Caractéristique (%s) dépassée sté:%s max:%s'% (nf[k],str(lf[k]),str(tf[k]))}, context)
+                    rew = self.write(cr, uid, ids, {
+                        'message': 'Feature (%s) overload vals:%s max:%s' % (nf[k], str(lf[k]), str(tf[k]))
+                    }, context=context)
 
             if msg:
-                rew = self.write(cr, uid, ids, {'message': 'Configuration valide'}, context)
+                rew = self.write(cr, uid, ids, {'message': 'Configuration valid'}, context=context)
                 if not rew:
-                    print 'Erreur écriture message'
+                    raise orm.except_orm(_('Error'), _('Cannot print error message on the line'))
 
         return True
 
-    #
-    # On change method
-    #
     def onchange_discount(self, cr, uid, ids, item_id, discount, retail_price):
-        v= {}
+        v = {}
         if item_id:
             v['sale_price'] = retail_price - (retail_price * discount / 100)
 
@@ -221,7 +218,7 @@ class sale_simulator_line_item(orm.Model):
     def name_get(self, cr, uid, ids, context=None):
         if not len(ids):
             return []
-        reads = self.read(cr, uid, ids ['line_id', 'item_id2'], context)
+        reads = self.read(cr, uid, ids, ['line_id', 'item_id2'], context=context)
         res = []
         for read in reads:
             res.append(read['id'], 'OK')
@@ -243,16 +240,23 @@ class sale_simulator_line_item(orm.Model):
 
     _order = 'id'
 
-    def onchange_item(self, cr, uid, ids, item_id):
+    def onchange_item(self, cr, uid, ids, item_id, context=None):
         '''
-        If item change
+        If item change, retrieve the factory and retail price
         '''
+        if not item_id:
+            return {}
+
+        if context is None:
+            context = self.pool.get('res.users').context_get(cr, uid)
+
         v = {}
-        if item_id:
-            item = self.pool.get('product.item').browse(cr, uid, item_id)
-            if item:
-                v['factory_price'] = item.factory_price
-                v['retail_price'] = item.retail_price
+        item = self.pool.get('product.item').browse(cr, uid, item_id, context=context)
+        if item:
+            v.update({
+                'factory_price': item.factory_price,
+                'retail_price': item.retail_price,
+            })
 
         return {'value': v}
 
