@@ -81,7 +81,7 @@ class product_item(orm.Model):
         'p_item_id': fields.many2one('product.item', 'Product Item', ondelete='cascade'),
         'feature_ids': fields.one2many('product.item.feature.line', 'item_id', 'Feature'),
         'number': fields.char('Product number', size=64),
-        'factory_price': fields.float('Factory price'),
+        'factory_price': fields.float('Factory price', help="Price include purchase price and others costs"),
         'retail_price': fields.float('Retail price'),
         'capacity_start': fields.float('Capacity (To)'),
         'sequence': fields.selection([(1, 'First step'), (2, 'Second step')], 'Sequence', required=True),
