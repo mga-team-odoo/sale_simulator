@@ -23,7 +23,6 @@
                                 <field name="name" default_focus="1" placeholder="Name" />
                             </h1>
                         </div>
-
                         <group colspan="4">
                             <field name="partner_id"/>
                             <field name="pricelist_id"/>
@@ -51,16 +50,19 @@
                                     <group colspan="4">
                                         <field name="description"/>
                                         <field name="item_id" domain="[('type','=','p')]" on_change="onchange_product(item_id)"/>
-                                        <field name="quantity"/>
-                                        <field name="discount" on_change="onchange_discount(item_id, discount, retail_price)"/>
-                                        <field name="factory_price"/>
-                                        <field name="retail_price"/>
-                                        <field name="sale_price" on_change="onchange_saleprice(item_id, retail_price, sale_price)"/>
-                                        <field name="margin"/>
+                                        <group colspan="4" col="4">
+                                            <field name="quantity"/>
+                                            <field name="discount" on_change="onchange_discount(item_id, discount, retail_price)"/>
+                                            <field name="factory_price"/>
+                                            <field name="retail_price"/>
+                                            <field name="sale_price" on_change="onchange_saleprice(item_id, retail_price, sale_price)"/>
+                                            <field name="margin"/>
+                                        </group>
                                         <field name="order_id" readonly="1"/>
                                         <field name="line_ids" nolabel="1" colspan="4">
                                             <tree string="Item" editable="bottom">
-                                                <field name="item_id2" domain="[('type','=','m'),('p_item_id','=',parent.item_id)]" width="450" on_change="onchange_item(item_id2)"/>
+                                                <field name="item_id2" domain="[('type','=','m'),('p_item_id','=',parent.item_id)]"
+                                                    width="450" on_change="onchange_item(item_id2)"/>
                                                 <field name="factory_price"/>
                                                 <field name="retail_price"/>
                                             </tree>
