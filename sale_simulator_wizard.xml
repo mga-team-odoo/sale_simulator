@@ -2,7 +2,7 @@
 <openerp>
     <data>
 
-        <wizard string="Create sale order" model="sale.simulator" name="simul.create_order" id="sale_simulator_class"/>
+        <!-- wizard string="Create sale order" model="sale.simulator" name="simul.create_order" id="sale_simulator_class"/ -->
 
     </data>
 </openerp>
