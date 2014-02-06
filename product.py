@@ -49,6 +49,16 @@ class product_item_feature(orm.Model):
         'active': lambda *a: True,
     }
 
+BOM_STEP = [
+    (-1, 'Kit / Phantom'),
+    (1, 'First step'),
+    (2, 'Second step'),
+]
+
+ITEM_TYPE = [
+    ('p', 'Product'),
+    ('m', 'Module')
+]
 
 class product_item(orm.Model):
     '''
@@ -75,7 +85,7 @@ class product_item(orm.Model):
     _columns = {
         'name': fields.char('Name', size=64, required=True),
         'code': fields.char('Code', size=12, required=True),
-        'type': fields.selection([('p', 'Product'), ('m', 'Module')], 'Type', required=True),
+        'type': fields.selection(ITEM_TYPE, 'Type', required=True),
         'active': fields.boolean('Active'),
         'item_ids': fields.one2many('product.item.line', 'item_id', 'Item line'),
         'p_item_id': fields.many2one('product.item', 'Product Item', ondelete='cascade'),
@@ -84,7 +94,7 @@ class product_item(orm.Model):
         'factory_price': fields.float('Factory price', help="Price include purchase price and others costs"),
         'retail_price': fields.float('Retail price'),
         'capacity_start': fields.float('Capacity (To)'),
-        'sequence': fields.selection([(1, 'First step'), (2, 'Second step')], 'Sequence', required=True),
+        'sequence': fields.selection(BOM_STEP, 'Sequence', required=True),
         'sale_taxes_id': fields.many2many('account.tax', 'sale_simulator_taxes_rel', 'item_id', 'tax_id', 'Customer taxes'),
         'categ_id': fields.many2one('product.category', 'Category', required=True),
         'uom_id': fields.many2one('product.uom', 'Unit', required=True),
