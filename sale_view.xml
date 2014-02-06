@@ -4,7 +4,8 @@
 
         <menuitem id="menu_simulator"
             name="Simulator"
-            parent="base.menu_base_partner"/>
+            parent="base.menu_base_partner"
+            groups="sale_simulator.group_sale_configurator"/>
 
         <record model="ir.ui.view" id="view_sale_simulator_form">
             <field name="name">sale.simulator.form</field>
@@ -105,7 +106,8 @@
             action="action_sale_simulator_all"
             sequence="10"
             id="menu_sale_simulator_all"
-            parent="menu_simulator"/>
+            parent="menu_simulator"
+            groups="sale_simulator.group_sale_configurator"/>
 
         <record model="ir.actions.act_window" id="action_sale_simulator_my">
             <field name="name">Sale simulator</field>
@@ -121,6 +123,8 @@
             action="action_sale_simulator_my" 
             sequence="10" 
             id="menu_sale_simulator_my"
-            parent="menu_simulator"/>
+            parent="menu_simulator"
+            groups="sale_simulator.group_sale_configurator"/>
+
     </data>
 </openerp>

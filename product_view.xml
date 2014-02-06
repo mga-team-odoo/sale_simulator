@@ -5,7 +5,8 @@
         <menuitem id="menu_simulator_config"
             name="Simulator"
             sequence="100"
-            parent="base.menu_base_config"/>
+            parent="base.menu_base_config"
+            groups="sale_simulator.group_manager_configurator"/>
 
         <record model="ir.ui.view" id="view_product_item_feature_form">
             <field name="name">product.item.feature.form</field>
@@ -48,7 +49,8 @@
             action="action_product_item_feature" 
             sequence="8" 
             id="menu_product_item_feature" 
-            parent="menu_simulator_config"/>
+            parent="menu_simulator_config"
+            groups="sale_simulator.group_manager_configurator"/>
 
         <record model="ir.ui.view" id="view_product_item_form">
             <field name="name">product.item.form</field>
@@ -163,7 +165,8 @@
             action="action_product_item" 
             sequence="10" 
             id="menu_product_item"
-            parent="menu_simulator_config"/>
+            parent="menu_simulator_config"
+            groups="sale_simulator.group_manager_configurator"/>
 
         <record model="ir.ui.view" id="view_module_item_form">
             <field name="name">module.item.form</field>
@@ -279,7 +282,8 @@
             action="action_module_item" 
             sequence="10" 
             id="menu_simulator_item" 
-            parent="menu_simulator_config"/>
+            parent="menu_simulator_config"
+            groups="sale_simulator.group_manager_configurator"/>
 
     </data>
 </openerp>
