@@ -40,12 +40,17 @@
                                 <field name="retail_price"/>
                                 <field name="margin"/>
                                 <field name="sale_price"/>
+                                <button string="Create Sale order"
+                                    icon="gtk-justify-fill"
+                                    type="object" 
+                                    name="create_sale_order"/>
                                 <field name="order_id" readonly="1"/>
                             </tree>
                             <form string="Lines" version="7.0">
                                 <header>
                                     <button name="check_config" string="Check" type="object"/>
                                     <button name="button_dummy" string="Compute" type="object"/> 
+                                    <button string="Create Sale Order" icon="gtk-justofy-fill" type="object" name="create_sale_order"/>
                                 </header>
                                 <sheet>
                                     <group colspan="4">

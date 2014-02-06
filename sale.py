@@ -212,6 +212,20 @@ class sale_simulator_line(orm.Model):
 
         return {'value': v}
 
+    def create_sale_order(self, cr, uid, ids, context=None):
+        """
+        Create the sale order and the product with the BOM structure
+        """
+        if len(ids) > 1:
+            raise orm.except_orm(_('Error'), _('You can only create one sale order at the time!'))
+
+        simul_obj = self.pool.get('sale.simulator')
+        simul = simul_obj.browse(cr, uid, ids[0], context=context)
+        if not simul:
+            raise orm.except_orm(_('Error'), _('Line not found, please reload your browser!'))
+
+
+        return True
 
 class sale_simulator_line_item(orm.Model):
     _name = 'sale.simulator.line.item'
@@ -261,5 +275,6 @@ class sale_simulator_line_item(orm.Model):
             })
 
         return {'value': v}
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
