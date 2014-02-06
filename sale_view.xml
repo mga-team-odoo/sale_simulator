@@ -21,7 +21,7 @@
                                 <label for="name"/>
                             </div>
                             <h1>
-                                <field name="name" default_focus="1" placeholder="Name" />
+                                <field name="name" default_focus="1" placeholder="Number" />
                             </h1>
                         </div>
                         <group colspan="4">
@@ -29,6 +29,7 @@
                             <field name="pricelist_id"/>
                             <field name="shop_id"/>
                             <field name="user_id"/>
+                            <field name="company_id" groups="base.group_multi_company" widget="selection"/>
                         </group>
                         <field name="line_ids" nolabel="1" colspan="4">
                             <tree string="Lines">

@@ -47,10 +47,12 @@ class sale_simulator(orm.Model):
         'line_ids': fields.one2many('sale.simulator.line', 'simul_id', 'Lines', required=True),
         'user_id': fields.many2one('res.users', 'Salesman', required=True, help="Salesman user"),
         'shop_id': fields.many2one('sale.shop', 'Shop', required=True, help='Select shop to convert this sale as sale order'),
+        'company_id': fields.many2one('res.company', 'Company', required=True),
     }
 
     _defaults = {
         'name': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'sale.simulator'),
+        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'sale.simulator', context=c),
     }
 
 
@@ -118,11 +120,13 @@ class sale_simulator_line(orm.Model):
         'line_ids': fields.one2many('sale.simulator.line.item', 'line_id', 'Item', required=True),
         'order_id': fields.many2one('sale.order', 'Sale order'),
         'message': fields.char('Message', size=128),
+        'company_id': fields.many2one('res.company', 'Company', required=True),
     }
 
     _defaults = {
-        'name': lambda *a: 'OK',
-        'quantity': lambda *a: 1.0,
+        'name': 'OK',
+        'quantity': 1.0,
+        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'sale.simulator', context=c),
     }
 
     def button_dummy(self, cr, uid, ids, context=None):
@@ -247,14 +251,15 @@ class sale_simulator_line_item(orm.Model):
         'item_id2': fields.many2one('product.item', 'Product Item', required=True, ondelete='cascade'),
         'retail_price': fields.float('Retail price'),
         'factory_price': fields.float('Factory Price'),
+        'company_id': fields.many2one('res.company', 'Company', required=True),
     }
 
     _defaults = {
         'name': 'OK',
         'retail_price': 0.0,
         'factory_price': 0.0,
+        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'sale.simulator', context=c),
     }
-
 
     def onchange_item(self, cr, uid, ids, item_id, context=None):
         '''

@@ -43,6 +43,7 @@ The sale simulator
     "data": [
         "security/groups.xml",
         "security/ir.model.access.csv",
+        "security/rules.xml",
         "sale_simulator_sequence.xml",
         "product_view.xml",
         "sale_view.xml",

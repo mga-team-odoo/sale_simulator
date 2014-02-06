@@ -43,10 +43,12 @@ class product_item_feature(orm.Model):
         'code': fields.char('Code', size=10, required=True),
         'name': fields.char('Name', size=64, required=True, translate=True),
         'active': fields.boolean('Active'),
+        'company_id': fields.many2one('res.company', 'Company', required=True),
     }
 
     _defaults = {
-        'active': lambda *a: True,
+        'active': True,
+        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'product.item.feature', context=c),
     }
 
 BOM_STEP = [
@@ -59,6 +61,7 @@ ITEM_TYPE = [
     ('p', 'Product'),
     ('m', 'Module')
 ]
+
 
 class product_item(orm.Model):
     '''
@@ -93,17 +96,19 @@ class product_item(orm.Model):
         'number': fields.char('Product number', size=64),
         'factory_price': fields.float('Factory price', help="Price include purchase price and others costs"),
         'retail_price': fields.float('Retail price'),
-        'capacity_start': fields.float('Capacity (To)'),
+        'capacity_start': fields.float('Capacity'),
         'sequence': fields.selection(BOM_STEP, 'Sequence', required=True),
         'sale_taxes_id': fields.many2many('account.tax', 'sale_simulator_taxes_rel', 'item_id', 'tax_id', 'Customer taxes'),
         'categ_id': fields.many2one('product.category', 'Category', required=True),
         'uom_id': fields.many2one('product.uom', 'Unit', required=True),
         'notes': fields.text('Notes'),
         #        'tsp': fields.function(_total_standard_price, method=True, type='float', string='Total standard price'),
+        'company_id': fields.many2one('res.company', 'Company', required=True),
     }
 
     _defaults = {
-        'active': lambda *a: True,
+        'active': True,
+        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'product.item', context=c),
     }
 
 
@@ -147,6 +152,11 @@ class product_item_feature_line(orm.Model):
         'feature_id': fields.many2one('product.item.feature', 'Feature', required=True),
         'quantity': fields.float('Quantity', required=True),
         'global': fields.float('Global', required=True),
+        'company_id': fields.many2one('res.company', 'Company', required=True),
+    }
+
+    _defaults = {
+        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'product.item', context=c),
     }
 
 

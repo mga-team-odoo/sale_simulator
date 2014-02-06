@@ -18,6 +18,7 @@
                         <field name="name"/>
                         <field name="code"/>
                         <field name="active"/>
+                        <field name="company_id" groups="base.group_multi_company" widget="selection"/>
                     </group>
                 </form>
             </field>
@@ -80,6 +81,8 @@
                                     <field name="capacity_start"/>
                                     <field name="factory_price"/>
                                     <field name="retail_price"/>
+                                    <field name="company_id" groups="base.group_multi_company"
+                                        widget="selection"/>
                                 </group>
                                 <separator string="Other informations" colspan="4"/>
                                 <group colspan="4" col="2">
@@ -194,6 +197,8 @@
                                     <field name="capacity_start"/>
                                     <field name="factory_price"/>
                                     <field name="retail_price"/>
+                                    <field name="company_id" groups="base.group_multi_company"
+                                        widget="selection"/>
                                 </group>
                                 <separator string="Other informations" colspan="4"/>
                                 <group col="2" colspan="4">
