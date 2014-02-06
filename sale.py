@@ -72,11 +72,11 @@ class sale_simulator_line(orm.Model):
             factory_price = line.item_id.factory_price
 
             # Récupération des modules
-            mod_ids = line_obj.search(cr, uid, [('line_id', '=', id)], context=context)
+            mod_ids = line_obj.search(cr, uid, [('line_id', '=', line.id)], context=context)
             if mod_ids:
                 for mod in line_obj.browse(cr, uid, mod_ids, context=context):
                     factory_price += round(mod.item_id2.factory_price, 2)
-            res.setdefault(id, factory_price)
+            res.setdefault(line.id, factory_price)
         return res
 
     def _retail_price(self, cr, uid, ids, name, arg, context=None):
@@ -90,18 +90,18 @@ class sale_simulator_line(orm.Model):
             retail_price = line.item_id.retail_price
 
             # Récupération des modules
-            mod_ids = line_obj.search(cr, uid, [('line_id', '=', id)])
+            mod_ids = line_obj.search(cr, uid, [('line_id', '=', line.id)])
             if mod_ids:
                 for mod in line_obj.browse(cr, uid, mod_ids, context=context):
                     retail_price += round(mod.item_id2.retail_price, 2)
-            res.setdefault(id, retail_price)
+            res.setdefault(line.id, retail_price)
         return res
 
     def _margin(self, cr, uid, ids, name, arg, context=None):
         res = {}
         for line in self.browse(cr, uid, ids, context=context):
             margin = round((line.sale_price - line.factory_price), 2)
-            res.setdefault(id, margin)
+            res.setdefault(line.id, margin)
         return res
 
     _columns = {
@@ -215,14 +215,14 @@ class sale_simulator_line_item(orm.Model):
     _name = 'sale.simulator.line.item'
     _description = 'Sale simulator line item'
 
-    def name_get(self, cr, uid, ids, context=None):
-        if not len(ids):
-            return []
-        reads = self.read(cr, uid, ids, ['line_id', 'item_id2'], context=context)
-        res = []
-        for read in reads:
-            res.append(read['id'], 'OK')
-        return res
+    #def name_get(self, cr, uid, ids, context=None):
+    #    if not len(ids):
+    #        return []
+    #    reads = self.read(cr, uid, ids, ['line_id', 'item_id2'], context=context)
+    #    res = []
+    #    for read in reads:
+    #        res.append(read['id'], 'OK')
+    #    return res
 
     _columns = {
         'name': fields.char('Name', size=12, required=True),
