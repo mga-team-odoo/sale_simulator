@@ -202,11 +202,13 @@ class sale_simulator_line(orm.Model):
 
         return {'value': v}
 
-    def onchange_product(self, cr, uid, ids, item_id):
+    def onchange_product(self, cr, uid, ids, item_id, name):
         v = {}
         if item_id:
-            product_item = self.pool.get('product.item').read(cr, uid, item_id, ['retail_price'])
-            v['sale_price'] = product_item['retail_price']
+            product_item = self.pool.get('product.item').browse(cr, uid, item_id)
+            v['sale_price'] = product_item.retail_price
+            if not name:
+                v['description'] = product_item.name
 
         return {'value': v}
 
@@ -214,15 +216,16 @@ class sale_simulator_line(orm.Model):
 class sale_simulator_line_item(orm.Model):
     _name = 'sale.simulator.line.item'
     _description = 'Sale simulator line item'
+    _order = 'id'
 
-    #def name_get(self, cr, uid, ids, context=None):
-    #    if not len(ids):
-    #        return []
-    #    reads = self.read(cr, uid, ids, ['line_id', 'item_id2'], context=context)
-    #    res = []
-    #    for read in reads:
-    #        res.append(read['id'], 'OK')
-    #    return res
+    def name_get(self, cr, uid, ids, context=None):
+        if not len(ids):
+            return []
+
+        res = []
+        for read in self.read(cr, uid, ids, ['line_id', 'item_id2'], context=context):
+            res.append(read['id'], 'OK')
+        return res
 
     _columns = {
         'name': fields.char('Name', size=12, required=True),
@@ -233,12 +236,11 @@ class sale_simulator_line_item(orm.Model):
     }
 
     _defaults = {
-        'name': lambda *a: 'OK',
-        'retail_price': lambda *a: 0.0,
-        'factory_price': lambda *a: 0.0,
+        'name': 'OK',
+        'retail_price': 0.0,
+        'factory_price': 0.0,
     }
 
-    _order = 'id'
 
     def onchange_item(self, cr, uid, ids, item_id, context=None):
         '''
