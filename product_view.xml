@@ -73,19 +73,18 @@
                                 <group col="4" colspan="4">
                                     <field name="code"/>
                                     <field name="sequence"/>
-                                    <field name="p_item_id" colspan="2" domain="[('type','=','p')]"/> <!-- TODO Read Only-->
+                                    <field name="p_item_id" colspan="2" domain="[('type','=','p')]" 
+                                        attrs="{'readonly': [('type','=', 'p')]}"/>
                                     <field name="type"/>
                                     <field name="number" colspan="2"/>
                                     <field name="capacity_start"/>
                                     <field name="factory_price"/>
                                     <field name="retail_price"/>
                                 </group>
-                                <separator colspan="4"/>
                                 <separator string="Other informations" colspan="4"/>
                                 <group colspan="4" col="2">
                                     <field name="uom_id"/>
                                     <field name="categ_id"/>
-
                                 </group>
                             </page>
                             <page string="Products">
@@ -186,7 +185,7 @@
                         </div>
                         <notebook>
                             <page string="General">
-                                <group col="8" colspan="4">
+                                <group col="4" colspan="4">
                                     <field name="code"/>
                                     <field name="sequence"/>
                                     <field name="p_item_id" colspan="2" domain="[('type','=','p')]"/>
@@ -196,11 +195,10 @@
                                     <field name="factory_price"/>
                                     <field name="retail_price"/>
                                 </group>
-                                <separator string="Other information" colspan="4"/>
-                                <group colspan="4">
+                                <separator string="Other informations" colspan="4"/>
+                                <group col="2" colspan="4">
                                     <field name="uom_id"/>
                                     <field name="categ_id"/>
-
                                 </group>
                             </page>
                             <page string="Products">
