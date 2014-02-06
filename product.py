@@ -139,6 +139,11 @@ class product_item_line(orm.Model):
         'product_id': fields.many2one('product.product', 'Product', required=True),
         'quantity': fields.float('Quantity', required=True),
         'uom_id': fields.many2one('product.uom', 'Unit', required=True),
+        'company_id': fields.many2one('res.company', 'Company', required=True),
+    }
+
+    _defaults = {
+        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'product.item', context=c),
     }
 
     def onchange_product(self, cr, uid, ids, product_id, context=None):
