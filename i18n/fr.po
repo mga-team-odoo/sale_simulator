@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-02 10:16+0000\n"
-"PO-Revision-Date: 2014-02-05 18:00+0100\n"
+"POT-Creation-Date: 2014-02-06 11:15+0000\n"
+"PO-Revision-Date: 2014-02-06 12:19+0100\n"
 "Last-Translator: Christophe CHAUVET <christophe.chauvet@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -30,6 +30,11 @@ msgid "Sale order"
 msgstr "Commande"
 
 #. module: sale_simulator
+#: field:product.item,capacity_start:0
+msgid "Capacity"
+msgstr "Capacité"
+
+#. module: sale_simulator
 #: field:sale.simulator,user_id:0
 msgid "Salesman"
 msgstr "Vendeur"
@@ -40,14 +45,14 @@ msgid "Product item"
 msgstr "Élément de base"
 
 #. module: sale_simulator
-#: view:product.item:0
-msgid "Other information"
-msgstr "Autre information"
+#: model:product.item.feature,name:sale_simulator.feature_power
+msgid "Power supply"
+msgstr "Alimentation"
 
 #. module: sale_simulator
-#: model:ir.model,name:sale_simulator.model_product_item_feature
-msgid "Product feature list"
-msgstr ""
+#: model:res.groups,name:sale_simulator.group_manager_configurator
+msgid "Manager configurator"
+msgstr "Configurateur responsable"
 
 #. module: sale_simulator
 #: field:product.item,feature_ids:0
@@ -56,12 +61,14 @@ msgid "Feature"
 msgstr "Fonctionnalité"
 
 #. module: sale_simulator
-#: model:ir.actions.act_window,name:sale_simulator.action_sale_simulator_all
-#: model:ir.actions.act_window,name:sale_simulator.action_sale_simulator_my
-#: model:ir.model,name:sale_simulator.model_sale_simulator
-#: field:sale.simulator.line,simul_id:0
-msgid "Sale simulator"
-msgstr "Configurateur de vente"
+#: view:sale.simulator:0
+msgid "Number"
+msgstr "Numéro"
+
+#. module: sale_simulator
+#: help:sale.simulator,shop_id:0
+msgid "Select shop to convert this sale as sale order"
+msgstr "Sélectionner le magasin pour convertir cette vente en commande"
 
 #. module: sale_simulator
 #: view:product.item:0
@@ -79,10 +86,9 @@ msgid "Memory"
 msgstr "Mémoire"
 
 #. module: sale_simulator
-#: field:product.item,factory_price:0
-#: field:sale.simulator.line,factory_price:0
-msgid "Factory price"
-msgstr "Prix de revient"
+#: view:sale.simulator:0
+msgid "Compute"
+msgstr "Calculer"
 
 #. module: sale_simulator
 #: field:product.item,type:0
@@ -93,15 +99,6 @@ msgstr "Type"
 #: field:res.partner.category,discount:0
 msgid "Discount Control"
 msgstr "Contrôle des remises"
-
-#. module: sale_simulator
-#: view:product.item:0
-#: field:product.item,name:0
-#: field:product.item.feature,name:0
-#: field:sale.simulator.line,name:0
-#: field:sale.simulator.line.item,name:0
-msgid "Name"
-msgstr "Nom"
 
 #. module: sale_simulator
 #: view:product.item:0
@@ -135,9 +132,19 @@ msgid "Feature item"
 msgstr "Caractéristique"
 
 #. module: sale_simulator
-#: selection:product.item,sequence:0
-msgid "Second step"
-msgstr "Seconde étape"
+#: field:sale.simulator.line,margin:0
+msgid "Margin"
+msgstr "Marge"
+
+#. module: sale_simulator
+#: field:product.item,company_id:0
+#: field:product.item.feature,company_id:0
+#: field:product.item.feature.line,company_id:0
+#: field:sale.simulator,company_id:0
+#: field:sale.simulator.line,company_id:0
+#: field:sale.simulator.line.item,company_id:0
+msgid "Company"
+msgstr "Société"
 
 #. module: sale_simulator
 #: model:ir.model,name:sale_simulator.model_product_item_feature_line
@@ -174,6 +181,11 @@ msgid "Simulation number"
 msgstr "Numéro de configuration"
 
 #. module: sale_simulator
+#: model:ir.model,name:sale_simulator.model_product_item_feature
+msgid "Product feature list"
+msgstr ""
+
+#. module: sale_simulator
 #: view:product.item:0
 #: field:product.item,active:0
 #: field:product.item.feature,active:0
@@ -196,14 +208,29 @@ msgid "Price List"
 msgstr "Liste de prix"
 
 #. module: sale_simulator
-#: view:sale.simulator:0
-msgid "Compute"
-msgstr "Calculer"
+#: field:sale.simulator,shop_id:0
+msgid "Shop"
+msgstr "Magasin"
 
 #. module: sale_simulator
-#: field:product.item,capacity_start:0
-msgid "Capacity (To)"
-msgstr "Capacité (To)"
+#: model:res.groups,name:sale_simulator.group_sale_configurator
+msgid "Salesman configurator"
+msgstr "Configurteur Vendeur "
+
+#. module: sale_simulator
+#: field:product.item,factory_price:0
+#: field:sale.simulator.line,factory_price:0
+msgid "Factory price"
+msgstr "Prix de revient"
+
+#. module: sale_simulator
+#: view:product.item:0
+#: field:product.item,name:0
+#: field:product.item.feature,name:0
+#: field:sale.simulator.line,name:0
+#: field:sale.simulator.line.item,name:0
+msgid "Name"
+msgstr "Nom"
 
 #. module: sale_simulator
 #: field:sale.simulator.line,sale_price:0
@@ -241,9 +268,9 @@ msgid "First step"
 msgstr "Première étape"
 
 #. module: sale_simulator
-#: model:ir.model,name:sale_simulator.model_sale_simulator_line_item
-msgid "Sale simulator line item"
-msgstr ""
+#: view:product.item:0
+msgid "Products"
+msgstr "Produits"
 
 #. module: sale_simulator
 #: model:ir.ui.menu,name:sale_simulator.menu_sale_simulator_all
@@ -261,15 +288,20 @@ msgid "Partner Categories"
 msgstr "Catégories de partenaire"
 
 #. module: sale_simulator
+#: selection:product.item,sequence:0
+msgid "Kit / Phantom"
+msgstr "Kit / Fantôme"
+
+#. module: sale_simulator
 #: model:ir.ui.menu,name:sale_simulator.menu_simulator
 #: model:ir.ui.menu,name:sale_simulator.menu_simulator_config
 msgid "Simulator"
 msgstr "Configurateur"
 
 #. module: sale_simulator
-#: field:sale.simulator.line,margin:0
-msgid "Margin"
-msgstr "Marge"
+#: view:sale.simulator:0
+msgid "Create Sale order"
+msgstr "Créer une commande de vente"
 
 #. module: sale_simulator
 #: model:product.item.feature,name:sale_simulator.feature_processor
@@ -282,9 +314,14 @@ msgid "Feature Items"
 msgstr "Caractéristiques"
 
 #. module: sale_simulator
-#: field:sale.simulator,shop_id:0
-msgid "Shop"
-msgstr "Magasin"
+#: help:sale.simulator,user_id:0
+msgid "Salesman user"
+msgstr "Vendeur"
+
+#. module: sale_simulator
+#: field:product.item,number:0
+msgid "Product number"
+msgstr "Numéro du produit"
 
 #. module: sale_simulator
 #: field:product.item,code:0
@@ -298,9 +335,9 @@ msgid "Factory Price"
 msgstr "Prix de revient"
 
 #. module: sale_simulator
-#: field:product.item,number:0
-msgid "Product number"
-msgstr "Numéro du produit"
+#: view:product.item:0
+msgid "Features"
+msgstr "Caractéristiques"
 
 #. module: sale_simulator
 #: model:ir.actions.act_window,name:sale_simulator.action_module_item
@@ -333,7 +370,7 @@ msgstr "Générale"
 #: view:product.item:0
 #: field:product.item,item_ids:0
 msgid "Item line"
-msgstr ""
+msgstr "Ligne d'élément"
 
 #. module: sale_simulator
 #: constraint:res.partner.category:0
@@ -349,6 +386,29 @@ msgstr "Si différente de 0, cela contrôle la valeur maximale de la remise et l
 #: view:product.item:0
 msgid "General"
 msgstr "Général"
+
+#. module: sale_simulator
+#: help:product.item,factory_price:0
+msgid "Price include purchase price and others costs"
+msgstr "Prix inclus le prix d'achat et les autres coûts"
+
+#. module: sale_simulator
+#: model:ir.actions.act_window,name:sale_simulator.action_sale_simulator_all
+#: model:ir.actions.act_window,name:sale_simulator.action_sale_simulator_my
+#: model:ir.model,name:sale_simulator.model_sale_simulator
+#: field:sale.simulator.line,simul_id:0
+msgid "Sale simulator"
+msgstr "Configurateur de vente"
+
+#. module: sale_simulator
+#: model:ir.model,name:sale_simulator.model_sale_simulator_line_item
+msgid "Sale simulator line item"
+msgstr ""
+
+#. module: sale_simulator
+#: selection:product.item,sequence:0
+msgid "Second step"
+msgstr "Seconde étape"
 
 #. module: sale_simulator
 #: model:ir.ui.menu,name:sale_simulator.menu_simulator_item
@@ -371,9 +431,9 @@ msgid "Item Feature"
 msgstr "Caractéristique"
 
 #. module: sale_simulator
-#: model:ir.actions.wizard,name:sale_simulator.sale_simulator_class
-msgid "Create sale order"
-msgstr "Créer un bon de commande"
+#: view:sale.simulator:0
+msgid "Create Sale Order"
+msgstr "Créer une commande"
 
 #. module: sale_simulator
 #: view:sale.simulator:0
@@ -385,4 +445,11 @@ msgstr "Vérifier"
 #: field:product.item.line,uom_id:0
 msgid "Unit"
 msgstr "Unité"
+
+#~ msgid "Other information"
+#~ msgstr "Autre information"
+#~ msgid "Capacity (To)"
+#~ msgstr "Capacité (To)"
+#~ msgid "Create sale order"
+#~ msgstr "Créer un bon de commande"
 

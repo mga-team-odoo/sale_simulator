@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-02 10:16+0000\n"
-"PO-Revision-Date: 2014-02-02 10:16+0000\n"
+"POT-Creation-Date: 2014-02-06 11:15+0000\n"
+"PO-Revision-Date: 2014-02-06 11:15+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -31,6 +31,11 @@ msgid "Sale order"
 msgstr ""
 
 #. module: sale_simulator
+#: field:product.item,capacity_start:0
+msgid "Capacity"
+msgstr ""
+
+#. module: sale_simulator
 #: field:sale.simulator,user_id:0
 msgid "Salesman"
 msgstr ""
@@ -41,13 +46,13 @@ msgid "Product item"
 msgstr ""
 
 #. module: sale_simulator
-#: view:product.item:0
-msgid "Other information"
+#: model:product.item.feature,name:sale_simulator.feature_power
+msgid "Power supply"
 msgstr ""
 
 #. module: sale_simulator
-#: model:ir.model,name:sale_simulator.model_product_item_feature
-msgid "Product feature list"
+#: model:res.groups,name:sale_simulator.group_manager_configurator
+msgid "Manager configurator"
 msgstr ""
 
 #. module: sale_simulator
@@ -57,11 +62,13 @@ msgid "Feature"
 msgstr ""
 
 #. module: sale_simulator
-#: model:ir.actions.act_window,name:sale_simulator.action_sale_simulator_all
-#: model:ir.actions.act_window,name:sale_simulator.action_sale_simulator_my
-#: model:ir.model,name:sale_simulator.model_sale_simulator
-#: field:sale.simulator.line,simul_id:0
-msgid "Sale simulator"
+#: view:sale.simulator:0
+msgid "Number"
+msgstr ""
+
+#. module: sale_simulator
+#: help:sale.simulator,shop_id:0
+msgid "Select shop to convert this sale as sale order"
 msgstr ""
 
 #. module: sale_simulator
@@ -80,9 +87,8 @@ msgid "Memory"
 msgstr ""
 
 #. module: sale_simulator
-#: field:product.item,factory_price:0
-#: field:sale.simulator.line,factory_price:0
-msgid "Factory price"
+#: view:sale.simulator:0
+msgid "Compute"
 msgstr ""
 
 #. module: sale_simulator
@@ -93,15 +99,6 @@ msgstr ""
 #. module: sale_simulator
 #: field:res.partner.category,discount:0
 msgid "Discount Control"
-msgstr ""
-
-#. module: sale_simulator
-#: view:product.item:0
-#: field:product.item,name:0
-#: field:product.item.feature,name:0
-#: field:sale.simulator.line,name:0
-#: field:sale.simulator.line.item,name:0
-msgid "Name"
 msgstr ""
 
 #. module: sale_simulator
@@ -136,8 +133,18 @@ msgid "Feature item"
 msgstr ""
 
 #. module: sale_simulator
-#: selection:product.item,sequence:0
-msgid "Second step"
+#: field:sale.simulator.line,margin:0
+msgid "Margin"
+msgstr ""
+
+#. module: sale_simulator
+#: field:product.item,company_id:0
+#: field:product.item.feature,company_id:0
+#: field:product.item.feature.line,company_id:0
+#: field:sale.simulator,company_id:0
+#: field:sale.simulator.line,company_id:0
+#: field:sale.simulator.line.item,company_id:0
+msgid "Company"
 msgstr ""
 
 #. module: sale_simulator
@@ -175,6 +182,11 @@ msgid "Simulation number"
 msgstr ""
 
 #. module: sale_simulator
+#: model:ir.model,name:sale_simulator.model_product_item_feature
+msgid "Product feature list"
+msgstr ""
+
+#. module: sale_simulator
 #: view:product.item:0
 #: field:product.item,active:0
 #: field:product.item.feature,active:0
@@ -197,13 +209,28 @@ msgid "Price List"
 msgstr ""
 
 #. module: sale_simulator
-#: view:sale.simulator:0
-msgid "Compute"
+#: field:sale.simulator,shop_id:0
+msgid "Shop"
 msgstr ""
 
 #. module: sale_simulator
-#: field:product.item,capacity_start:0
-msgid "Capacity (To)"
+#: model:res.groups,name:sale_simulator.group_sale_configurator
+msgid "Salesman configurator"
+msgstr ""
+
+#. module: sale_simulator
+#: field:product.item,factory_price:0
+#: field:sale.simulator.line,factory_price:0
+msgid "Factory price"
+msgstr ""
+
+#. module: sale_simulator
+#: view:product.item:0
+#: field:product.item,name:0
+#: field:product.item.feature,name:0
+#: field:sale.simulator.line,name:0
+#: field:sale.simulator.line.item,name:0
+msgid "Name"
 msgstr ""
 
 #. module: sale_simulator
@@ -242,8 +269,8 @@ msgid "First step"
 msgstr ""
 
 #. module: sale_simulator
-#: model:ir.model,name:sale_simulator.model_sale_simulator_line_item
-msgid "Sale simulator line item"
+#: view:product.item:0
+msgid "Products"
 msgstr ""
 
 #. module: sale_simulator
@@ -262,14 +289,19 @@ msgid "Partner Categories"
 msgstr ""
 
 #. module: sale_simulator
+#: selection:product.item,sequence:0
+msgid "Kit / Phantom"
+msgstr ""
+
+#. module: sale_simulator
 #: model:ir.ui.menu,name:sale_simulator.menu_simulator
 #: model:ir.ui.menu,name:sale_simulator.menu_simulator_config
 msgid "Simulator"
 msgstr ""
 
 #. module: sale_simulator
-#: field:sale.simulator.line,margin:0
-msgid "Margin"
+#: view:sale.simulator:0
+msgid "Create Sale order"
 msgstr ""
 
 #. module: sale_simulator
@@ -283,8 +315,13 @@ msgid "Feature Items"
 msgstr ""
 
 #. module: sale_simulator
-#: field:sale.simulator,shop_id:0
-msgid "Shop"
+#: help:sale.simulator,user_id:0
+msgid "Salesman user"
+msgstr ""
+
+#. module: sale_simulator
+#: field:product.item,number:0
+msgid "Product number"
 msgstr ""
 
 #. module: sale_simulator
@@ -299,8 +336,8 @@ msgid "Factory Price"
 msgstr ""
 
 #. module: sale_simulator
-#: field:product.item,number:0
-msgid "Product number"
+#: view:product.item:0
+msgid "Features"
 msgstr ""
 
 #. module: sale_simulator
@@ -352,6 +389,29 @@ msgid "General"
 msgstr ""
 
 #. module: sale_simulator
+#: help:product.item,factory_price:0
+msgid "Price include purchase price and others costs"
+msgstr ""
+
+#. module: sale_simulator
+#: model:ir.actions.act_window,name:sale_simulator.action_sale_simulator_all
+#: model:ir.actions.act_window,name:sale_simulator.action_sale_simulator_my
+#: model:ir.model,name:sale_simulator.model_sale_simulator
+#: field:sale.simulator.line,simul_id:0
+msgid "Sale simulator"
+msgstr ""
+
+#. module: sale_simulator
+#: model:ir.model,name:sale_simulator.model_sale_simulator_line_item
+msgid "Sale simulator line item"
+msgstr ""
+
+#. module: sale_simulator
+#: selection:product.item,sequence:0
+msgid "Second step"
+msgstr ""
+
+#. module: sale_simulator
 #: model:ir.ui.menu,name:sale_simulator.menu_simulator_item
 msgid "Module Items"
 msgstr ""
@@ -372,8 +432,8 @@ msgid "Item Feature"
 msgstr ""
 
 #. module: sale_simulator
-#: model:ir.actions.wizard,name:sale_simulator.sale_simulator_class
-msgid "Create sale order"
+#: view:sale.simulator:0
+msgid "Create Sale Order"
 msgstr ""
 
 #. module: sale_simulator
