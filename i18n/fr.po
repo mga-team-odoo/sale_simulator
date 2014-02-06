@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-02 10:16+0000\n"
-"PO-Revision-Date: 2014-02-02 11:36+0100\n"
+"PO-Revision-Date: 2014-02-05 18:00+0100\n"
 "Last-Translator: Christophe CHAUVET <christophe.chauvet@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr "Catégorie"
 #. module: sale_simulator
 #: model:ir.ui.menu,name:sale_simulator.menu_product_item
 msgid "Product Items"
-msgstr ""
+msgstr "Éléments de base"
 
 #. module: sale_simulator
 #: field:sale.simulator.line,order_id:0
@@ -37,7 +37,7 @@ msgstr "Vendeur"
 #. module: sale_simulator
 #: model:ir.model,name:sale_simulator.model_product_item
 msgid "Product item"
-msgstr ""
+msgstr "Élément de base"
 
 #. module: sale_simulator
 #: view:product.item:0
@@ -82,7 +82,7 @@ msgstr "Mémoire"
 #: field:product.item,factory_price:0
 #: field:sale.simulator.line,factory_price:0
 msgid "Factory price"
-msgstr ""
+msgstr "Prix de revient"
 
 #. module: sale_simulator
 #: field:product.item,type:0
@@ -126,7 +126,7 @@ msgstr "Descriptif"
 #: field:sale.simulator.line,item_id:0
 #: field:sale.simulator.line.item,item_id2:0
 msgid "Product Item"
-msgstr ""
+msgstr "Élément de base"
 
 #. module: sale_simulator
 #: view:product.item.feature:0
@@ -149,7 +149,7 @@ msgstr ""
 #: field:sale.simulator.line,retail_price:0
 #: field:sale.simulator.line.item,retail_price:0
 msgid "Retail price"
-msgstr ""
+msgstr "Prix de vente recommandé"
 
 #. module: sale_simulator
 #: model:product.item.feature,name:sale_simulator.feature_pci
@@ -295,7 +295,7 @@ msgstr "Code"
 #. module: sale_simulator
 #: field:sale.simulator.line.item,factory_price:0
 msgid "Factory Price"
-msgstr ""
+msgstr "Prix de revient"
 
 #. module: sale_simulator
 #: field:product.item,number:0
@@ -317,7 +317,7 @@ msgstr "Séquence"
 #: model:ir.model,name:sale_simulator.model_sale_simulator_line
 #: field:sale.simulator.line.item,line_id:0
 msgid "Sale simulator line"
-msgstr ""
+msgstr "Ligne du configurateur"
 
 #. module: sale_simulator
 #: model:ir.ui.menu,name:sale_simulator.menu_sale_simulator_my
@@ -338,7 +338,7 @@ msgstr ""
 #. module: sale_simulator
 #: constraint:res.partner.category:0
 msgid "Erreur la valeur doit etre comprise entre 0 et 100"
-msgstr ""
+msgstr "Erreur la valeur doit etre comprise entre 0 et 100"
 
 #. module: sale_simulator
 #: help:res.partner.category,discount:0
@@ -353,7 +353,7 @@ msgstr "Général"
 #. module: sale_simulator
 #: model:ir.ui.menu,name:sale_simulator.menu_simulator_item
 msgid "Module Items"
-msgstr ""
+msgstr "Modules complémentaires"
 
 #. module: sale_simulator
 #: view:product.item:0
