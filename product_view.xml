@@ -145,8 +145,8 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_product_item_tree"/>
-            <field name="domain">[ ('type','=','p') ]</field>
-            <field name="context">{'type': 'p'}</field>
+            <field name="domain">[('type','=','p')]</field>
+            <field name="context">{'default_type': 'p'}</field>
         </record>
 
         <record model="ir.actions.act_window.view" id="act_open_product_item_view_form">
@@ -264,7 +264,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_module_item_tree"/>
             <field name="domain">[('type','=','m')]</field> 
-            <field name="context">{'type': 'm'}</field>
+            <field name="context">{'default_type': 'm'}</field>
         </record>
 
         <record model="ir.actions.act_window.view" id="act_open_module_item_view_form">

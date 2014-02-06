@@ -51,6 +51,19 @@ class product_item_feature(orm.Model):
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'product.item.feature', context=c),
     }
 
+    def create(self, cr, uid, values, context=None):
+        """
+        #TODO make doc string
+        Comment this
+        """
+        if context is None:
+            context = {}
+
+        if not values.get('code', False):
+            values['code'] = 'NONE'
+
+        return super(product_item_feature, self).create(cr, uid, values, context=context)
+
 BOM_STEP = [
     (-1, 'Kit / Phantom'),
     (1, 'First step'),
@@ -109,6 +122,8 @@ class product_item(orm.Model):
     _defaults = {
         'active': True,
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'product.item', context=c),
+        'type': 'p',
+        'sequence': -1,
     }
 
 
