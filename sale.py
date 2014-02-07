@@ -40,6 +40,11 @@ class sale_simulator(orm.Model):
     _description = 'Sale simulator'
     _order = 'name'
 
+    def _get_default_shop(self, cr, uid, context=None):
+        company_id = self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.id
+        shop_ids = self.pool.get('sale.shop').search(cr, uid, [('company_id', '=', company_id)], context=context)
+        return shop_ids and shop_ids[0] or False
+
     _columns = {
         'name': fields.char('Simulation number', size=64, required=True),
         'partner_id': fields.many2one('res.partner', 'Partner', ondelete='cascade'),
@@ -53,6 +58,7 @@ class sale_simulator(orm.Model):
     _defaults = {
         'name': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'sale.simulator'),
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'sale.simulator', context=c),
+        'shop_id': _get_default_shop,
     }
 
 
