@@ -127,6 +127,7 @@ class sale_simulator_line(orm.Model):
         'name': 'OK',
         'quantity': 1.0,
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'sale.simulator', context=c),
+        'quantity': 1.0,
     }
 
     def button_dummy(self, cr, uid, ids, context=None):

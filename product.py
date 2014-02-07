@@ -144,6 +144,7 @@ class product_item_line(orm.Model):
 
     _defaults = {
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'product.item', context=c),
+        'quantity': 1.0
     }
 
     def onchange_product(self, cr, uid, ids, product_id, context=None):
