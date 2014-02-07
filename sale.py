@@ -59,6 +59,7 @@ class sale_simulator(orm.Model):
         'name': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'sale.simulator'),
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'sale.simulator', context=c),
         'shop_id': _get_default_shop,
+        'user_id': lambda obj, cr, uid, context: uid,
     }
 
 
@@ -235,8 +236,8 @@ class sale_simulator_line(orm.Model):
         if not simul:
             raise orm.except_orm(_('Error'), _('Line not found, please reload your browser!'))
 
-
         return True
+
 
 class sale_simulator_line_item(orm.Model):
     _name = 'sale.simulator.line.item'
