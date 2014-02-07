@@ -25,7 +25,7 @@
                             </h1>
                         </div>
                         <group colspan="4">
-                            <field name="partner_id"/>
+                            <field name="partner_id" on_change="onchange_partner(partner_id)"/>
                             <field name="pricelist_id"/>
                             <field name="shop_id"/>
                             <field name="user_id"/>

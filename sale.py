@@ -62,6 +62,21 @@ class sale_simulator(orm.Model):
         'user_id': lambda obj, cr, uid, context: uid,
     }
 
+    def onchange_partner(self, cr, uid, ids, partner_id, context=None):
+        """
+        Retrieve pricelist when select a partner
+        """
+        if context is None:
+            context = {}
+
+        res = {}
+        if partner_id:
+            partner = self.pool.get('res.partner').browse(cr, uid, partner_id, context=context)
+            if partner:
+                res['pricelist_id'] = partner.property_product_pricelist and partner.property_product_pricelist.id or False
+
+        return {'value': res}
+
 
 class sale_simulator_line(orm.Model):
     '''
