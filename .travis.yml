@@ -13,7 +13,7 @@ services:
 
 before_script:
     - psql -c "CREATE USER openerp WITH PASSWORD 'mirounga';" -U postgres
-    - psql -c 'create database ocb-mirounga with owner openerp;' -U postgres
+    - psql -c 'create database simulator with owner openerp;' -U postgres
 
 install:
     - ./.travis_install_nightly.sh

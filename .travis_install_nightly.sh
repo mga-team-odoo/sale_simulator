@@ -9,7 +9,7 @@ git clone --depth=50 https://github.com/syleam/openerp.git -b ocb-server/7.0 ser
 git clone --depth=50 https://github.com/syleam/openerp.git -b ocb-web/7.0 web
 
 # copy all module in server/openerp/addons
-cp -a sale_simulator ./server/openerp/addons
+cp -a openerp-sale_simulator/ ./server/openerp/addons/sale_simulator
 cp -a web/addons ./server/openerp/addons
 cp -a addons ./server/openerp/addons
 
