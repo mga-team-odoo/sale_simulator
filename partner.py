@@ -47,6 +47,10 @@ class res_partner_category(orm.Model):
                                  "of discount(%) and block if greather")
     }
 
+    _defaults = {
+        'discount': 0.0,
+    }
+
     _constraints = [
         (_check_valid,
          'Erreur la valeur doit etre comprise entre 0 et 100',
