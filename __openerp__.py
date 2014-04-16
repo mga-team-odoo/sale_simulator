@@ -38,7 +38,8 @@ The sale simulator
         "mrp",
     ],
     "demo": [
-         "sale_simulator_demo.xml"
+        "demo/product.xml",
+        "demo/sale_simulator.xml",
     ],
     "data": [
         "security/groups.xml",

@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<openerp>
+    <data>
+
+        <!-- ****************************************************** -->
+        <!-- * Create a new custom order                            -->
+        <!-- ****************************************************** -->
+        <record model="sale.simulator" id="sale_simulator_1">
+            <field name="partner_id" model="res.partner" search="[('name','=','Ecole de Commerce de Liege')]"/>
+            <field name="pricelist_id" model="product.pricelist" search="[('type','=','sale')]"/>
+            <field name="user_id" ref="base.user_demo"/>
+            <field name="shop_id" ref="sale.sale_shop_1"/>
+        </record>
+
+        <record model="sale.simulator.line" id="sale_simulator_line_1">
+            <field name="description">Eco Server 1U</field>
+            <field name="simul_id" ref="sale_simulator_1"/>
+            <field name="item_id" ref="product_item_serveur_1u"/>
+            <field name="sale_price" eval="2600.95"/>
+        </record>
+
+        <record model="sale.simulator.line" id="sale_simulator_line_2">
+            <field name="description">Wonderfull Server 2U</field>
+            <field name="simul_id" ref="sale_simulator_1"/>
+            <field name="item_id" ref="product_item_serveur_2u"/>
+            <field name="sale_price" eval="3490.25"/>
+        </record>
+
+        <record model="sale.simulator.line.item" id="sale_simulator_line_item_1_1">
+            <field name="line_id" ref="sale_simulator_line_1"/>
+            <field name="item_id2" ref="product_item_ss1u_dd120Go"/>
+            <field name="retail_price" eval="10.0"/>
+            <field name="factory_price" eval="12.0"/>
+        </record>
+
+    </data>
+</openerp>
