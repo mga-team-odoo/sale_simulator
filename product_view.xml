@@ -59,6 +59,9 @@
             <field name="priority" eval="8"/> 
             <field name="arch" type="xml">
                 <form string="Product Item" version="7.0">
+                    <header>
+                        <button string="Compute price" icon="gtk-ok" type="object" name="price_compute"/>
+                    </header>
                     <sheet>
                         <div class="oe_title">
                             <div class="oe_edit_only">

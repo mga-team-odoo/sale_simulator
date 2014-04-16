@@ -126,6 +126,23 @@ class product_item(orm.Model):
         'sequence': -1,
     }
 
+    def price_compute(self, cr, uid, ids, context=None):
+        """
+        Compute the public price and the standard price of this module
+        """
+        if context is None:
+            context = {}
+
+        for itm in self.browse(cr, uid, ids, context=context):
+            std_price = 0.0
+            pub_price = 0.0
+            for line in itm.item_ids:
+                std_price += line.product_id.standard_price * line.quantity
+                pub_price += line.product_id.list_price * line.quantity
+
+            self.write(cr, uid, [itm.id], {'factory_price': std_price, 'retail_price': pub_price}, context=context)
+        return True
+
 
 class product_item_line(orm.Model):
     '''
