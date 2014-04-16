@@ -65,12 +65,6 @@
             <field name="view_type">form</field>
         </record>
 
-        <record model="ir.actions.act_window.view" id="act_open_product_item_view_form">
-            <field name="act_window_id" ref="product_item_module"/>
-            <field name="sequence" eval="20"/>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="view_module_item_form"/>
-        </record>
 
         <record model="ir.ui.view" id="view_product_item_form">
             <field name="name">product.item.form</field>
@@ -297,6 +291,14 @@
 
         <record model="ir.actions.act_window.view" id="act_open_module_item_view_form">
             <field name="act_window_id" ref="action_module_item"/>
+            <field name="sequence" eval="20"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_module_item_form"/>
+        </record>
+
+        <!-- Duplicate for button action in base module -->
+        <record model="ir.actions.act_window.view" id="act_open_product_item_view_form">
+            <field name="act_window_id" ref="product_item_module"/>
             <field name="sequence" eval="20"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="view_module_item_form"/>
