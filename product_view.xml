@@ -53,6 +53,25 @@
             parent="menu_simulator_config"
             groups="sale_simulator.group_manager_configurator"/>
 
+
+        <!-- *************************************************************** -->
+        <!-- ** Action to open related module from this product ************ -->
+        <!-- *************************************************************** -->
+        <record model="ir.actions.act_window" id="product_item_module">
+            <field name="context">{'default_p_item_id': active_id, 'search_default_p_item_id': active_id}</field>
+            <field name="name">Modules</field>
+            <field name="domain">[('p_item_id', '=', active_id)]</field>
+            <field name="res_model">product.item</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="act_open_product_item_view_form">
+            <field name="act_window_id" ref="product_item_module"/>
+            <field name="sequence" eval="20"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_module_item_form"/>
+        </record>
+
         <record model="ir.ui.view" id="view_product_item_form">
             <field name="name">product.item.form</field>
             <field name="model">product.item</field>
@@ -71,6 +90,9 @@
                             <h1>
                                 <field name="name" default_focus="1" placeholder="Name" />
                             </h1>
+                        </div>
+                        <div class="oe_right oe_button_box" name="buttons">
+                            <button string="Modules" name="%(product_item_module)d" type="action"/>
                         </div>
                         <notebook>
                             <page string="General">
