@@ -239,6 +239,17 @@ class sale_simulator_line(orm.Model):
 
         return {'value': v}
 
+    def _compute_product_code(self, cr, uid, simul, context=None):
+        """
+        Compute the final product code from base element as prefix
+        and each modules order by sequence
+        """
+        prefix = simul.item_id.code
+        concat = ''
+        for line in simul.line_ids:
+            concat += line.item_id2.code
+        return prefix + concat
+
     def create_sale_order(self, cr, uid, ids, context=None):
         """
         Create the sale order and the product with the BOM structure
@@ -246,10 +257,12 @@ class sale_simulator_line(orm.Model):
         if len(ids) > 1:
             raise orm.except_orm(_('Error'), _('You can only create one sale order at the time!'))
 
-        simul_obj = self.pool.get('sale.simulator')
-        simul = simul_obj.browse(cr, uid, ids[0], context=context)
+        simul = self.browse(cr, uid, ids[0], context=context)
         if not simul:
             raise orm.except_orm(_('Error'), _('Line not found, please reload your browser!'))
+
+        # Retrieve base module to check
+        print self._compute_product_code(cr, uid, simul, context=context)
 
         return True
 
