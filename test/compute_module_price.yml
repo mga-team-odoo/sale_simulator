@@ -1,0 +1,16 @@
+-
+  Compute the module price based on the component for Serveur 1U
+-
+  !python {model: product.item}: |
+    try:
+        self.price_compute(cr, uid, [ref("product_item_serveur_1u")])
+    except Exception as e:
+        pass
+-
+  Compute the module price based on the component for Serveur 2U
+-
+  !python {model: product.item}: |
+    try:
+        self.price_compute(cr, uid, [ref("product_item_serveur_2u")])
+    except Exception as e:
+        pass

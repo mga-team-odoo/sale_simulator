@@ -51,6 +51,9 @@ The sale simulator
         "partner_view.xml",
         "sale_simulator_wizard.xml",
     ],
+    "test": [
+        "test/compute_module_price.yml",
+    ],
     "active": False,
     "installable": True,
 }
