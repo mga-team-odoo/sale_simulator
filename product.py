@@ -65,9 +65,9 @@ class product_item_feature(orm.Model):
         return super(product_item_feature, self).create(cr, uid, values, context=context)
 
 BOM_STEP = [
-    (-1, 'Kit / Phantom'),
-    (1, 'First step'),
-    (2, 'Second step'),
+    (-1, 'Kit'),
+    (1, 'Normal'),
+    (2, 'BOM'),
 ]
 
 ITEM_TYPE = [
@@ -110,20 +110,25 @@ class product_item(orm.Model):
         'factory_price': fields.float('Factory price', help="Price include purchase price and others costs"),
         'retail_price': fields.float('Retail price'),
         'capacity_start': fields.float('Capacity'),
-        'sequence': fields.selection(BOM_STEP, 'Sequence', required=True),
+        'sequence': fields.integer('Sequence'),
+        'bom_type': fields.selection(BOM_STEP, 'Sequence', required=True),
         'sale_taxes_id': fields.many2many('account.tax', 'sale_simulator_taxes_rel', 'item_id', 'tax_id', 'Customer taxes'),
         'categ_id': fields.many2one('product.category', 'Category', required=True),
         'uom_id': fields.many2one('product.uom', 'Unit', required=True),
         'notes': fields.text('Notes'),
         #        'tsp': fields.function(_total_standard_price, method=True, type='float', string='Total standard price'),
         'company_id': fields.many2one('res.company', 'Company', required=True),
+        'supplier_id': fields.many2one('res.partner', 'Supplier', help="Select the manufacturer if you use subcontracting,\nleave empty if you don't ue it"),
+        'product_company_id': fields.many2one('res.company', 'Company', help='Company to create the main product,\nleave empty to create in the current company'),
     }
 
     _defaults = {
         'active': True,
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'product.item', context=c),
         'type': 'p',
-        'sequence': -1,
+        'sequence': 10,
+        'bom_type': -1,
+        'supplier_id': False,
     }
 
     def price_compute(self, cr, uid, ids, context=None):

@@ -63,7 +63,7 @@
             <field name="capacity_start" eval="0.32"/>
             <field name="factory_price" eval="1000.00"/>
             <field name="retail_price" eval="20000.00"/>
-            <field name="sequence" eval="1"/>
+            <field name="bom_type" eval="1"/>
             <field name="categ_id" model="product.category" search="[('name','=','All products')]"/>
             <field name="uom_id" ref="product.product_uom_unit"/>
         </record>
@@ -98,10 +98,11 @@
             <field name="name">Hard disk extension 480Go</field>
             <field name="code">EXT480</field>
             <field name="type">m</field>
+            <field name="bom_type" eval="1"/>
             <field name="p_item_id" ref="product_item_serveur_1u"/>
             <field name="factory_price" eval="180.00"/>
             <field name="retail_price" eval="240.00"/>
-            <field name="sequence" eval="1"/>
+            <field name="bom_type" eval="1"/>
             <field name="categ_id" model="product.category" search="[('name','=','All products')]"/>
             <field name="uom_id" ref="product.product_uom_unit"/>
         </record>
@@ -147,10 +148,11 @@
             <field name="name">Software Installation (il)</field>
             <field name="code">IL</field>
             <field name="type">m</field>
+            <field name="bom_type" eval="1"/>
             <field name="p_item_id" ref="product_item_serveur_1u"/>
             <field name="factory_price" eval="100.00"/>
             <field name="retail_price" eval="180.00"/>
-            <field name="sequence" eval="2"/>
+            <field name="bom_type" eval="2"/>
             <field name="categ_id" model="product.category" search="[('name','=','All products')]"/>
             <field name="uom_id" ref="product.product_uom_unit"/>
             <field name="notes">Software installation</field>
@@ -167,7 +169,7 @@
             <field name="capacity_start" eval="0.48"/>
             <field name="factory_price" eval="1230.00"/>
             <field name="retail_price" eval="3000.00"/>
-            <field name="sequence" eval="1"/>
+            <field name="bom_type" eval="1"/>
             <field name="categ_id" model="product.category" search="[('name','=','All products')]"/>
             <field name="uom_id" ref="product.product_uom_unit"/>
         </record>
@@ -198,10 +200,11 @@
             <field name="name">Hard Disque extension 640Go</field>
             <field name="code">EXT640</field>
             <field name="type">m</field>
+            <field name="bom_type" eval="1"/>
             <field name="p_item_id" ref="product_item_serveur_2u"/>
             <field name="factory_price" eval="150.00"/>
             <field name="retail_price" eval="400.00"/>
-            <field name="sequence" eval="1"/>
+            <field name="bom_type" eval="1"/>
             <field name="categ_id" model="product.category" search="[('name','=','All products')]"/>
             <field name="uom_id" ref="product.product_uom_unit"/>
         </record>
