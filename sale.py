@@ -41,8 +41,8 @@ class sale_simulator(orm.Model):
     _order = 'name'
 
     def _get_default_shop(self, cr, uid, context=None):
-        company_id = self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.id
-        shop_ids = self.pool.get('sale.shop').search(cr, uid, [('company_id', '=', company_id)], context=context)
+        company_id = self.pool['res.users'].browse(cr, uid, uid, context=context).company_id.id
+        shop_ids = self.pool['sale.shop'].search(cr, uid, [('company_id', '=', company_id)], context=context)
         return shop_ids and shop_ids[0] or False
 
     _columns = {
@@ -56,8 +56,8 @@ class sale_simulator(orm.Model):
     }
 
     _defaults = {
-        'name': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'sale.simulator'),
-        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'sale.simulator', context=c),
+        'name': lambda obj, cr, uid, context: obj.pool['ir.sequence'].get(cr, uid, 'sale.simulator'),
+        'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'sale.simulator', context=c),
         'shop_id': _get_default_shop,
         'user_id': lambda obj, cr, uid, context: uid,
     }
@@ -71,7 +71,7 @@ class sale_simulator(orm.Model):
 
         res = {}
         if partner_id:
-            partner = self.pool.get('res.partner').browse(cr, uid, partner_id, context=context)
+            partner = self.pool['res.partner'].browse(cr, uid, partner_id, context=context)
             if partner:
                 res['pricelist_id'] = partner.property_product_pricelist and partner.property_product_pricelist.id or False
 
@@ -91,7 +91,7 @@ class sale_simulator_line(orm.Model):
         Calcul le prix de revient de chaque composant.
         '''
         res = {}
-        line_obj = self.pool.get('sale.simulator.line.item')
+        line_obj = self.pool['sale.simulator.line.item']
         for line in self.browse(cr, uid, ids, context=context):
             factory_price = line.item_id.factory_price
 
@@ -108,7 +108,7 @@ class sale_simulator_line(orm.Model):
         Calcul du prix de vente.
         '''
         res = {}
-        line_obj = self.pool.get('sale.simulator.line.item')
+        line_obj = self.pool['sale.simulator.line.item']
         for line in self.browse(cr, uid, ids, context=context):
             # Récupération du produit de référence
             retail_price = line.item_id.retail_price
@@ -148,7 +148,7 @@ class sale_simulator_line(orm.Model):
     _defaults = {
         'name': 'OK',
         'quantity': 1.0,
-        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'sale.simulator', context=c),
+        'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'sale.simulator', context=c),
         'quantity': 1.0,
     }
 
@@ -159,8 +159,8 @@ class sale_simulator_line(orm.Model):
         '''
         Check if selected configuration is valid
         '''
-        f_obj = self.pool.get('product.item.feature.line')
-        sl_obj = self.pool.get('sale.simulator.line.item')
+        f_obj = self.pool['product.item.feature.line']
+        sl_obj = self.pool['sale.simulator.line.item']
         config = self.read(cr, uid, ids, context=context)
         if not config:
             raise orm.except_orm(_('Error'), _('Configuration line not found'))
@@ -232,7 +232,7 @@ class sale_simulator_line(orm.Model):
     def onchange_product(self, cr, uid, ids, item_id, name):
         v = {}
         if item_id:
-            product_item = self.pool.get('product.item').browse(cr, uid, item_id)
+            product_item = self.pool['product.item'].browse(cr, uid, item_id)
             v['sale_price'] = product_item.retail_price
             if not name:
                 v['description'] = product_item.name
@@ -294,7 +294,7 @@ class sale_simulator_line_item(orm.Model):
         'name': 'OK',
         'retail_price': 0.0,
         'factory_price': 0.0,
-        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'sale.simulator', context=c),
+        'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'sale.simulator', context=c),
     }
 
     def onchange_item(self, cr, uid, ids, item_id, context=None):
@@ -305,10 +305,10 @@ class sale_simulator_line_item(orm.Model):
             return {}
 
         if context is None:
-            context = self.pool.get('res.users').context_get(cr, uid)
+            context = self.pool['res.users'].context_get(cr, uid)
 
         v = {}
-        item = self.pool.get('product.item').browse(cr, uid, item_id, context=context)
+        item = self.pool['product.item'].browse(cr, uid, item_id, context=context)
         if item:
             v.update({
                 'factory_price': item.factory_price,

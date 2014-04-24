@@ -40,7 +40,7 @@ def _pre_init(self, cr, uid, data, context):
     print 'data: %s' % str(data)
 
     # Recherche si un client est présent sur la fiche de simulation
-    simul_obj = pool.get('sale.simulator')
+    simul_obj = pool['sale.simulator']
     simul = simul_obj.read(cr, uid, data['id'], ['id','partner_id'], context)
     if not simul['partner_id']:
         raise wizard.except_wizard('Error','Pour créer un devis, veuillez créer ou sélectionner un partenaire!')
@@ -59,7 +59,7 @@ def _pre_init(self, cr, uid, data, context):
     _select_fields.clear()
 
     #recherche
-    line_obj = pool.get('sale.simulator.line')
+    line_obj = pool['sale.simulator.line']
     args = [
         ('simul_id','=',data['id']),
         ('order_id','=',False),
@@ -96,13 +96,13 @@ def _make_order(self, cr, uid, data, context):
     sline_nb = data['form']['simul']
 
     pool = pooler.get_pool(cr.dbname)
-    simul_obj = pool.get('sale.simulator')
-    simul_line_obj = pool.get('sale.simulator.line')
-    simul_line_item_obj = pool.get('sale.simulator.line.item')
-    order_obj = pool.get('sale.order')
-    order_line_obj = pool.get('sale.order.line')
-    partner_obj = pool.get('res.partner')
-    product_obj = pool.get('product.product')
+    simul_obj = pool['sale.simulator']
+    simul_line_obj = pool['sale.simulator.line']
+    simul_line_item_obj = pool['sale.simulator.line.item']
+    order_obj = pool['sale.order']
+    order_line_obj = pool['sale.order.line']
+    partner_obj = pool['res.partner']
+    product_obj = pool['product.product']
 
     simul = simul_obj.read(cr, uid, simul_nb)
     if not simul:
@@ -225,7 +225,7 @@ def _make_order(self, cr, uid, data, context):
         proref1['name'] = coder[:64]
     print '_make_order:proref: %s' % str(proref1)
 
-    pil_obj = pool.get('product.item.line')
+    pil_obj = pool['product.item.line']
     niv1_lst = {}
     niv2_lst = {}
 
@@ -274,7 +274,7 @@ def _make_order(self, cr, uid, data, context):
     # *********************************************************************
     #  Add BOM on the main product.
     # *********************************************************************
-    bom_obj = pool.get('mrp.bom')
+    bom_obj = pool['mrp.bom']
 
     proref_bom1 = {
         'name': proname,

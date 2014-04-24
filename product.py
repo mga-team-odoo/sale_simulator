@@ -48,7 +48,7 @@ class product_item_feature(orm.Model):
 
     _defaults = {
         'active': True,
-        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'product.item.feature', context=c),
+        'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'product.item.feature', context=c),
     }
 
     def create(self, cr, uid, values, context=None):
@@ -88,7 +88,7 @@ class product_item(orm.Model):
         Compute all products standard price.
         TODO: Maybe use a pricelist, to compute purchase price
         '''
-        line_obj = self.pool.get('product.item.line')
+        line_obj = self.pool['product.item.line']
         res = {}
         for id in ids:
             std_price = 0.0
@@ -124,7 +124,7 @@ class product_item(orm.Model):
 
     _defaults = {
         'active': True,
-        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'product.item', context=c),
+        'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'product.item', context=c),
         'type': 'p',
         'sequence': 10,
         'bom_type': -1,
@@ -165,7 +165,7 @@ class product_item_line(orm.Model):
     }
 
     _defaults = {
-        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'product.item', context=c),
+        'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'product.item', context=c),
         'quantity': 1.0
     }
 
@@ -175,7 +175,7 @@ class product_item_line(orm.Model):
         '''
         v = {}
         if product_id:
-            product = self.pool.get('product.product').browse(cr, uid, product_id, context=context)
+            product = self.pool['product.product'].browse(cr, uid, product_id, context=context)
             if product:
                 v['uom_id'] = product.uom_id.id
             v['quantity'] = 1
@@ -199,7 +199,7 @@ class product_item_feature_line(orm.Model):
     }
 
     _defaults = {
-        'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'product.item', context=c),
+        'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'product.item', context=c),
     }
 
 
