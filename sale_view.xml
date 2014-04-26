@@ -44,14 +44,16 @@
                                 <button string="Create Sale order"
                                     icon="gtk-justify-fill"
                                     type="object" 
-                                    name="create_sale_order"/>
+                                    name="create_sale_order"
+                                    attrs="{'invisible': [('order_id','!=', False)]}"/>
                                 <field name="order_id" readonly="1"/>
                             </tree>
                             <form string="Lines" version="7.0">
                                 <header>
                                     <button name="check_config" string="Check" type="object"/>
                                     <button name="button_dummy" string="Compute" type="object"/> 
-                                    <button string="Create Sale Order" icon="gtk-justofy-fill" type="object" name="create_sale_order"/>
+                                    <button string="Create Sale Order" icon="gtk-justofy-fill" type="object" name="create_sale_order"
+                                        attrs="{'invisible': [('order_id','!=', False)]}"/>
                                 </header>
                                 <sheet>
                                     <group colspan="4">
