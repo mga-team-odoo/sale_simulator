@@ -111,7 +111,7 @@ class product_item(orm.Model):
         'retail_price': fields.float('Retail price'),
         'capacity_start': fields.float('Capacity'),
         'sequence': fields.integer('Sequence'),
-        'bom_type': fields.selection(BOM_STEP, 'Sequence', required=True),
+        'bom_type': fields.selection(BOM_STEP, 'BOM type', required=True),
         'sale_taxes_id': fields.many2many('account.tax', 'sale_simulator_taxes_rel', 'item_id', 'tax_id', 'Customer taxes'),
         'categ_id': fields.many2one('product.category', 'Category', required=True),
         'uom_id': fields.many2one('product.uom', 'Unit', required=True),
@@ -120,6 +120,8 @@ class product_item(orm.Model):
         'company_id': fields.many2one('res.company', 'Company', required=True),
         'supplier_id': fields.many2one('res.partner', 'Supplier', help="Select the manufacturer if you use subcontracting,\nleave empty if you don't ue it"),
         'product_company_id': fields.many2one('res.company', 'Company', help='Company to create the main product,\nleave empty to create in the current company'),
+        'routing_id': fields.many2one('mrp.routing', 'Routing', help='Select routing for this BOM'),
+
     }
 
     _defaults = {
@@ -129,6 +131,7 @@ class product_item(orm.Model):
         'sequence': 10,
         'bom_type': -1,
         'supplier_id': False,
+        'routing_id': False,
     }
 
     def price_compute(self, cr, uid, ids, context=None):

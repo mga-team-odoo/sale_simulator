@@ -30,6 +30,7 @@
 from openerp.osv import orm
 from openerp.osv import fields
 from openerp.tools.translate import _
+import time
 
 
 class sale_simulator(orm.Model):
@@ -76,6 +77,19 @@ class sale_simulator(orm.Model):
                 res['pricelist_id'] = partner.property_product_pricelist and partner.property_product_pricelist.id or False
 
         return {'value': res}
+
+    def copy(self, cr, uid, id, default=None, context=None):
+        """
+        When we duplicate the simulation, we just create a new number
+        """
+        if context is None:
+            context = {}
+
+        if default is None:
+            default = {}
+
+        default['name'] = self.pool['ir.sequence'].get(cr, uid, 'sale.simulator')
+        return super(sale_simulator, self).copy(cr, uid, id, default, context=context)
 
 
 class sale_simulator_line(orm.Model):
@@ -151,6 +165,19 @@ class sale_simulator_line(orm.Model):
         'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'sale.simulator', context=c),
         'quantity': 1.0,
     }
+
+    def copy(self, cr, uid, id, default=None, context=None):
+        """
+        We remove the sale order reference
+        """
+        if context is None:
+            context = {}
+
+        if default is None:
+            default = {}
+
+        default['order_id'] = False
+        return super(sale_simulator_line, self).copy(cr, uid, id, default, context=context)
 
     def button_dummy(self, cr, uid, ids, context=None):
         return True
@@ -250,6 +277,107 @@ class sale_simulator_line(orm.Model):
             concat += line.item_id2.code
         return prefix + concat
 
+    def _assembly_bom_from_line(self, cr, uid, line, context=None):
+        """
+        Retrieve all products to compose the BOM
+
+        :param line: Browse record from the current line
+        :type  line: openerp.osv.orm.browse
+        :return: List of tuples
+        :rtype: list
+        """
+        tmp_list = {}
+
+        # first we retrieve module from base module
+        for p in line.item_id.item_ids:
+            if p.product_id.id in tmp_list.keys():
+                tmp_list[p.product_id.id] = [tmp_list[p.product_id.id][0] + p.quantity, p.uom_id.id]
+            else:
+                tmp_list[p.product_id.id] = [p.quantity, p.uom_id.id]
+
+        # Loop on all optional modules
+        for opt in line.line_ids:
+            for m in opt.item_id2.item_ids:
+                if m.product_id.id in tmp_list.keys():
+                    tmp_list[m.product_id.id] = [tmp_list[m.product_id.id][0] + m.quantity, m.uom_id.id]
+                else:
+                    tmp_list[m.product_id.id] = [m.quantity, m.uom_id.id]
+
+        res = []
+        for p_id in tmp_list:
+            if tmp_list[p_id][0] > 0.0:
+                res.append((p_id, tmp_list[p_id][0], tmp_list[p_id][1]))
+
+        return res
+
+    def create_product_with_bom(self, cr, uid, id, procode='', context=None):
+        """
+        Create the final product and BOM
+        :param id: ID of the line
+        :type  id: integer
+        :param procode: Code of the final product
+        :type  procode: str
+        :return: ID of the final product
+        :rtype: integer
+        """
+        product_obj = self.pool['product.product']
+        product_ids = product_obj.search(cr, uid, [('default_code', '=', procode)], offset=0, limit=None, order=None, context=context)
+        if product_ids:
+            # The product already exists, we return the known id
+            return product_ids[0]
+
+        line = self.browse(cr, uid, id, context=context)
+        final = {
+            'name': line.description,
+            'categ_id': line.item_id.categ_id.id,
+            'taxes_id': [(6, 0, [t.id for t in line.item_id.sale_taxes_id])],
+            'sale_ok': True,
+            'purchase_ok': False,
+            'list_price': line.retail_price,
+            'standard_price': line.factory_price,
+            'procure_method': 'make_to_order',
+            'supply_method': 'produce',
+            'uom_id': line.item_id.uom_id.id,
+            'uom_po_id': line.item_id.uom_id.id,
+            'description_sale': line.item_id.notes,
+            'type': 'product',
+        }
+        if line.item_id.company_id:
+            final['company_id'] = line.item_id.company_id.id
+
+        product_id = product_obj.create(cr, uid, final, context=context)
+        bom = {
+            'product_id': product_id,
+            'product_qty': 1.0,
+            'product_uom': line.item_id.uom_id.id,
+            'type': line.item_id.bom_type == -1 and 'phantom' or 'normal',
+            'routing_id': line.item_id.routing_id and line.item_id.routing_id.id or False,
+            'bom_lines': [],
+        }
+        if line.item_id.company_id:
+            bom['company_id'] = line.item_id.company_id.id
+
+        # The assembly_bom_from_line return a list of tuple composed with
+        # (product ID, Quantity, Unit of measure ID)
+        for i in self._assembly_bom_from_line(cr, uid, line, context=context):
+            bom['bom_lines'].append((0, 0, {
+                'product_id': i[0],
+                'product_qty': i[1],
+                'product_uom': i[2],
+            }))
+
+        bom_id = self.pool['mrp.bom'].create(cr, uid, bom, context=context)
+
+        # We supplier is specify we must create  an entry at the supplier form
+        if line.item_id.supplier_id:
+            supplier_form = {
+                'name': line.item_id.supplier_id.id,
+                'product_uom': line.item_id.uom_id.id,
+            }
+            product_obj.write(cr, uid, [product_id], {'seller_ids': [(0, 0, supplier_form)]}, context=context)
+
+        return product_id
+
     def create_sale_order(self, cr, uid, ids, context=None):
         """
         Create the sale order and the product with the BOM structure
@@ -257,13 +385,46 @@ class sale_simulator_line(orm.Model):
         if len(ids) > 1:
             raise orm.except_orm(_('Error'), _('You can only create one sale order at the time!'))
 
-        simul = self.browse(cr, uid, ids[0], context=context)
-        if not simul:
+        line = self.browse(cr, uid, ids[0], context=context)
+        if not line:
             raise orm.except_orm(_('Error'), _('Line not found, please reload your browser!'))
 
-        # Retrieve base module to check
-        print self._compute_product_code(cr, uid, simul, context=context)
+        if not line.simul_id.partner_id:
+            raise orm.except_orm(_('Error'), _('A partner is necessary before create a sale order!'))
 
+        # Retrieve base module to check
+        final_code = self._compute_product_code(cr, uid, line, context=context)
+
+        # We create the product and BOM associated
+        product_id = self.create_product_with_bom(cr, uid, ids[0], procode=final_code, context=context)
+
+        # Search for invoicing and delevrey addresses
+        addr = self.pool['res.partner'].address_get(cr, uid, [line.simul_id.partner_id.id], ['delivery', 'invoice', 'contact'], context=context)
+
+        # Create a sale order with one line included the final product
+        sorder = {
+            'origin': line.name,
+            'date_order': time.strftime('%Y-%m-%d'),
+            'partner_id': line.simul_id.partner_id.id,
+            'partner_invoice_id': addr['invoice'],
+            'partner_order_id': addr['contact'],
+            'partner_shipping_id': addr['delivery'],
+            'pricelist_id': line.simul_id.pricelist_id.id,
+            'user_id': line.simul_id.user_id.id,
+            'shop_id': line.simul_id.shop_id.id,
+            'order_line': [(0, 0,
+                            {
+                                'product_id': product_id,
+                                'name': line.description,
+                                'product_uom_qty': line.quantity,
+                                'product_uom': line.item_id.uom_id.id,
+                                'tax_id': [(6, 0, [t.id for t in line.item_id.sale_taxes_id])],
+                                'price_unit': line.sale_price,
+                            })],
+        }
+
+        order_id = self.pool['sale.order'].create(cr, uid, sorder, context=context)
+        self.write(cr, uid, ids, {'order_id': order_id}, context=context)
         return True
 
 
