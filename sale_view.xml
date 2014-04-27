@@ -51,6 +51,11 @@
                                     type="object" 
                                     name="create_sale_order"
                                     attrs="{'invisible': [('order_id','!=', False)]}"/>
+                                <button string="Cancel Sale order"
+                                    icon="gtk-cancel"
+                                    type="object" 
+                                    name="cancel_sale_order"
+                                    attrs="{'invisible': [('order_id','=', False)]}"/>
                                 <field name="order_id" readonly="1"/>
                             </tree>
                             <form string="Lines" version="7.0">
@@ -60,6 +65,8 @@
                                     <button string="Create Sale Order" icon="gtk-justofy-fill" type="object" name="create_sale_order"
                                         attrs="{'invisible': [('order_id','!=', False)]}"/>
                                     <button string="Compute price" icon="gtk-ok" type="object" name="compute_price"/>
+                                    <button string="Cancel Sale order" icon="gtk-cancel" type="object" name="cancel_sale_order"
+                                    attrs="{'invisible': [('order_id','=', False)]}"/>
                                 </header>
                                 <sheet>
                                     <group colspan="4">

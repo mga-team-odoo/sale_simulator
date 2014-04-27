@@ -205,7 +205,7 @@ class sale_simulator_line(orm.Model):
             cost_price += product_obj.browse(cr, uid, i[0], context=context).standard_price or 0.0
             sale_price += pricelist_obj.price_get(cr, uid, [pricelist_id],
                                                   i[0], i[1] or 1.0, partner_id,
-                                                  {'uom': i[2], 'date': date_order,}
+                                                  {'uom': i[2], 'date': date_order}
                                                  )[pricelist_id]
 
         new_prices = {
@@ -464,6 +464,18 @@ class sale_simulator_line(orm.Model):
         order_id = self.pool['sale.order'].create(cr, uid, sorder, context=context)
         self.write(cr, uid, ids, {'order_id': order_id}, context=context)
         return True
+
+    def cancel_sale_order(self, cr, uid, ids, context=None):
+        """
+        Cancel the sale order if not confirm
+        """
+        line = self.browse(cr, uid, ids[0], context=context)
+        if not line.order_id:
+            raise orm.except_orm(_('Error'), _('Oups you may not be here!\nNo sale order to cancel'))
+
+        self.pool['sale.order'].action_cancel(cr, uid, [line.order_id.id], context=context)
+
+        return self.write(cr, uid, [line.id], {'order_id': False}, context=context)
 
 
 class sale_simulator_line_item(orm.Model):
