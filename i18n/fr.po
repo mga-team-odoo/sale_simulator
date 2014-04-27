@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-06 11:15+0000\n"
-"PO-Revision-Date: 2014-02-06 12:19+0100\n"
+"POT-Creation-Date: 2014-04-27 18:48+0000\n"
+"PO-Revision-Date: 2014-04-27 20:57+0100\n"
 "Last-Translator: Christophe CHAUVET <christophe.chauvet@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,14 +15,259 @@ msgstr ""
 "X-Generator: Translate Toolkit 1.5.3\n"
 
 #. module: sale_simulator
+#: help:product.item,supplier_id:0
+msgid ""
+"Select the manufacturer if you use subcontracting,\n"
+"leave empty if you don't ue it"
+msgstr ""
+"Sélectionner le fabricant si vous utiliser la sous traitance.\n"
+"Laisser le vide si vous ne l'utiliser pas"
+
+#. module: sale_simulator
+#: view:product.item:0
+#: view:sale.simulator:0
+msgid "Compute price"
+msgstr "Calculer le prix"
+
+#. module: sale_simulator
+#: selection:product.item,bom_type:0
+msgid "BOM"
+msgstr "Nomenclature"
+
+#. module: sale_simulator
+#: field:product.item,supplier_id:0
+msgid "Supplier"
+msgstr "Fournisseur"
+
+#. module: sale_simulator
+#: field:sale.simulator,name:0
+msgid "Simulation number"
+msgstr "Numéro de configuration"
+
+#. module: sale_simulator
+#: field:product.item,company_id:0
+#: field:product.item,product_company_id:0
+#: field:product.item.feature,company_id:0
+#: field:product.item.feature.line,company_id:0
+#: field:product.item.line,company_id:0
+#: field:sale.simulator,company_id:0
+#: field:sale.simulator.line,company_id:0
+#: field:sale.simulator.line.item,company_id:0
+msgid "Company"
+msgstr "Société"
+
+#. module: sale_simulator
+#: model:ir.model,name:sale_simulator.model_product_item_feature_line
+msgid "Product item feature line"
+msgstr "Caractéristique de ligne de produit"
+
+#. module: sale_simulator
+#: field:product.item,retail_price:0
+#: field:sale.simulator.line,retail_price:0
+#: field:sale.simulator.line.item,retail_price:0
+msgid "Retail price"
+msgstr "Prix de vente recommandé"
+
+#. module: sale_simulator
+#: field:sale.simulator,pricelist_id:0
+msgid "Price List"
+msgstr "Liste de prix"
+
+#. module: sale_simulator
+#: model:product.item.feature,name:sale_simulator.feature_pci
+msgid "PCI Connector"
+msgstr "Connecteur PCI"
+
+#. module: sale_simulator
+#: view:product.item:0
+#: field:product.item,notes:0
+msgid "Notes"
+msgstr "Notes"
+
+#. module: sale_simulator
+#: view:product.item:0
+msgid "Products"
+msgstr "Produits"
+
+#. module: sale_simulator
+#: model:ir.ui.menu,name:sale_simulator.menu_sale_simulator_all
+msgid "All Simulations"
+msgstr "Toutes les configurations"
+
+#. module: sale_simulator
+#: field:sale.simulator,shop_id:0
+msgid "Shop"
+msgstr "Magasin"
+
+#. module: sale_simulator
+#: model:ir.ui.menu,name:sale_simulator.menu_simulator
+#: model:ir.ui.menu,name:sale_simulator.menu_simulator_config
+msgid "Simulator"
+msgstr "Configurateur"
+
+#. module: sale_simulator
+#: field:product.item.feature.line,global:0
+msgid "Global"
+msgstr "Générale"
+
+#. module: sale_simulator
+#: model:product.item.feature,name:sale_simulator.feature_power
+msgid "Power supply"
+msgstr "Alimentation"
+
+#. module: sale_simulator
+#: model:ir.actions.act_window,name:sale_simulator.action_sale_simulator_all
+#: model:ir.actions.act_window,name:sale_simulator.action_sale_simulator_my
+#: model:ir.model,name:sale_simulator.model_sale_simulator
+#: field:sale.simulator.line,simul_id:0
+msgid "Sale simulator"
+msgstr "Configurateur de vente"
+
+#. module: sale_simulator
+#: help:res.partner.category,discount:0
+msgid "If different to 0, it control max valueof discount(%) and block if greather"
+msgstr "Si différente de 0, cela contrôle la valeur maximale de la remise et la bloque si dépassement."
+
+#. module: sale_simulator
+#: help:product.item.line,list_price:0
+msgid "Base price to compute the customer price. Sometimes called the catalog price."
+msgstr "Prix de base pour calculer le prix client. Quelque fois appelé prix catalogue."
+
+#. module: sale_simulator
+#: field:sale.simulator,partner_id:0
+msgid "Partner"
+msgstr "Partenaire"
+
+#. module: sale_simulator
+#: model:ir.actions.act_window,name:sale_simulator.action_product_item_feature
+msgid "Item Feature"
+msgstr "Caractéristique"
+
+#. module: sale_simulator
+#: model:ir.ui.menu,name:sale_simulator.menu_sale_simulator_my
+msgid "My Simulations"
+msgstr "Mes configurations"
+
+#. module: sale_simulator
+#: view:sale.simulator:0
+msgid "Check"
+msgstr "Vérifier"
+
+#. module: sale_simulator
+#: help:product.item.line,standard_price:0
+msgid "Cost price of the product used for standard stock valuation in accounting and used as a base price on purchase orders."
+msgstr "Prix de revient du produit utiliser pour la valorisation de stock en comptabilité et utilisé comme prix de base pour les commandes d'achats."
+
+#. module: sale_simulator
+#: field:product.item,routing_id:0
+msgid "Routing"
+msgstr "Gammes"
+
+#. module: sale_simulator
+#: field:product.item,type:0
+msgid "Type"
+msgstr "Type"
+
+#. module: sale_simulator
+#: code:addons/sale_simulator/sale.py:271
+#, python-format
+msgid "Cannot print error message on the line"
+msgstr "Impossible d'imprimer le message d'erreur sur la ligne"
+
+#. module: sale_simulator
+#: view:product.item:0
+msgid "Sale taxes"
+msgstr "Taxes de vente"
+
+#. module: sale_simulator
+#: code:addons/sale_simulator/sale.py:426
+#, python-format
+msgid "A partner is necessary before create a sale order!"
+msgstr "Un partenaire est nécessaire pour créer un commande!"
+
+#. module: sale_simulator
+#: help:product.item,routing_id:0
+msgid "Select routing for this BOM"
+msgstr "Sélectionner une gamme pour cette nomenclature"
+
+#. module: sale_simulator
+#: model:product.item.feature,name:sale_simulator.feature_hdd
+msgid "Hard disk"
+msgstr "Disque dur"
+
+#. module: sale_simulator
+#: model:res.groups,name:sale_simulator.group_sale_configurator
+msgid "Salesman configurator"
+msgstr "Configurteur Vendeur "
+
+#. module: sale_simulator
+#: code:addons/sale_simulator/sale.py:193
+#, python-format
+msgid "You can only compute one line at the time!"
+msgstr "Vous ne pouvez calculer qu'une ligne à la fois!"
+
+#. module: sale_simulator
+#: view:sale.simulator:0
+#: field:sale.simulator,line_ids:0
+msgid "Lines"
+msgstr "Lignes"
+
+#. module: sale_simulator
+#: model:ir.model,name:sale_simulator.model_sale_simulator_line_item
+msgid "Sale simulator line item"
+msgstr "Élément de la ligne"
+
+#. module: sale_simulator
+#: field:sale.simulator.line,margin:0
+msgid "Margin"
+msgstr "Marge"
+
+#. module: sale_simulator
+#: field:product.item,number:0
+msgid "Product number"
+msgstr "Numéro du produit"
+
+#. module: sale_simulator
+#: model:ir.model,name:sale_simulator.model_sale_simulator_line
+#: field:sale.simulator.line.item,line_id:0
+msgid "Sale simulator line"
+msgstr "Ligne du configurateur"
+
+#. module: sale_simulator
+#: view:product.item:0
+#: field:product.item,item_ids:0
+msgid "Item line"
+msgstr "Ligne d'élément"
+
+#. module: sale_simulator
+#: constraint:res.partner.category:0
+msgid "Erreur la valeur doit etre comprise entre 0 et 100"
+msgstr "Erreur la valeur doit etre comprise entre 0 et 100"
+
+#. module: sale_simulator
+#: help:product.item,factory_price:0
+msgid "Price include purchase price and others costs"
+msgstr "Prix inclus le prix d'achat et les autres coûts"
+
+#. module: sale_simulator
+#: model:ir.model,name:sale_simulator.model_product_item_line
+msgid "Product Item Line"
+msgstr "Ligne de produit"
+
+#. module: sale_simulator
+#: field:sale.simulator.line,message:0
+msgid "Message"
+msgstr "Message"
+
+#. module: sale_simulator
+#: view:sale.simulator:0
+msgid "Create Sale Order"
+msgstr "Créer une commande"
+
+#. module: sale_simulator
 #: field:product.item,categ_id:0
 msgid "Category"
 msgstr "Catégorie"
-
-#. module: sale_simulator
-#: model:ir.ui.menu,name:sale_simulator.menu_product_item
-msgid "Product Items"
-msgstr "Éléments de base"
 
 #. module: sale_simulator
 #: field:sale.simulator.line,order_id:0
@@ -35,9 +280,155 @@ msgid "Capacity"
 msgstr "Capacité"
 
 #. module: sale_simulator
-#: field:sale.simulator,user_id:0
-msgid "Salesman"
-msgstr "Vendeur"
+#: field:product.item,sale_taxes_id:0
+msgid "Customer taxes"
+msgstr "Taxes clients"
+
+#. module: sale_simulator
+#: help:sale.simulator,shop_id:0
+msgid "Select shop to convert this sale as sale order"
+msgstr "Sélectionner le magasin pour convertir cette vente en commande"
+
+#. module: sale_simulator
+#: view:sale.simulator:0
+msgid "Cancel Sale order"
+msgstr "Annuler la commande"
+
+#. module: sale_simulator
+#: model:ir.actions.act_window,name:sale_simulator.action_product_item
+#: view:product.item:0
+#: field:product.item,p_item_id:0
+#: field:sale.simulator.line,item_id:0
+#: field:sale.simulator.line.item,item_id2:0
+msgid "Product Item"
+msgstr "Élément de base"
+
+#. module: sale_simulator
+#: selection:product.item,bom_type:0
+msgid "Normal"
+msgstr "Normale"
+
+#. module: sale_simulator
+#: code:addons/sale_simulator/sale.py:419
+#, python-format
+msgid "You can only create one sale order at the time!"
+msgstr "Vous ne pouvez créer qu'une seule commande à la fois!"
+
+#. module: sale_simulator
+#: field:sale.simulator.line,discount:0
+msgid "Discount"
+msgstr "Remise"
+
+#. module: sale_simulator
+#: view:product.item:0
+#: field:product.item,active:0
+#: field:product.item.feature,active:0
+msgid "Active"
+msgstr "Actif"
+
+#. module: sale_simulator
+#: field:product.item,factory_price:0
+#: field:sale.simulator.line,factory_price:0
+msgid "Factory price"
+msgstr "Prix de revient"
+
+#. module: sale_simulator
+#: code:addons/sale_simulator/sale.py:474
+#, python-format
+msgid ""
+"Oups you may not be here!\n"
+"No sale order to cancel"
+msgstr ""
+"Oups vous ne devriez pas être iic!\n"
+"Pas de commande a annuler"
+
+#. module: sale_simulator
+#: code:addons/sale_simulator/sale.py:193
+#: code:addons/sale_simulator/sale.py:226
+#: code:addons/sale_simulator/sale.py:249
+#: code:addons/sale_simulator/sale.py:271
+#: code:addons/sale_simulator/sale.py:419
+#: code:addons/sale_simulator/sale.py:423
+#: code:addons/sale_simulator/sale.py:426
+#: code:addons/sale_simulator/sale.py:474
+#, python-format
+msgid "Error"
+msgstr "Erreur"
+
+#. module: sale_simulator
+#: model:ir.model,name:sale_simulator.model_res_partner_category
+msgid "Partner Categories"
+msgstr "Catégories de partenaire"
+
+#. module: sale_simulator
+#: field:product.item.feature.line,quantity:0
+#: field:product.item.line,quantity:0
+#: field:sale.simulator.line,quantity:0
+msgid "Quantity"
+msgstr "Quantité"
+
+#. module: sale_simulator
+#: field:product.item,code:0
+#: field:product.item.feature,code:0
+msgid "Code"
+msgstr "Code"
+
+#. module: sale_simulator
+#: field:sale.simulator.line.item,factory_price:0
+msgid "Factory Price"
+msgstr "Prix de revient"
+
+#. module: sale_simulator
+#: view:product.item:0
+msgid "Features"
+msgstr "Caractéristiques"
+
+#. module: sale_simulator
+#: code:addons/sale_simulator/sale.py:423
+#, python-format
+msgid "Line not found, please reload your browser!"
+msgstr "Ligne non trouvé, veuillez recharger votre navigateur!"
+
+#. module: sale_simulator
+#: model:res.groups,name:sale_simulator.group_manager_configurator
+msgid "Manager configurator"
+msgstr "Configurateur responsable"
+
+#. module: sale_simulator
+#: view:sale.simulator:0
+msgid "Number"
+msgstr "Numéro"
+
+#. module: sale_simulator
+#: view:product.item:0
+msgid "General"
+msgstr "Général"
+
+#. module: sale_simulator
+#: field:sale.simulator,fiscal_position:0
+msgid "Fiscal Position"
+msgstr "Position fiscale"
+
+#. module: sale_simulator
+#: model:ir.ui.menu,name:sale_simulator.menu_simulator_item
+msgid "Module Items"
+msgstr "Modules complémentaires"
+
+#. module: sale_simulator
+#: field:product.item,bom_type:0
+msgid "BOM type"
+msgstr "Type de nomenclature"
+
+#. module: sale_simulator
+#: field:product.item,uom_id:0
+#: field:product.item.line,uom_id:0
+msgid "Unit"
+msgstr "Unité"
+
+#. module: sale_simulator
+#: model:ir.ui.menu,name:sale_simulator.menu_product_item
+msgid "Product Items"
+msgstr "Éléments de base"
 
 #. module: sale_simulator
 #: model:ir.model,name:sale_simulator.model_product_item
@@ -45,14 +436,15 @@ msgid "Product item"
 msgstr "Élément de base"
 
 #. module: sale_simulator
-#: model:product.item.feature,name:sale_simulator.feature_power
-msgid "Power supply"
-msgstr "Alimentation"
+#: model:ir.model,name:sale_simulator.model_product_item_feature
+msgid "Product feature list"
+msgstr "Liste des caractéristiques produits"
 
 #. module: sale_simulator
-#: model:res.groups,name:sale_simulator.group_manager_configurator
-msgid "Manager configurator"
-msgstr "Configurateur responsable"
+#: code:addons/sale_simulator/sale.py:226
+#, python-format
+msgid "Configuration line not found"
+msgstr "Ligne de configuration non trouvé"
 
 #. module: sale_simulator
 #: field:product.item,feature_ids:0
@@ -61,24 +453,15 @@ msgid "Feature"
 msgstr "Fonctionnalité"
 
 #. module: sale_simulator
-#: view:sale.simulator:0
-msgid "Number"
-msgstr "Numéro"
-
-#. module: sale_simulator
-#: help:sale.simulator,shop_id:0
-msgid "Select shop to convert this sale as sale order"
-msgstr "Sélectionner le magasin pour convertir cette vente en commande"
+#: code:addons/sale_simulator/sale.py:249
+#, python-format
+msgid "No module found for %d !"
+msgstr "Pas de module trouvé pour %d !"
 
 #. module: sale_simulator
 #: view:product.item:0
 msgid "Other"
 msgstr "Autre"
-
-#. module: sale_simulator
-#: selection:product.item,type:0
-msgid "Module"
-msgstr "Module"
 
 #. module: sale_simulator
 #: model:product.item.feature,name:sale_simulator.feature_memory
@@ -91,19 +474,9 @@ msgid "Compute"
 msgstr "Calculer"
 
 #. module: sale_simulator
-#: field:product.item,type:0
-msgid "Type"
-msgstr "Type"
-
-#. module: sale_simulator
 #: field:res.partner.category,discount:0
 msgid "Discount Control"
 msgstr "Contrôle des remises"
-
-#. module: sale_simulator
-#: view:product.item:0
-msgid "Sale taxes"
-msgstr "Taxes de vente"
 
 #. module: sale_simulator
 #: selection:product.item,type:0
@@ -117,111 +490,15 @@ msgid "Description"
 msgstr "Descriptif"
 
 #. module: sale_simulator
-#: model:ir.actions.act_window,name:sale_simulator.action_product_item
-#: view:product.item:0
-#: field:product.item,p_item_id:0
-#: field:sale.simulator.line,item_id:0
-#: field:sale.simulator.line.item,item_id2:0
-msgid "Product Item"
-msgstr "Élément de base"
-
-#. module: sale_simulator
 #: view:product.item.feature:0
 #: view:sale.simulator:0
 msgid "Feature item"
 msgstr "Caractéristique"
 
 #. module: sale_simulator
-#: field:sale.simulator.line,margin:0
-msgid "Margin"
-msgstr "Marge"
-
-#. module: sale_simulator
-#: field:product.item,company_id:0
-#: field:product.item.feature,company_id:0
-#: field:product.item.feature.line,company_id:0
-#: field:sale.simulator,company_id:0
-#: field:sale.simulator.line,company_id:0
-#: field:sale.simulator.line.item,company_id:0
-msgid "Company"
-msgstr "Société"
-
-#. module: sale_simulator
-#: model:ir.model,name:sale_simulator.model_product_item_feature_line
-msgid "Product item feature line"
-msgstr ""
-
-#. module: sale_simulator
-#: field:product.item,retail_price:0
-#: field:sale.simulator.line,retail_price:0
-#: field:sale.simulator.line.item,retail_price:0
-msgid "Retail price"
-msgstr "Prix de vente recommandé"
-
-#. module: sale_simulator
-#: model:product.item.feature,name:sale_simulator.feature_pci
-msgid "PCI Connector"
-msgstr "Connecteur PCI"
-
-#. module: sale_simulator
-#: field:sale.simulator.line,discount:0
-msgid "Discount"
-msgstr "Remise"
-
-#. module: sale_simulator
-#: field:product.item.feature.line,quantity:0
-#: field:product.item.line,quantity:0
-#: field:sale.simulator.line,quantity:0
-msgid "Quantity"
-msgstr "Quantité"
-
-#. module: sale_simulator
-#: field:sale.simulator,name:0
-msgid "Simulation number"
-msgstr "Numéro de configuration"
-
-#. module: sale_simulator
-#: model:ir.model,name:sale_simulator.model_product_item_feature
-msgid "Product feature list"
-msgstr ""
-
-#. module: sale_simulator
-#: view:product.item:0
-#: field:product.item,active:0
-#: field:product.item.feature,active:0
-msgid "Active"
-msgstr "Actif"
-
-#. module: sale_simulator
-#: model:ir.model,name:sale_simulator.model_product_item_line
-msgid "Product Item Line"
-msgstr ""
-
-#. module: sale_simulator
-#: model:product.item.feature,name:sale_simulator.feature_hdd
-msgid "Hard disk"
-msgstr "Disque dur"
-
-#. module: sale_simulator
-#: field:sale.simulator,pricelist_id:0
-msgid "Price List"
-msgstr "Liste de prix"
-
-#. module: sale_simulator
-#: field:sale.simulator,shop_id:0
-msgid "Shop"
-msgstr "Magasin"
-
-#. module: sale_simulator
-#: model:res.groups,name:sale_simulator.group_sale_configurator
-msgid "Salesman configurator"
-msgstr "Configurteur Vendeur "
-
-#. module: sale_simulator
-#: field:product.item,factory_price:0
-#: field:sale.simulator.line,factory_price:0
-msgid "Factory price"
-msgstr "Prix de revient"
+#: selection:product.item,bom_type:0
+msgid "Kit"
+msgstr "Kit"
 
 #. module: sale_simulator
 #: view:product.item:0
@@ -238,21 +515,10 @@ msgid "Sale price"
 msgstr "Prix de vente"
 
 #. module: sale_simulator
+#: model:ir.actions.act_window,name:sale_simulator.product_item_module
 #: view:product.item:0
-#: field:product.item,notes:0
-msgid "Notes"
-msgstr "Notes"
-
-#. module: sale_simulator
-#: view:sale.simulator:0
-#: field:sale.simulator,line_ids:0
-msgid "Lines"
-msgstr "Lignes"
-
-#. module: sale_simulator
-#: field:product.item,sale_taxes_id:0
-msgid "Customer taxes"
-msgstr "Taxes clients"
+msgid "Modules"
+msgstr "Modules"
 
 #. module: sale_simulator
 #: field:product.item.feature.line,item_id:0
@@ -263,40 +529,13 @@ msgid "Item"
 msgstr "Élement"
 
 #. module: sale_simulator
-#: selection:product.item,sequence:0
-msgid "First step"
-msgstr "Première étape"
-
-#. module: sale_simulator
-#: view:product.item:0
-msgid "Products"
-msgstr "Produits"
-
-#. module: sale_simulator
-#: model:ir.ui.menu,name:sale_simulator.menu_sale_simulator_all
-msgid "All Simulations"
-msgstr "Toutes les configurations"
-
-#. module: sale_simulator
-#: field:sale.simulator,partner_id:0
-msgid "Partner"
-msgstr "Partenaire"
-
-#. module: sale_simulator
-#: model:ir.model,name:sale_simulator.model_res_partner_category
-msgid "Partner Categories"
-msgstr "Catégories de partenaire"
-
-#. module: sale_simulator
-#: selection:product.item,sequence:0
-msgid "Kit / Phantom"
-msgstr "Kit / Fantôme"
-
-#. module: sale_simulator
-#: model:ir.ui.menu,name:sale_simulator.menu_simulator
-#: model:ir.ui.menu,name:sale_simulator.menu_simulator_config
-msgid "Simulator"
-msgstr "Configurateur"
+#: help:product.item,product_company_id:0
+msgid ""
+"Company to create the main product,\n"
+"leave empty to create in the current company"
+msgstr ""
+"Société pour créer le produit principal,\n"
+"laisser vide pour le créer dans la société actuelle"
 
 #. module: sale_simulator
 #: view:sale.simulator:0
@@ -319,27 +558,6 @@ msgid "Salesman user"
 msgstr "Vendeur"
 
 #. module: sale_simulator
-#: field:product.item,number:0
-msgid "Product number"
-msgstr "Numéro du produit"
-
-#. module: sale_simulator
-#: field:product.item,code:0
-#: field:product.item.feature,code:0
-msgid "Code"
-msgstr "Code"
-
-#. module: sale_simulator
-#: field:sale.simulator.line.item,factory_price:0
-msgid "Factory Price"
-msgstr "Prix de revient"
-
-#. module: sale_simulator
-#: view:product.item:0
-msgid "Features"
-msgstr "Caractéristiques"
-
-#. module: sale_simulator
 #: model:ir.actions.act_window,name:sale_simulator.action_module_item
 #: view:product.item:0
 msgid "Module Item"
@@ -351,101 +569,36 @@ msgid "Sequence"
 msgstr "Séquence"
 
 #. module: sale_simulator
-#: model:ir.model,name:sale_simulator.model_sale_simulator_line
-#: field:sale.simulator.line.item,line_id:0
-msgid "Sale simulator line"
-msgstr "Ligne du configurateur"
+#: field:product.item.line,list_price:0
+msgid "Sale Price"
+msgstr "Prix de vente"
 
 #. module: sale_simulator
-#: model:ir.ui.menu,name:sale_simulator.menu_sale_simulator_my
-msgid "My Simulations"
-msgstr "Mes configurations"
+#: field:sale.simulator,user_id:0
+msgid "Salesman"
+msgstr "Vendeur"
 
 #. module: sale_simulator
-#: field:product.item.feature.line,global:0
-msgid "Global"
-msgstr "Générale"
+#: selection:product.item,type:0
+msgid "Module"
+msgstr "Module"
 
 #. module: sale_simulator
-#: view:product.item:0
-#: field:product.item,item_ids:0
-msgid "Item line"
-msgstr "Ligne d'élément"
-
-#. module: sale_simulator
-#: constraint:res.partner.category:0
-msgid "Erreur la valeur doit etre comprise entre 0 et 100"
-msgstr "Erreur la valeur doit etre comprise entre 0 et 100"
-
-#. module: sale_simulator
-#: help:res.partner.category,discount:0
-msgid "If different to 0, it control max valueof discount(%) and block if greather"
-msgstr "Si différente de 0, cela contrôle la valeur maximale de la remise et la bloque si dépassement."
-
-#. module: sale_simulator
-#: view:product.item:0
-msgid "General"
-msgstr "Général"
-
-#. module: sale_simulator
-#: help:product.item,factory_price:0
-msgid "Price include purchase price and others costs"
-msgstr "Prix inclus le prix d'achat et les autres coûts"
-
-#. module: sale_simulator
-#: model:ir.actions.act_window,name:sale_simulator.action_sale_simulator_all
-#: model:ir.actions.act_window,name:sale_simulator.action_sale_simulator_my
-#: model:ir.model,name:sale_simulator.model_sale_simulator
-#: field:sale.simulator.line,simul_id:0
-msgid "Sale simulator"
-msgstr "Configurateur de vente"
-
-#. module: sale_simulator
-#: model:ir.model,name:sale_simulator.model_sale_simulator_line_item
-msgid "Sale simulator line item"
-msgstr ""
-
-#. module: sale_simulator
-#: selection:product.item,sequence:0
-msgid "Second step"
-msgstr "Seconde étape"
-
-#. module: sale_simulator
-#: model:ir.ui.menu,name:sale_simulator.menu_simulator_item
-msgid "Module Items"
-msgstr "Modules complémentaires"
+#: field:product.item.line,standard_price:0
+msgid "Cost"
+msgstr "Prix de revient"
 
 #. module: sale_simulator
 #: view:product.item:0
 msgid "Other informations"
 msgstr "Autres Informations"
 
-#. module: sale_simulator
-#: field:sale.simulator.line,message:0
-msgid "Message"
-msgstr "Message"
-
-#. module: sale_simulator
-#: model:ir.actions.act_window,name:sale_simulator.action_product_item_feature
-msgid "Item Feature"
-msgstr "Caractéristique"
-
-#. module: sale_simulator
-#: view:sale.simulator:0
-msgid "Create Sale Order"
-msgstr "Créer une commande"
-
-#. module: sale_simulator
-#: view:sale.simulator:0
-msgid "Check"
-msgstr "Vérifier"
-
-#. module: sale_simulator
-#: field:product.item,uom_id:0
-#: field:product.item.line,uom_id:0
-msgid "Unit"
-msgstr "Unité"
-
+#~ msgid "First step"
+#~ msgstr "Première étape"
+#~ msgid "Kit / Phantom"
+#~ msgstr "Kit / Fantôme"
+#~ msgid "Second step"
+#~ msgstr "Seconde étape"
 #~ msgid "Other information"
 #~ msgstr "Autre information"
 #~ msgid "Capacity (To)"
