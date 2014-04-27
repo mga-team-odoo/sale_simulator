@@ -185,6 +185,36 @@ class sale_simulator_line(orm.Model):
     def button_dummy(self, cr, uid, ids, context=None):
         return True
 
+    def compute_price(self, cr, uid, ids, context=None):
+        """
+        Compute the price, based on the pricelist
+        """
+        if len(ids) > 1:
+            raise orm.except_orm(_('Error'), _('You can only compute one line at the time!'))
+
+        line = self.browse(cr, uid, ids[0], context=context)
+        cost_price = 0.0
+        sale_price = 0.0
+
+        pricelist_obj = self.pool.get('product.pricelist')
+        product_obj = self.pool.get('product.product')
+        partner_id = line.simul_id.partner_id and line.simul_id.partner_id.id or False
+        pricelist_id = line.simul_id.pricelist_id.id
+        date_order = time.strftime('%Y-%m-%d')
+        for i in self._assembly_bom_from_line(cr, uid, line, context=context):
+            cost_price += product_obj.browse(cr, uid, i[0], context=context).standard_price or 0.0
+            sale_price += pricelist_obj.price_get(cr, uid, [pricelist_id],
+                                                  i[0], i[1] or 1.0, partner_id,
+                                                  {'uom': i[2], 'date': date_order,}
+                                                 )[pricelist_id]
+
+        new_prices = {
+            'factory_price': cost_price,
+            'sale_price': sale_price,
+        }
+
+        return self.write(cr, uid, ids, new_prices, context=context)
+
     def check_config(self, cr, uid, ids, context=None):
         '''
         Check if selected configuration is valid

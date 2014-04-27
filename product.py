@@ -29,6 +29,7 @@
 
 from openerp.osv import orm
 from openerp.osv import fields
+import openerp.addons.decimal_precision as dp
 
 
 class product_item_feature(orm.Model):
@@ -121,7 +122,6 @@ class product_item(orm.Model):
         'supplier_id': fields.many2one('res.partner', 'Supplier', help="Select the manufacturer if you use subcontracting,\nleave empty if you don't ue it"),
         'product_company_id': fields.many2one('res.company', 'Company', help='Company to create the main product,\nleave empty to create in the current company'),
         'routing_id': fields.many2one('mrp.routing', 'Routing', help='Select routing for this BOM'),
-
     }
 
     _defaults = {
@@ -164,12 +164,18 @@ class product_item_line(orm.Model):
         'product_id': fields.many2one('product.product', 'Product', required=True),
         'quantity': fields.float('Quantity', required=True),
         'uom_id': fields.many2one('product.uom', 'Unit', required=True),
+        'list_price': fields.float('Sale Price', digits_compute=dp.get_precision('Product Price'),
+                                   help="Base price to compute the customer price. Sometimes called the catalog price."),
+        'standard_price': fields.float('Cost', digits_compute=dp.get_precision('Product Price'),
+                                       help="Cost price of the product used for standard stock valuation in accounting and used as a base price on purchase orders.", groups="base.group_user"),
         'company_id': fields.many2one('res.company', 'Company', required=True),
     }
 
     _defaults = {
         'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'product.item', context=c),
-        'quantity': 1.0
+        'quantity': 1.0,
+        'standard_price': 0.0,
+        'list_price': 0.0,
     }
 
     def onchange_product(self, cr, uid, ids, product_id, context=None):
@@ -180,7 +186,11 @@ class product_item_line(orm.Model):
         if product_id:
             product = self.pool['product.product'].browse(cr, uid, product_id, context=context)
             if product:
-                v['uom_id'] = product.uom_id.id
+                v.update({
+                    'uom_id': product.uom_id.id,
+                    'standard_price': product.standard_price or 0.0,
+                    'list_price': product.list_price or 0.0,
+                })
             v['quantity'] = 1
 
         return {'value': v}

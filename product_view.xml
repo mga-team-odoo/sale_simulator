@@ -119,6 +119,8 @@
                                         <field name="product_id" on_change="onchange_product(product_id)"/>
                                         <field name="quantity"/>
                                         <field name="uom_id"/>
+                                        <field name="standard_price"/>
+                                        <field name="list_price"/>
                                     </tree>
                                 </field>
                             </page>

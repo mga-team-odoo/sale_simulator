@@ -42,6 +42,10 @@
                                 <field name="retail_price"/>
                                 <field name="margin"/>
                                 <field name="sale_price"/>
+                                <button string="Compute price"
+                                    icon="gtk-ok"
+                                    type="object"
+                                    name="compute_price"/>
                                 <button string="Create Sale order"
                                     icon="gtk-justify-fill"
                                     type="object" 
@@ -55,6 +59,7 @@
                                     <button name="button_dummy" string="Compute" type="object"/> 
                                     <button string="Create Sale Order" icon="gtk-justofy-fill" type="object" name="create_sale_order"
                                         attrs="{'invisible': [('order_id','!=', False)]}"/>
+                                    <button string="Compute price" icon="gtk-ok" type="object" name="compute_price"/>
                                 </header>
                                 <sheet>
                                     <group colspan="4">
