@@ -24,7 +24,7 @@
 
 {
     "name": "Sale Simulator",
-    "version": "1.1",
+    "version": "1.2",
     "author": "Mirounga, Syleam",
     "website": "http://www.mirounga.fr/",
     "description": """
