@@ -54,6 +54,7 @@ class sale_simulator(orm.Model):
         'user_id': fields.many2one('res.users', 'Salesman', required=True, help="Salesman user"),
         'shop_id': fields.many2one('sale.shop', 'Shop', required=True, help='Select shop to convert this sale as sale order'),
         'company_id': fields.many2one('res.company', 'Company', required=True),
+        'fiscal_position': fields.many2one('account.fiscal.position', 'Fiscal Position'),
     }
 
     _defaults = {
@@ -61,6 +62,7 @@ class sale_simulator(orm.Model):
         'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'sale.simulator', context=c),
         'shop_id': _get_default_shop,
         'user_id': lambda obj, cr, uid, context: uid,
+        'fiscal_position': False,
     }
 
     def onchange_partner(self, cr, uid, ids, partner_id, context=None):
@@ -75,6 +77,7 @@ class sale_simulator(orm.Model):
             partner = self.pool['res.partner'].browse(cr, uid, partner_id, context=context)
             if partner:
                 res['pricelist_id'] = partner.property_product_pricelist and partner.property_product_pricelist.id or False
+                res['fiscal_position'] = partner.property_account_position and partner.property_account_position.id or False
 
         return {'value': res}
 
@@ -401,6 +404,10 @@ class sale_simulator_line(orm.Model):
         # Search for invoicing and delevrey addresses
         addr = self.pool['res.partner'].address_get(cr, uid, [line.simul_id.partner_id.id], ['delivery', 'invoice', 'contact'], context=context)
 
+        # retrieve fiscal position to compute
+        fiscal_position = line.simul_id.fiscal_position
+        fpos = fiscal_position and self.pool.get('account.fiscal.position').browse(cr, uid, fiscal_position.id) or False
+
         # Create a sale order with one line included the final product
         sorder = {
             'origin': line.name,
@@ -412,13 +419,14 @@ class sale_simulator_line(orm.Model):
             'pricelist_id': line.simul_id.pricelist_id.id,
             'user_id': line.simul_id.user_id.id,
             'shop_id': line.simul_id.shop_id.id,
+            'fiscal_position': fiscal_position and fiscal_position.id or False,
             'order_line': [(0, 0,
                             {
                                 'product_id': product_id,
                                 'name': line.description,
                                 'product_uom_qty': line.quantity,
                                 'product_uom': line.item_id.uom_id.id,
-                                'tax_id': [(6, 0, [t.id for t in line.item_id.sale_taxes_id])],
+                                'tax_id': [(6, 0, self.pool.get('account.fiscal.position').map_tax(cr, uid, fpos, line.item_id.sale_taxes_id))],
                                 'price_unit': line.sale_price,
                             })],
         }
