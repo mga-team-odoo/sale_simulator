@@ -374,6 +374,7 @@ class sale_simulator_line(orm.Model):
             'uom_po_id': line.item_id.uom_id.id,
             'description_sale': line.item_id.notes,
             'type': 'product',
+            'default_code': procode,
         }
         if line.item_id.company_id:
             final['company_id'] = line.item_id.company_id.id
