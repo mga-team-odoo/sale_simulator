@@ -220,19 +220,14 @@
                                     <field name="code"/>
                                     <field name="sequence"/>
                                     <field name="p_item_id" colspan="2" domain="[('type','=','p')]"/>
-                                    <field name="type"/>
+                                    <field name="type" invisible="1"/>
                                     <field name="number" colspan="2"/>
                                     <field name="capacity_start"/>
                                     <field name="factory_price"/>
                                     <field name="retail_price"/>
-                                    <field name="bom_type"/>
+                                    <field name="bom_type" invisible="1"/>
                                     <field name="company_id" groups="base.group_multi_company"
                                         widget="selection"/>
-                                </group>
-                                <separator string="Other informations" colspan="4"/>
-                                <group col="2" colspan="4">
-                                    <field name="uom_id"/>
-                                    <field name="categ_id"/>
                                 </group>
                             </page>
                             <page string="Products">
@@ -252,12 +247,6 @@
                                         <field name="global"/>
                                     </tree>
                                 </field>
-                            </page>
-                            <page string="Other">
-                                <separator string="Sale taxes" colspan="4"/>
-                                <field name="sale_taxes_id" nolabel="1"/>
-                                <separator string="Notes" colspan="4"/>
-                                <field name="notes" nolabel="1"/>
                             </page>
                         </notebook>
                     </sheet>
