@@ -404,7 +404,11 @@ class sale_simulator_line(orm.Model):
             supplier_form = {
                 'name': line.item_id.supplier_id.id,
                 'product_uom': line.item_id.uom_id.id,
+                'min_qty': 1.0,
+                'sequence': line.item_id.sequence,
             }
+            if line.item_id.company_id:
+                supplier_form['company_id'] = line.item_id.company_id.id
             product_obj.write(cr, uid, [product_id], {'seller_ids': [(0, 0, supplier_form)]}, context=context)
 
         return product_id
