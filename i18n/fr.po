@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-27 18:48+0000\n"
-"PO-Revision-Date: 2014-04-27 20:57+0100\n"
+"POT-Creation-Date: 2014-04-30 13:48+0000\n"
+"PO-Revision-Date: 2014-04-30 15:53+0100\n"
 "Last-Translator: Christophe CHAUVET <christophe.chauvet@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -43,6 +43,11 @@ msgstr "Fournisseur"
 #: field:sale.simulator,name:0
 msgid "Simulation number"
 msgstr "Numéro de configuration"
+
+#. module: sale_simulator
+#: selection:product.item,supply_method:0
+msgid "Manufacture"
+msgstr "Produire"
 
 #. module: sale_simulator
 #: field:product.item,company_id:0
@@ -169,7 +174,7 @@ msgid "Type"
 msgstr "Type"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:271
+#: code:addons/sale_simulator/sale.py:268
 #, python-format
 msgid "Cannot print error message on the line"
 msgstr "Impossible d'imprimer le message d'erreur sur la ligne"
@@ -180,7 +185,7 @@ msgid "Sale taxes"
 msgstr "Taxes de vente"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:426
+#: code:addons/sale_simulator/sale.py:428
 #, python-format
 msgid "A partner is necessary before create a sale order!"
 msgstr "Un partenaire est nécessaire pour créer un commande!"
@@ -201,16 +206,16 @@ msgid "Salesman configurator"
 msgstr "Configurteur Vendeur "
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:193
+#: code:addons/sale_simulator/sale.py:190
 #, python-format
 msgid "You can only compute one line at the time!"
 msgstr "Vous ne pouvez calculer qu'une ligne à la fois!"
 
 #. module: sale_simulator
-#: view:sale.simulator:0
-#: field:sale.simulator,line_ids:0
-msgid "Lines"
-msgstr "Lignes"
+#: model:ir.actions.act_window,name:sale_simulator.product_item_module
+#: view:product.item:0
+msgid "Modules"
+msgstr "Modules"
 
 #. module: sale_simulator
 #: model:ir.model,name:sale_simulator.model_sale_simulator_line_item
@@ -295,6 +300,11 @@ msgid "Cancel Sale order"
 msgstr "Annuler la commande"
 
 #. module: sale_simulator
+#: selection:product.item,supply_method:0
+msgid "Buy"
+msgstr "Acheter"
+
+#. module: sale_simulator
 #: model:ir.actions.act_window,name:sale_simulator.action_product_item
 #: view:product.item:0
 #: field:product.item,p_item_id:0
@@ -309,7 +319,14 @@ msgid "Normal"
 msgstr "Normale"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:419
+#: help:product.item,supply_method:0
+msgid ""
+"Manufacture: When procuring the product, a manufacturing order or a task will be generated, depending on the product type. \n"
+"Buy: When procuring the product, a purchase order will be generated."
+msgstr "Fabriquer : lors des approvisionnements pour cet article, un ordre de fabrication ou une tâche sera créé, selon le type d'article. Acheter : lors des approvisionnements pour cet article, une commande d'achat sera créée."
+
+#. module: sale_simulator
+#: code:addons/sale_simulator/sale.py:421
 #, python-format
 msgid "You can only create one sale order at the time!"
 msgstr "Vous ne pouvez créer qu'une seule commande à la fois!"
@@ -333,7 +350,12 @@ msgid "Factory price"
 msgstr "Prix de revient"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:474
+#: field:product.item,supply_method:0
+msgid "Supply Method"
+msgstr "Méthode de fourniture"
+
+#. module: sale_simulator
+#: code:addons/sale_simulator/sale.py:476
 #, python-format
 msgid ""
 "Oups you may not be here!\n"
@@ -343,14 +365,14 @@ msgstr ""
 "Pas de commande a annuler"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:193
-#: code:addons/sale_simulator/sale.py:226
-#: code:addons/sale_simulator/sale.py:249
-#: code:addons/sale_simulator/sale.py:271
-#: code:addons/sale_simulator/sale.py:419
-#: code:addons/sale_simulator/sale.py:423
-#: code:addons/sale_simulator/sale.py:426
-#: code:addons/sale_simulator/sale.py:474
+#: code:addons/sale_simulator/sale.py:190
+#: code:addons/sale_simulator/sale.py:223
+#: code:addons/sale_simulator/sale.py:246
+#: code:addons/sale_simulator/sale.py:268
+#: code:addons/sale_simulator/sale.py:421
+#: code:addons/sale_simulator/sale.py:425
+#: code:addons/sale_simulator/sale.py:428
+#: code:addons/sale_simulator/sale.py:476
 #, python-format
 msgid "Error"
 msgstr "Erreur"
@@ -384,7 +406,7 @@ msgid "Features"
 msgstr "Caractéristiques"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:423
+#: code:addons/sale_simulator/sale.py:425
 #, python-format
 msgid "Line not found, please reload your browser!"
 msgstr "Ligne non trouvé, veuillez recharger votre navigateur!"
@@ -441,7 +463,7 @@ msgid "Product feature list"
 msgstr "Liste des caractéristiques produits"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:226
+#: code:addons/sale_simulator/sale.py:223
 #, python-format
 msgid "Configuration line not found"
 msgstr "Ligne de configuration non trouvé"
@@ -453,7 +475,7 @@ msgid "Feature"
 msgstr "Fonctionnalité"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:249
+#: code:addons/sale_simulator/sale.py:246
 #, python-format
 msgid "No module found for %d !"
 msgstr "Pas de module trouvé pour %d !"
@@ -467,11 +489,6 @@ msgstr "Autre"
 #: model:product.item.feature,name:sale_simulator.feature_memory
 msgid "Memory"
 msgstr "Mémoire"
-
-#. module: sale_simulator
-#: view:sale.simulator:0
-msgid "Compute"
-msgstr "Calculer"
 
 #. module: sale_simulator
 #: field:res.partner.category,discount:0
@@ -515,10 +532,10 @@ msgid "Sale price"
 msgstr "Prix de vente"
 
 #. module: sale_simulator
-#: model:ir.actions.act_window,name:sale_simulator.product_item_module
-#: view:product.item:0
-msgid "Modules"
-msgstr "Modules"
+#: view:sale.simulator:0
+#: field:sale.simulator,line_ids:0
+msgid "Lines"
+msgstr "Lignes"
 
 #. module: sale_simulator
 #: field:product.item.feature.line,item_id:0
@@ -593,6 +610,8 @@ msgstr "Prix de revient"
 msgid "Other informations"
 msgstr "Autres Informations"
 
+#~ msgid "Compute"
+#~ msgstr "Calculer"
 #~ msgid "First step"
 #~ msgstr "Première étape"
 #~ msgid "Kit / Phantom"
