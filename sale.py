@@ -365,13 +365,13 @@ class sale_simulator_line(orm.Model):
             'purchase_ok': False,
             'list_price': line.retail_price,
             'standard_price': line.factory_price,
-            'procure_method': 'make_to_order',
-            'supply_method': 'produce',
             'uom_id': line.item_id.uom_id.id,
             'uom_po_id': line.item_id.uom_id.id,
             'description_sale': line.item_id.notes,
             'type': 'product',
             'default_code': procode,
+            'procure_method': 'make_to_order',
+            'supply_method': line.item_id.supply_method,
         }
         if line.item_id.company_id:
             final['company_id'] = line.item_id.company_id.id

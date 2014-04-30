@@ -122,6 +122,8 @@ class product_item(orm.Model):
         'supplier_id': fields.many2one('res.partner', 'Supplier', help="Select the manufacturer if you use subcontracting,\nleave empty if you don't ue it"),
         'product_company_id': fields.many2one('res.company', 'Company', help='Company to create the main product,\nleave empty to create in the current company'),
         'routing_id': fields.many2one('mrp.routing', 'Routing', help='Select routing for this BOM'),
+        'supply_method': fields.selection([('produce','Manufacture'),('buy','Buy')], 'Supply Method', required=True,
+                                          help="Manufacture: When procuring the product, a manufacturing order or a task will be generated, depending on the product type. \nBuy: When procuring the product, a purchase order will be generated."),
     }
 
     _defaults = {
@@ -132,6 +134,7 @@ class product_item(orm.Model):
         'bom_type': -1,
         'supplier_id': False,
         'routing_id': False,
+        'supply_method': 'produce',
     }
 
     def price_compute(self, cr, uid, ids, context=None):
