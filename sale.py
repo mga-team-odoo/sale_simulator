@@ -182,9 +182,6 @@ class sale_simulator_line(orm.Model):
         default['order_id'] = False
         return super(sale_simulator_line, self).copy(cr, uid, id, default, context=context)
 
-    def button_dummy(self, cr, uid, ids, context=None):
-        return True
-
     def compute_price(self, cr, uid, ids, context=None):
         """
         Compute the price, based on the pricelist

@@ -61,7 +61,6 @@
                             <form string="Lines" version="7.0">
                                 <header>
                                     <button name="check_config" string="Check" type="object"/>
-                                    <button name="button_dummy" string="Compute" type="object"/> 
                                     <button string="Create Sale Order" icon="gtk-justofy-fill" type="object" name="create_sale_order"
                                         attrs="{'invisible': [('order_id','!=', False)]}"/>
                                     <button string="Compute price" icon="gtk-ok" type="object" name="compute_price"/>
