@@ -30,6 +30,7 @@
 from openerp.osv import orm
 from openerp.osv import fields
 from openerp.tools.translate import _
+import openerp.addons.decimal_precision as dp
 import time
 
 
@@ -151,11 +152,11 @@ class sale_simulator_line(orm.Model):
         'simul_id': fields.many2one('sale.simulator', 'Sale simulator', select=True, required=True, ondelete='cascade'),
         'item_id': fields.many2one('product.item', 'Product Item', required=True, ondelete='cascade'),
         'quantity': fields.float('Quantity'),
-        'factory_price': fields.function(_factory_price, method=True, type='float', string='Factory price'),
+        'factory_price': fields.function(_factory_price, digits_compute=dp.get_precision('Product Price'), method=True, type='float', string='Factory price'),
         'discount': fields.float('Discount'),
-        'retail_price': fields.function(_retail_price, method=True, type='float', string='Retail price'),
+        'retail_price': fields.function(_retail_price, digits_compute=dp.get_precision('Product Price'), method=True, type='float', string='Retail price'),
         'margin': fields.function(_margin, method=True, type='float', string='Margin'),
-        'sale_price': fields.float('Sale price'),
+        'sale_price': fields.float('Sale price', digits_compute=dp.get_precision('Product Price')),
         'line_ids': fields.one2many('sale.simulator.line.item', 'line_id', 'Item', required=True),
         'order_id': fields.many2one('sale.order', 'Sale order'),
         'message': fields.char('Message', size=128),
