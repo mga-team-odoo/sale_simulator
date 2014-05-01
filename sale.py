@@ -30,6 +30,8 @@
 from openerp.osv import orm
 from openerp.osv import fields
 from openerp.tools.translate import _
+from openerp import tools
+from datetime import datetime, timedelta
 import openerp.addons.decimal_precision as dp
 import time
 
@@ -56,6 +58,7 @@ class sale_simulator(orm.Model):
         'shop_id': fields.many2one('sale.shop', 'Shop', required=True, help='Select shop to convert this sale as sale order'),
         'company_id': fields.many2one('res.company', 'Company', required=True),
         'fiscal_position': fields.many2one('account.fiscal.position', 'Fiscal Position'),
+        'validity_date': fields.date('Validity date', help='Date validity for this quotation'),
     }
 
     _defaults = {
@@ -64,6 +67,7 @@ class sale_simulator(orm.Model):
         'shop_id': _get_default_shop,
         'user_id': lambda obj, cr, uid, context: uid,
         'fiscal_position': False,
+        'validity_date': lambda *a: datetime.strftime(datetime.now() + timedelta(days=30), tools.DEFAULT_SERVER_DATE_FORMAT)
     }
 
     def onchange_partner(self, cr, uid, ids, partner_id, context=None):
@@ -427,6 +431,9 @@ class sale_simulator_line(orm.Model):
 
         if not line.simul_id.partner_id:
             raise orm.except_orm(_('Error'), _('A partner is necessary before create a sale order!'))
+
+        if line.simul_id.validity_date > fields.date.today:
+            raise orm.except_orm(_('Error'), _('Validity is outdated, you cannot create a sale order!'))
 
         # Retrieve base module to check
         final_code = self._compute_product_code(cr, uid, line, context=context)
