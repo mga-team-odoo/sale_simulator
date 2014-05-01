@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-30 13:48+0000\n"
-"PO-Revision-Date: 2014-04-30 15:53+0100\n"
+"POT-Creation-Date: 2014-05-01 09:55+0000\n"
+"PO-Revision-Date: 2014-05-01 11:56+0100\n"
 "Last-Translator: Christophe CHAUVET <christophe.chauvet@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -28,6 +28,12 @@ msgstr ""
 #: view:sale.simulator:0
 msgid "Compute price"
 msgstr "Calculer le prix"
+
+#. module: sale_simulator
+#: code:addons/sale_simulator/sale.py:436
+#, python-format
+msgid "Validity is outdated, you cannot create a sale order!"
+msgstr "Date de validité dépassée, vous ne pouvez pas créer de commande!"
 
 #. module: sale_simulator
 #: selection:product.item,bom_type:0
@@ -139,6 +145,11 @@ msgid "Base price to compute the customer price. Sometimes called the catalog pr
 msgstr "Prix de base pour calculer le prix client. Quelque fois appelé prix catalogue."
 
 #. module: sale_simulator
+#: model:product.item.feature,name:sale_simulator.feature_memory
+msgid "Memory"
+msgstr "Mémoire"
+
+#. module: sale_simulator
 #: field:sale.simulator,partner_id:0
 msgid "Partner"
 msgstr "Partenaire"
@@ -174,7 +185,7 @@ msgid "Type"
 msgstr "Type"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:268
+#: code:addons/sale_simulator/sale.py:273
 #, python-format
 msgid "Cannot print error message on the line"
 msgstr "Impossible d'imprimer le message d'erreur sur la ligne"
@@ -185,7 +196,7 @@ msgid "Sale taxes"
 msgstr "Taxes de vente"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:428
+#: code:addons/sale_simulator/sale.py:433
 #, python-format
 msgid "A partner is necessary before create a sale order!"
 msgstr "Un partenaire est nécessaire pour créer un commande!"
@@ -206,7 +217,7 @@ msgid "Salesman configurator"
 msgstr "Configurteur Vendeur "
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:190
+#: code:addons/sale_simulator/sale.py:195
 #, python-format
 msgid "You can only compute one line at the time!"
 msgstr "Vous ne pouvez calculer qu'une ligne à la fois!"
@@ -326,7 +337,7 @@ msgid ""
 msgstr "Fabriquer : lors des approvisionnements pour cet article, un ordre de fabrication ou une tâche sera créé, selon le type d'article. Acheter : lors des approvisionnements pour cet article, une commande d'achat sera créée."
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:421
+#: code:addons/sale_simulator/sale.py:426
 #, python-format
 msgid "You can only create one sale order at the time!"
 msgstr "Vous ne pouvez créer qu'une seule commande à la fois!"
@@ -355,7 +366,7 @@ msgid "Supply Method"
 msgstr "Méthode de fourniture"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:476
+#: code:addons/sale_simulator/sale.py:484
 #, python-format
 msgid ""
 "Oups you may not be here!\n"
@@ -365,14 +376,15 @@ msgstr ""
 "Pas de commande a annuler"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:190
-#: code:addons/sale_simulator/sale.py:223
-#: code:addons/sale_simulator/sale.py:246
-#: code:addons/sale_simulator/sale.py:268
-#: code:addons/sale_simulator/sale.py:421
-#: code:addons/sale_simulator/sale.py:425
-#: code:addons/sale_simulator/sale.py:428
-#: code:addons/sale_simulator/sale.py:476
+#: code:addons/sale_simulator/sale.py:195
+#: code:addons/sale_simulator/sale.py:228
+#: code:addons/sale_simulator/sale.py:251
+#: code:addons/sale_simulator/sale.py:273
+#: code:addons/sale_simulator/sale.py:426
+#: code:addons/sale_simulator/sale.py:430
+#: code:addons/sale_simulator/sale.py:433
+#: code:addons/sale_simulator/sale.py:436
+#: code:addons/sale_simulator/sale.py:484
 #, python-format
 msgid "Error"
 msgstr "Erreur"
@@ -406,7 +418,7 @@ msgid "Features"
 msgstr "Caractéristiques"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:425
+#: code:addons/sale_simulator/sale.py:430
 #, python-format
 msgid "Line not found, please reload your browser!"
 msgstr "Ligne non trouvé, veuillez recharger votre navigateur!"
@@ -463,10 +475,9 @@ msgid "Product feature list"
 msgstr "Liste des caractéristiques produits"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:223
-#, python-format
-msgid "Configuration line not found"
-msgstr "Ligne de configuration non trouvé"
+#: help:sale.simulator,validity_date:0
+msgid "Date validity for this quotation"
+msgstr "Date de validité pour ce devis"
 
 #. module: sale_simulator
 #: field:product.item,feature_ids:0
@@ -475,7 +486,7 @@ msgid "Feature"
 msgstr "Fonctionnalité"
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:246
+#: code:addons/sale_simulator/sale.py:251
 #, python-format
 msgid "No module found for %d !"
 msgstr "Pas de module trouvé pour %d !"
@@ -486,9 +497,10 @@ msgid "Other"
 msgstr "Autre"
 
 #. module: sale_simulator
-#: model:product.item.feature,name:sale_simulator.feature_memory
-msgid "Memory"
-msgstr "Mémoire"
+#: code:addons/sale_simulator/sale.py:228
+#, python-format
+msgid "Configuration line not found"
+msgstr "Ligne de configuration non trouvé"
 
 #. module: sale_simulator
 #: field:res.partner.category,discount:0
@@ -516,6 +528,11 @@ msgstr "Caractéristique"
 #: selection:product.item,bom_type:0
 msgid "Kit"
 msgstr "Kit"
+
+#. module: sale_simulator
+#: field:sale.simulator,validity_date:0
+msgid "Validity date"
+msgstr "Date de validité"
 
 #. module: sale_simulator
 #: view:product.item:0

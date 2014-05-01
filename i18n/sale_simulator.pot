@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-30 13:48+0000\n"
-"PO-Revision-Date: 2014-04-30 13:48+0000\n"
+"POT-Creation-Date: 2014-05-01 09:55+0000\n"
+"PO-Revision-Date: 2014-05-01 09:55+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,12 @@ msgstr ""
 #: view:product.item:0
 #: view:sale.simulator:0
 msgid "Compute price"
+msgstr ""
+
+#. module: sale_simulator
+#: code:addons/sale_simulator/sale.py:436
+#, python-format
+msgid "Validity is outdated, you cannot create a sale order!"
 msgstr ""
 
 #. module: sale_simulator
@@ -137,6 +143,11 @@ msgid "Base price to compute the customer price. Sometimes called the catalog pr
 msgstr ""
 
 #. module: sale_simulator
+#: model:product.item.feature,name:sale_simulator.feature_memory
+msgid "Memory"
+msgstr ""
+
+#. module: sale_simulator
 #: field:sale.simulator,partner_id:0
 msgid "Partner"
 msgstr ""
@@ -172,7 +183,7 @@ msgid "Type"
 msgstr ""
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:268
+#: code:addons/sale_simulator/sale.py:273
 #, python-format
 msgid "Cannot print error message on the line"
 msgstr ""
@@ -183,7 +194,7 @@ msgid "Sale taxes"
 msgstr ""
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:428
+#: code:addons/sale_simulator/sale.py:433
 #, python-format
 msgid "A partner is necessary before create a sale order!"
 msgstr ""
@@ -204,7 +215,7 @@ msgid "Salesman configurator"
 msgstr ""
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:190
+#: code:addons/sale_simulator/sale.py:195
 #, python-format
 msgid "You can only compute one line at the time!"
 msgstr ""
@@ -323,7 +334,7 @@ msgid "Manufacture: When procuring the product, a manufacturing order or a task 
 msgstr ""
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:421
+#: code:addons/sale_simulator/sale.py:426
 #, python-format
 msgid "You can only create one sale order at the time!"
 msgstr ""
@@ -352,21 +363,22 @@ msgid "Supply Method"
 msgstr ""
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:476
+#: code:addons/sale_simulator/sale.py:484
 #, python-format
 msgid "Oups you may not be here!\n"
 "No sale order to cancel"
 msgstr ""
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:190
-#: code:addons/sale_simulator/sale.py:223
-#: code:addons/sale_simulator/sale.py:246
-#: code:addons/sale_simulator/sale.py:268
-#: code:addons/sale_simulator/sale.py:421
-#: code:addons/sale_simulator/sale.py:425
-#: code:addons/sale_simulator/sale.py:428
-#: code:addons/sale_simulator/sale.py:476
+#: code:addons/sale_simulator/sale.py:195
+#: code:addons/sale_simulator/sale.py:228
+#: code:addons/sale_simulator/sale.py:251
+#: code:addons/sale_simulator/sale.py:273
+#: code:addons/sale_simulator/sale.py:426
+#: code:addons/sale_simulator/sale.py:430
+#: code:addons/sale_simulator/sale.py:433
+#: code:addons/sale_simulator/sale.py:436
+#: code:addons/sale_simulator/sale.py:484
 #, python-format
 msgid "Error"
 msgstr ""
@@ -400,7 +412,7 @@ msgid "Features"
 msgstr ""
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:425
+#: code:addons/sale_simulator/sale.py:430
 #, python-format
 msgid "Line not found, please reload your browser!"
 msgstr ""
@@ -457,9 +469,8 @@ msgid "Product feature list"
 msgstr ""
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:223
-#, python-format
-msgid "Configuration line not found"
+#: help:sale.simulator,validity_date:0
+msgid "Date validity for this quotation"
 msgstr ""
 
 #. module: sale_simulator
@@ -469,7 +480,7 @@ msgid "Feature"
 msgstr ""
 
 #. module: sale_simulator
-#: code:addons/sale_simulator/sale.py:246
+#: code:addons/sale_simulator/sale.py:251
 #, python-format
 msgid "No module found for %d !"
 msgstr ""
@@ -480,8 +491,9 @@ msgid "Other"
 msgstr ""
 
 #. module: sale_simulator
-#: model:product.item.feature,name:sale_simulator.feature_memory
-msgid "Memory"
+#: code:addons/sale_simulator/sale.py:228
+#, python-format
+msgid "Configuration line not found"
 msgstr ""
 
 #. module: sale_simulator
@@ -509,6 +521,11 @@ msgstr ""
 #. module: sale_simulator
 #: selection:product.item,bom_type:0
 msgid "Kit"
+msgstr ""
+
+#. module: sale_simulator
+#: field:sale.simulator,validity_date:0
+msgid "Validity date"
 msgstr ""
 
 #. module: sale_simulator
