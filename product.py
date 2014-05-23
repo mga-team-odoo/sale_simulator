@@ -114,7 +114,7 @@ class product_item(orm.Model):
         'sequence': fields.integer('Sequence'),
         'bom_type': fields.selection(BOM_STEP, 'BOM type', required=True),
         'sale_taxes_id': fields.many2many('account.tax', 'sale_simulator_taxes_rel', 'item_id', 'tax_id', 'Customer taxes'),
-        'categ_id': fields.many2one('product.category', 'Category', required=True),
+        'categ_id': fields.many2one('product.category', 'Category'),
         'uom_id': fields.many2one('product.uom', 'Unit'),
         'notes': fields.text('Notes'),
         #        'tsp': fields.function(_total_standard_price, method=True, type='float', string='Total standard price'),
@@ -122,7 +122,7 @@ class product_item(orm.Model):
         'supplier_id': fields.many2one('res.partner', 'Supplier', help="Select the manufacturer if you use subcontracting,\nleave empty if you don't ue it"),
         'product_company_id': fields.many2one('res.company', 'Company', help='Company to create the main product,\nleave empty to create in the current company'),
         'routing_id': fields.many2one('mrp.routing', 'Routing', help='Select routing for this BOM'),
-        'supply_method': fields.selection([('produce','Manufacture'),('buy','Buy')], 'Supply Method', required=True,
+        'supply_method': fields.selection([('produce','Manufacture'),('buy','Buy')], 'Supply Method',
                                           help="Manufacture: When procuring the product, a manufacturing order or a task will be generated, depending on the product type. \nBuy: When procuring the product, a purchase order will be generated."),
     }
 

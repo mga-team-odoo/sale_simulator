@@ -102,14 +102,14 @@
                                     <field name="retail_price"/>
                                     <field name="bom_type"/>
                                     <field name="routing_id"/>
-                                    <field name="supply_method"/>
+                                    <field name="supply_method" required="1"/>
                                     <field name="company_id" groups="base.group_multi_company"
                                         widget="selection"/>
                                 </group>
                                 <separator string="Other informations" colspan="4"/>
                                 <group colspan="4" col="4">
                                     <field name="uom_id" required="1"/>
-                                    <field name="categ_id"/>
+                                    <field name="categ_id" required="1"/>
                                     <field name="supplier_id" domain="[('supplier','=', True)]"/>
                                     <field name="product_company_id"/>
                                 </group>
