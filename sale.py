@@ -161,7 +161,7 @@ class sale_simulator_line(orm.Model):
         'retail_price': fields.function(_retail_price, digits_compute=dp.get_precision('Product Price'), method=True, type='float', string='Retail price'),
         'margin': fields.function(_margin, method=True, type='float', string='Margin'),
         'sale_price': fields.float('Sale price', digits_compute=dp.get_precision('Product Price')),
-        'line_ids': fields.one2many('sale.simulator.line.item', 'line_id', 'Item', required=True),
+        'line_ids': fields.one2many('sale.simulator.line.item', 'line_id', 'Item'),
         'order_id': fields.many2one('sale.order', 'Sale order'),
         'message': fields.char('Message', size=128),
         'company_id': fields.many2one('res.company', 'Company', required=True),
