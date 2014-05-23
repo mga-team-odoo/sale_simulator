@@ -53,7 +53,7 @@ class sale_simulator(orm.Model):
         'name': fields.char('Simulation number', size=64, required=True),
         'partner_id': fields.many2one('res.partner', 'Partner', ondelete='cascade'),
         'pricelist_id': fields.many2one('product.pricelist', 'Price List', ondelete='cascade', required=True),
-        'line_ids': fields.one2many('sale.simulator.line', 'simul_id', 'Lines', required=True),
+        'line_ids': fields.one2many('sale.simulator.line', 'simul_id', 'Lines'),
         'user_id': fields.many2one('res.users', 'Salesman', required=True, help="Salesman user"),
         'shop_id': fields.many2one('sale.shop', 'Shop', required=True, help='Select shop to convert this sale as sale order'),
         'company_id': fields.many2one('res.company', 'Company', required=True),
