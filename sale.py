@@ -432,8 +432,8 @@ class sale_simulator_line(orm.Model):
         if not line.simul_id.partner_id:
             raise orm.except_orm(_('Error'), _('A partner is necessary before create a sale order!'))
 
-        if line.simul_id.validity_date > fields.date.today:
-            raise orm.except_orm(_('Error'), _('Validity is outdated, you cannot create a sale order!'))
+        # if line.simul_id.validity_date < fields.date.today:
+        #     raise orm.except_orm(_('Error'), _('Validity is outdated, you cannot create a sale order!'))
 
         # Retrieve base module to check
         final_code = self._compute_product_code(cr, uid, line, context=context)
