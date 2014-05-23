@@ -115,7 +115,7 @@ class product_item(orm.Model):
         'bom_type': fields.selection(BOM_STEP, 'BOM type', required=True),
         'sale_taxes_id': fields.many2many('account.tax', 'sale_simulator_taxes_rel', 'item_id', 'tax_id', 'Customer taxes'),
         'categ_id': fields.many2one('product.category', 'Category', required=True),
-        'uom_id': fields.many2one('product.uom', 'Unit', required=True),
+        'uom_id': fields.many2one('product.uom', 'Unit'),
         'notes': fields.text('Notes'),
         #        'tsp': fields.function(_total_standard_price, method=True, type='float', string='Total standard price'),
         'company_id': fields.many2one('res.company', 'Company', required=True),
