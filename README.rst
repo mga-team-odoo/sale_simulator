@@ -1,8 +1,8 @@
 Sales configurator for salesman
 ===============================
 
-.. image:: https://travis-ci.org/mga-team/openerp-sale_simulator.svg?branch=7.0
-   :target: https://travis-ci.org/mga-team/openerp-sale_simulator
+.. image:: https://travis-ci.org/mga-team-odoo/sale_simulator.svg?branch=7.0
+   :target: https://travis-ci.org/mga-team-odoo/sale_simulator
 
 This module help salesman to assembly configuration, and check if the configuration is possible
 
@@ -17,4 +17,4 @@ The name of this module must be *sale_simulator*, see below the command line to 
 
 ::
 
-    git clone https://github.com/mga-team/openerp-sale_simulator.git ./sale_simulator
+    git clone https://github.com/mga-team-odoo/sale_simulator.git
