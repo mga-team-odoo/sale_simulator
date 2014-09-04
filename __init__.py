@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright (c) 2008 Syleam Info Services (http://syleam.fr) All Rights Reserved
+# Copyright (c) 2008 Syleam Info Services http://syleam.fr All Rights Reserved
 #                    Christophe Chauvet <christophe(.)chauvet(@)syleam(.)fr
 #
 # WARNING: This program as such is intended to be used by professional
@@ -29,7 +29,7 @@
 
 import product
 import sale
-#import wizard
+# import wizard
 import partner
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

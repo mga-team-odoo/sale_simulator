@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright (c) 2008 Sylëam Info Services (http://www.syleam.fr) All rights Reserved.
+# Copyright (c) 2008 Sylëam Info Services http://www.syleam.fr
+#               All rights Reserved.
 #               2013 Christophe CHAUVET <christophe.chauvet@gmail.com>
 #
 # WARNING: This program as such is intended to be used by professional
@@ -49,7 +50,9 @@ class product_item_feature(orm.Model):
 
     _defaults = {
         'active': True,
-        'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'product.item.feature', context=c),
+        'company_id': lambda self, cr, uid,
+        c: self.pool['res.company']._company_default_get(
+            cr, uid, 'product.item.feature', context=c),
     }
 
     def create(self, cr, uid, values, context=None):
@@ -63,7 +66,8 @@ class product_item_feature(orm.Model):
         if not values.get('code', False):
             values['code'] = 'NONE'
 
-        return super(product_item_feature, self).create(cr, uid, values, context=context)
+        return super(product_item_feature, self).create(
+            cr, uid, values, context=context)
 
 BOM_STEP = [
     (-1, 'Kit'),
@@ -93,7 +97,8 @@ class product_item(orm.Model):
         res = {}
         for id in ids:
             std_price = 0.0
-            line_ids = line_obj.search(cr, uid, [('item_id', '=', id)], context=context)
+            line_ids = line_obj.search(cr, uid, [('item_id', '=', id)],
+                                       context=context)
             for line in line_obj.browse(cr, uid, line_ids, context=context):
                 std_price += line.product_id.standard_price
             res.setdefault(id, std_price)
@@ -104,31 +109,53 @@ class product_item(orm.Model):
         'code': fields.char('Code', size=12, required=True),
         'type': fields.selection(ITEM_TYPE, 'Type', required=True),
         'active': fields.boolean('Active'),
-        'item_ids': fields.one2many('product.item.line', 'item_id', 'Item line'),
-        'p_item_id': fields.many2one('product.item', 'Product Item', ondelete='cascade'),
-        'feature_ids': fields.one2many('product.item.feature.line', 'item_id', 'Feature'),
+        'item_ids': fields.one2many('product.item.line', 'item_id',
+                                    'Item line'),
+        'p_item_id': fields.many2one('product.item', 'Product Item',
+                                     ondelete='cascade'),
+        'feature_ids': fields.one2many('product.item.feature.line', 'item_id',
+                                       'Feature'),
         'number': fields.char('Product number', size=64),
-        'factory_price': fields.float('Factory price', help="Price include purchase price and others costs"),
+        'factory_price': fields.float(
+            'Factory price',
+            help="Price include purchase price and others costs"),
         'retail_price': fields.float('Retail price'),
         'capacity_start': fields.float('Capacity'),
         'sequence': fields.integer('Sequence'),
         'bom_type': fields.selection(BOM_STEP, 'BOM type', required=True),
-        'sale_taxes_id': fields.many2many('account.tax', 'sale_simulator_taxes_rel', 'item_id', 'tax_id', 'Customer taxes'),
+        'sale_taxes_id': fields.many2many(
+            'account.tax', 'sale_simulator_taxes_rel',
+            'item_id', 'tax_id', 'Customer taxes'),
         'categ_id': fields.many2one('product.category', 'Category'),
         'uom_id': fields.many2one('product.uom', 'Unit'),
         'notes': fields.text('Notes'),
-        #        'tsp': fields.function(_total_standard_price, method=True, type='float', string='Total standard price'),
+        # 'tsp': fields.function(_total_standard_price, method=True,
+        # type='float', string='Total standard price'),
         'company_id': fields.many2one('res.company', 'Company', required=True),
-        'supplier_id': fields.many2one('res.partner', 'Supplier', help="Select the manufacturer if you use subcontracting,\nleave empty if you don't ue it"),
-        'product_company_id': fields.many2one('res.company', 'Company', help='Company to create the main product,\nleave empty to create in the current company'),
-        'routing_id': fields.many2one('mrp.routing', 'Routing', help='Select routing for this BOM'),
-        'supply_method': fields.selection([('produce','Manufacture'),('buy','Buy')], 'Supply Method',
-                                          help="Manufacture: When procuring the product, a manufacturing order or a task will be generated, depending on the product type. \nBuy: When procuring the product, a purchase order will be generated."),
+        'supplier_id': fields.many2one(
+            'res.partner', 'Supplier',
+            help="Select the manufacturer if you use subcontracting,\n"
+            "leave empty if you don't ue it"),
+        'product_company_id': fields.many2one(
+            'res.company', 'Company',
+            help='Company to create the main product,\n'
+            'leave empty to create in the current company'),
+        'routing_id': fields.many2one('mrp.routing', 'Routing',
+                                      help='Select routing for this BOM'),
+        'supply_method': fields.selection(
+            [('produce', 'Manufacture'), ('buy', 'Buy')],
+            'Supply Method',
+            help="Manufacture: When procuring the product, a manufacturing "
+            "order or a task will be generated, depending on the product type."
+            "\nBuy: When procuring the product, a purchase order "
+            "will be generated."),
     }
 
     _defaults = {
         'active': True,
-        'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'product.item', context=c),
+        'company_id': lambda self, cr, uid,
+        c: self.pool['res.company']._company_default_get(
+            cr, uid, 'product.item', context=c),
         'type': 'p',
         'sequence': 10,
         'bom_type': -1,
@@ -151,7 +178,9 @@ class product_item(orm.Model):
                 std_price += line.product_id.standard_price * line.quantity
                 pub_price += line.product_id.list_price * line.quantity
 
-            self.write(cr, uid, [itm.id], {'factory_price': std_price, 'retail_price': pub_price}, context=context)
+            self.write(cr, uid, [itm.id],
+                       {'factory_price': std_price,
+                        'retail_price': pub_price}, context=context)
         return True
 
 
@@ -163,19 +192,28 @@ class product_item_line(orm.Model):
     _description = 'Product Item Line'
 
     _columns = {
-        'item_id': fields.many2one('product.item', 'Item', required=True, ondelete='cascade'),
-        'product_id': fields.many2one('product.product', 'Product', required=True),
+        'item_id': fields.many2one('product.item', 'Item', required=True,
+                                   ondelete='cascade'),
+        'product_id': fields.many2one('product.product', 'Product',
+                                      required=True),
         'quantity': fields.float('Quantity', required=True),
         'uom_id': fields.many2one('product.uom', 'Unit', required=True),
-        'list_price': fields.float('Sale Price', digits_compute=dp.get_precision('Product Price'),
-                                   help="Base price to compute the customer price. Sometimes called the catalog price."),
-        'standard_price': fields.float('Cost', digits_compute=dp.get_precision('Product Price'),
-                                       help="Cost price of the product used for standard stock valuation in accounting and used as a base price on purchase orders.", groups="base.group_user"),
+        'list_price': fields.float(
+            'Sale Price', digits_compute=dp.get_precision('Product Price'),
+            help="Base price to compute the customer price. "
+            "Sometimes called the catalog price."),
+        'standard_price': fields.float(
+            'Cost', digits_compute=dp.get_precision('Product Price'),
+            help="Cost price of the product used for standard stock valuation "
+            "in accounting and used as a base price on purchase orders.",
+            groups="base.group_user"),
         'company_id': fields.many2one('res.company', 'Company', required=True),
     }
 
     _defaults = {
-        'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'product.item', context=c),
+        'company_id': lambda self, cr, uid,
+        c: self.pool['res.company']._company_default_get(
+            cr, uid, 'product.item', context=c),
         'quantity': 1.0,
         'standard_price': 0.0,
         'list_price': 0.0,
@@ -187,7 +225,8 @@ class product_item_line(orm.Model):
         '''
         v = {}
         if product_id:
-            product = self.pool['product.product'].browse(cr, uid, product_id, context=context)
+            product = self.pool['product.product'].browse(cr, uid, product_id,
+                                                          context=context)
             if product:
                 v.update({
                     'uom_id': product.uom_id.id,
@@ -207,16 +246,19 @@ class product_item_feature_line(orm.Model):
     _description = 'Product item feature line'
 
     _columns = {
-        'item_id': fields.many2one('product.item', 'Item', required=True, ondelete='cascade'),
-        'feature_id': fields.many2one('product.item.feature', 'Feature', required=True),
+        'item_id': fields.many2one('product.item', 'Item', required=True,
+                                   ondelete='cascade'),
+        'feature_id': fields.many2one('product.item.feature', 'Feature',
+                                      required=True),
         'quantity': fields.float('Quantity', required=True),
         'global': fields.float('Global', required=True),
         'company_id': fields.many2one('res.company', 'Company', required=True),
     }
 
     _defaults = {
-        'company_id': lambda self, cr, uid, c: self.pool['res.company']._company_default_get(cr, uid, 'product.item', context=c),
+        'company_id': lambda self, cr, uid,
+        c: self.pool['res.company']._company_default_get(
+            cr, uid, 'product.item', context=c),
     }
-
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

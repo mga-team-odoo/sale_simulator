@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright (c) 2008 Sylëam Info Services (http://www.syleam.fr) All rights Reserved.
+# Copyright (c) 2008 Sylëam Info Services http://www.syleam.fr
+#               All rights Reserved.
 #               2013 Christophe CHAUVET <christophe.chauvet@gmail.com>
 #
 # WARNING: This program as such is intended to be used by professional
