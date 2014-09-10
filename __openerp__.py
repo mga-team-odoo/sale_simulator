@@ -27,8 +27,10 @@
     "version": "1.3",
     "author": "Mirounga, Syleam",
     "website": "http://www.mirounga.fr/",
-    "description": """
-The sale simulator
+    "description": """The sale simulator
+
+    With the simulator, we can create specific configuration for each sales.
+    On the request, we have only on product with a BOM
     """,
     "category": "Generic Modules/Sale",
     "depends": [

@@ -33,7 +33,9 @@ from openerp.osv import fields
 
 
 class res_partner_category(orm.Model):
-
+    """
+    Extended res.aprtner.category to add discount limit
+    """
     _inherit = 'res.partner.category'
 
     def _check_valid(self, cr, uid, ids, context=None):

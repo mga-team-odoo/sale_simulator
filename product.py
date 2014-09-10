@@ -57,8 +57,7 @@ class product_item_feature(orm.Model):
 
     def create(self, cr, uid, values, context=None):
         """
-        #TODO make doc string
-        Comment this
+        If code field is empty, we add NONE value in it
         """
         if context is None:
             context = {}

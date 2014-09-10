@@ -246,12 +246,9 @@ class sale_simulator_line(orm.Model):
         for i in self._assembly_bom_from_line(cr, uid, line, context=context):
             cost_price += product_obj.browse(
                 cr, uid, i[0], context=context).standard_price or 0.0
-            sale_price += pricelist_obj.price_get(cr, uid, [pricelist_id],
-                                                  i[0], i[
-                                                      1] or 1.0, partner_id,
-                                                  {'uom': i[2],
-                                                      'date': date_order}
-                                                  )[pricelist_id]
+            sale_price += pricelist_obj.price_get(
+                cr, uid, [pricelist_id], i[0], i[1] or 1.0, partner_id,
+                {'uom': i[2], 'date': date_order})[pricelist_id]
 
         new_prices = {
             'factory_price': cost_price,
